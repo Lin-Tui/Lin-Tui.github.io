@@ -5,5 +5,5 @@ db.json
 node_modules/
 public/
 .deploy*/
-util/
+utils/
 .github/
