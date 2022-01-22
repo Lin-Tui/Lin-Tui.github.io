@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录1. 同源策略及其限制内容 同源策略 同源策略限制  2. 跨域 什么是跨域 跨域的常见场景  3. 跨域解决方案 JSONP 跨域 CORS 跨域资源共享 Node 中间件代理(两次跨域) nginx 代理跨域 websocket postMessage 跨域 window.name + iframe 跨域 location.hash + iframe 跨域 document.domain">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E8%B7%A8%E5%9F%9F/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="目录1. 同源策略及其限制内容 同源策略 同源策略限制  2. 跨域 什么是跨域 跨域的常见场景  3. 跨域解决方案 JSONP 跨域 CORS 跨域资源共享 Node 中间件代理(两次跨域) nginx 代理跨域 websocket postMessage 跨域 window.name + iframe 跨域 location.hash + iframe 跨域 document.domain">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1588311963814.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1588316115701.png">
+<meta property="article:published_time" content="2020-05-01T04:28:05.687Z">
+<meta property="article:modified_time" content="2022-01-22T04:45:17.664Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1588311963814.png">
+  
+  
+  <title>跨域 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="跨域">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-01 12:28" pubdate>
+        2020年5月1日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      15k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      125 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">跨域</h1>
+            
+            <div class="markdown-body">
+              <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="1-同源策略及其限制内容"><a href="#1-同源策略及其限制内容" class="headerlink" title="1. 同源策略及其限制内容"></a><a href="#jumpa"><strong>1. 同源策略及其限制内容</strong></a></h3><ul>
+<li><a href="#jumpa1"><strong>同源策略</strong></a></li>
+<li><a href="#jumpa2"><strong>同源策略限制</strong></a></li>
+</ul>
+<h3 id="2-跨域"><a href="#2-跨域" class="headerlink" title="2. 跨域"></a><a href="#jumpb"><strong>2. 跨域</strong></a></h3><ul>
+<li><a href="#jumpb1"><strong>什么是跨域</strong></a></li>
+<li><a href="#jumpb2"><strong>跨域的常见场景</strong></a></li>
+</ul>
+<h3 id="3-跨域解决方案"><a href="#3-跨域解决方案" class="headerlink" title="3. 跨域解决方案"></a><a href="#jumpc"><strong>3. 跨域解决方案</strong></a></h3><ul>
+<li><a href="#jumpc1"><strong>JSONP 跨域</strong></a></li>
+<li><a href="#jumpc2"><strong>CORS 跨域资源共享</strong></a></li>
+<li><a href="#jumpc3"><strong>Node 中间件代理(两次跨域)</strong></a></li>
+<li><a href="#jumpc4"><strong>nginx 代理跨域</strong></a></li>
+<li><a href="#jumpc5"><strong>websocket</strong></a></li>
+<li><a href="#jumpc6"><strong>postMessage 跨域</strong></a></li>
+<li><a href="#jumpc7"><strong>window.name + iframe 跨域</strong></a></li>
+<li><a href="#jumpc8"><strong>location.hash + iframe 跨域</strong></a></li>
+<li><a href="#jumpc9"><strong>document.domain + iframe 跨域</strong></a></li>
+<li><a href="#jumpc10"><strong>总结</strong></a></li>
+</ul>
+<h1 id="（一）同源策略及其限制内容"><a href="#（一）同源策略及其限制内容" class="headerlink" title="（一）同源策略及其限制内容"></a><span id="jumpa"><strong>（一）同源策略及其限制内容</strong></span></h1><h3 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1. 同源策略"></a><span id="jumpa1"><strong>1. 同源策略</strong></span></h3><p>同源策略（Sameoriginpolicy）是一种约定，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，浏览器很容易受到XSS、CSRF等攻击。所谓同源是指”协议+域名+端口”三者相同，即便两个不同的域名指向同一个ip地址，也非同源。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1588311963814.png" srcset="/img/loading.gif" lazyload alt="1588311963814"></p>
+<h3 id="2-同源策略限制"><a href="#2-同源策略限制" class="headerlink" title="2. 同源策略限制"></a><span id="jumpa2"><strong>2. 同源策略限制</strong></span></h3><ul>
+<li>无法读取非同源网页的 Cookie、LocalStorage 和 IndexedDB</li>
+<li>无法接触非同源网页的 DOM</li>
+<li>无法向非同源地址发送 AJAX 请求</li>
+</ul>
+<p>但是有三个标签是允许跨域加载资源：</p>
+<ul>
+<li><code>&lt;img src=XXX&gt;</code></li>
+<li><code>&lt;link href=XXX&gt;</code></li>
+<li><code>&lt;script src=XXX&gt;</code></li>
+</ul>
+<h1 id="（二）跨域"><a href="#（二）跨域" class="headerlink" title="（二）跨域"></a><span id="jumpb"><strong>（二）跨域</strong></span></h1><h3 id="1-什么是跨域？"><a href="#1-什么是跨域？" class="headerlink" title="1. 什么是跨域？"></a><span id="jumpb1"><strong>1. 什么是跨域？</strong></span></h3><p>跨域出于浏览器的同源策略限制。当一个请求url的<strong>协议、域名、端口</strong>三者之间任意一个与当前页面url不同即为跨域。</p>
+<h3 id="2-跨域的常见场景"><a href="#2-跨域的常见场景" class="headerlink" title="2. 跨域的常见场景"></a><span id="jumpb2"><strong>2. 跨域的常见场景</strong></span></h3><figure class="highlight dts"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><pre><code class="hljs dts">URL                      说明       是否允许通信<br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/b.js     同一域名下   允许</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/lab/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/script/b.js 同一域名下不同文件夹 允许</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com:8000/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/b.js     同一域名，不同端口  不允许</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/a.js</span><br><span class="hljs-symbol">https:</span><span class="hljs-comment">//www.a.com/b.js 同一域名，不同协议 不允许</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//70.32.92.74/b.js 域名和域名对应ip 不允许</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//script.a.com/b.js 主域相同，子域不同 不允许（cookie这种情况下也不允许访问）</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//a.com/b.js 同一域名，不同二级域名（同上） 不允许（cookie这种情况下也不允许访问）</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.cnblogs.com/a.js</span><br><span class="hljs-symbol">http:</span><span class="hljs-comment">//www.a.com/b.js 不同域名 不允许</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：</p>
+<ul>
+<li><p>如果是协议和端口造成的跨域问题“前台”是无能为力的。</p>
+</li>
+<li><p>在跨域问题上，仅仅是通过“URL的首部”来识别而不会根据域名对应的IP地址是否相同来判断。“URL的首部”可以理解为“协议, 域名和端口必须匹配”。</p>
+</li>
+</ul>
+<h1 id="（三）跨域解决方案"><a href="#（三）跨域解决方案" class="headerlink" title="（三）跨域解决方案"></a><span id="jumpc">（三）<strong>跨域解决方案</strong></span></h1><ul>
+<li><code>jsonp</code> 跨域</li>
+<li><code>document.domain + iframe</code> 跨域</li>
+<li><code>location.hash + iframe</code> 跨域</li>
+<li><code>window.name + iframe</code> 跨域</li>
+<li><code>postMessage</code> 跨域</li>
+<li><code>CORS</code> 跨域资源共享</li>
+<li><code>nginx</code> 代理跨域</li>
+<li><code>nodejs</code> 中间件代理跨域</li>
+<li><code>WebSocket</code> 协议跨域</li>
+</ul>
+<h3 id="1-jsonp跨域"><a href="#1-jsonp跨域" class="headerlink" title="1. jsonp跨域"></a><span id="jumpc1"><strong>1. jsonp跨域</strong></span></h3><h5 id="（1）原理："><a href="#（1）原理：" class="headerlink" title="（1）原理："></a><strong>（1）原理</strong>：</h5><p>在页面上直接发起一个跨域的ajax请求是不可以的，但是在页面通过script标签引入的js是不受同源策略的限制的，就像你可以在自己的页面上使用<code>&lt;img src=&quot;&quot;&gt; </code>标签来随意显示某个域上的图片一样。（  原理：利用了src不受同源策略的影响 ，可以访问其他页面的数据）</p>
+<p> JSONP <strong>利用 <code>&lt;script&gt; </code>标签没有跨域限制的漏洞，网页可以得到从其他来源动态产生的 JSON 数据。JSONP请求一定需要对方的服务器做支持才可以。</strong>JSONP的一个要点就是允许用户传递一个<code>callback</code> 或者开始就定义一个回调方法，参数给服务端，然后服务端返回数据时会将这个<code>callback</code> 参数作为函数名来包裹住 JSON 数据，这样客户端就可以随意定制自己的函数来自动处理返回数据了。</p>
+<h5 id="（2）实现流程："><a href="#（2）实现流程：" class="headerlink" title="（2）实现流程："></a><strong>（2）实现流程</strong>：</h5><ul>
+<li>声明一个回调函数，其函数名(如show)当做参数值，传递给跨域请求数据的服务器，函数形参为要获取目标数据(服务器返回的data)。</li>
+<li>创建一个<code>&lt;script&gt;</code>标签，把那个跨域的API数据接口地址，赋值给script的src,还要在这个地址中向服务器传递该函数名（可以通过问号传参:?callback=show）。</li>
+<li>服务器接收到请求后，需要进行特殊的处理：把传递进来的函数名和它需要给你的数据拼接成一个字符串,例如：传递进去的函数名是show，它准备好的数据是<code>show(&#39;我不爱你&#39;)</code>。</li>
+<li>最后服务器把准备的数据通过HTTP协议返回给客户端，客户端再调用执行之前声明的回调函数（show），对返回的数据进行操作。</li>
+</ul>
+<h5 id="（3）优缺点："><a href="#（3）优缺点：" class="headerlink" title="（3）优缺点："></a><strong>（3）优缺点</strong>：</h5><ul>
+<li>优点是简单兼容性好，可用于解决主流浏览器的跨域数据访问的问题。</li>
+<li><strong>缺点是仅支持get方法具有局限性,不安全可能会遭受XSS攻击。</strong></li>
+</ul>
+<h5 id="（4）例子："><a href="#（4）例子：" class="headerlink" title="（4）例子："></a><strong>（4）例子：</strong></h5><p>在开发中可能会遇到多个 JSONP 请求的回调函数名是相同的，这时候就需要自己封装一个 JSONP函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// index.html</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">jsonp</span>(<span class="hljs-params">&#123; url, params, callback &#125;</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> script = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;script&#x27;</span>)<br>    <span class="hljs-built_in">window</span>[callback] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>&#123;<br>      resolve(data)<br>      <span class="hljs-built_in">document</span>.body.removeChild(script)<br>    &#125;<br>    params = &#123; ...params, callback &#125; <span class="hljs-comment">// wd=b&amp;callback=show</span><br>    <span class="hljs-keyword">let</span> arrs = []<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> params) &#123;<br>      arrs.push(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>=<span class="hljs-subst">$&#123;params[key]&#125;</span>`</span>)<br>    &#125;<br>    script.src = <span class="hljs-string">`<span class="hljs-subst">$&#123;url&#125;</span>?<span class="hljs-subst">$&#123;arrs.join(<span class="hljs-string">&#x27;&amp;&#x27;</span>)&#125;</span>`</span><br>    <span class="hljs-built_in">document</span>.body.appendChild(script)<br>  &#125;)<br>&#125;<br>jsonp(&#123;<br>  <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:3000/say&#x27;</span>,<br>  <span class="hljs-attr">params</span>: &#123; <span class="hljs-attr">wd</span>: <span class="hljs-string">&#x27;Iloveyou&#x27;</span> &#125;,<br>  <span class="hljs-attr">callback</span>: <span class="hljs-string">&#x27;show&#x27;</span><br>&#125;).then(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(data)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>上面这段代码相当于向<code>http://localhost:3000/say?wd=Iloveyou&amp;callback=show</code>这个地址请求数据，然后后台返回<code>show(&#39;我不爱你&#39;)</code>，最后会运行show()这个函数，打印出’我不爱你’</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// server.js</span><br><span class="hljs-keyword">let</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>)<br><span class="hljs-keyword">let</span> app = express()<br>app.get(<span class="hljs-string">&#x27;/say&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> &#123; wd, callback &#125; = req.query<br>  <span class="hljs-built_in">console</span>.log(wd) <span class="hljs-comment">// Iloveyou</span><br>  <span class="hljs-built_in">console</span>.log(callback) <span class="hljs-comment">// show</span><br>  res.end(<span class="hljs-string">`<span class="hljs-subst">$&#123;callback&#125;</span>(&#x27;我不爱你&#x27;)`</span>)<br>&#125;)<br>app.listen(<span class="hljs-number">3000</span>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>jQuery的jsonp形式</strong></p>
+<p>JSONP都是GET和异步请求的，不存在其他的请求方式和同步请求，且jQuery默认就会给JSONP的请求清除缓存。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js">$.ajax(&#123;<br><span class="hljs-attr">url</span>:<span class="hljs-string">&quot;http://crossdomain.com/jsonServerResponse&quot;</span>,<br><span class="hljs-attr">dataType</span>:<span class="hljs-string">&quot;jsonp&quot;</span>,<br><span class="hljs-attr">type</span>:<span class="hljs-string">&quot;get&quot;</span>,<span class="hljs-comment">//可以省略</span><br><span class="hljs-attr">jsonpCallback</span>:<span class="hljs-string">&quot;show&quot;</span>,<span class="hljs-comment">//-&gt;自定义传递给服务器的函数名，而不是使用jQuery自动生成的，可省略</span><br><span class="hljs-attr">jsonp</span>:<span class="hljs-string">&quot;callback&quot;</span>,<span class="hljs-comment">//-&gt;把传递函数名的那个形参callback，可省略</span><br><span class="hljs-attr">success</span>:<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>)</span>&#123;<br><span class="hljs-built_in">console</span>.log(data);&#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p><strong>更多例子可查看</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/DFF1993/article/details/79925874">JSONP跨域请求原理及优缺点</a></p>
+<h3 id="2-跨域资源共享（CORS）"><a href="#2-跨域资源共享（CORS）" class="headerlink" title="2. 跨域资源共享（CORS）"></a><span id="jumpc2"><strong>2. 跨域资源共享（CORS）</strong></span></h3><p><strong>CORS 需要浏览器和后端同时支持。</strong></p>
+<p>浏览器会自动进行 CORS 通信，实现 CORS 通信的关键是后端。只要后端实现了 CORS，就实现了跨域。</p>
+<p>服务端设置 Access-Control-Allow-Origin 就可以开启 CORS。 该属性表示哪些域名可以访问资源，如果设置通配符则表示所有网站都可以访问资源。</p>
+<p>虽然设置 CORS 和前端没什么关系，但是通过这种方式解决跨域问题的话，会在发送请求时出现两种情况，分别为<strong>简单请求</strong>和<strong>复杂请求</strong>。</p>
+<h5 id="（1）普通跨域"><a href="#（1）普通跨域" class="headerlink" title="（1）普通跨域"></a><strong>（1）普通跨域</strong></h5><p>普通跨域请求：只服务端设置Access-Control-Allow-Origin即可，前端无须设置，若要带cookie请求：前后端都需要设置。只要同时满足以下两大条件，就属于简单请求</p>
+<p><strong>条件1</strong>：使用下列方法之一：</p>
+<ul>
+<li>GET</li>
+<li>HEAD</li>
+<li>POST</li>
+</ul>
+<p><strong>条件2</strong>：Content-Type 的值仅限于下列三者之一：</p>
+<ul>
+<li>text/plain</li>
+<li>multipart/form-data</li>
+<li>application/x-www-form-urlencoded</li>
+</ul>
+<p>请求中的任意 XMLHttpRequestUpload 对象均没有注册任何事件监听器； XMLHttpRequestUpload 对象可以使用 XMLHttpRequest.upload 属性访问。</p>
+<h5 id="（2）复杂请求："><a href="#（2）复杂请求：" class="headerlink" title="（2）复杂请求："></a><strong>（2）复杂请求</strong>：</h5><p>不符合以上条件的请求就肯定是复杂请求了。复杂请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求,该请求是 option 方法的，通过该请求来知道服务端是否允许跨域请求。</p>
+<p>我们用<code>PUT</code>向后台请求时，属于复杂请求，后台需做如下配置：</p>
+<p><strong>复杂跨域的例子</strong>：</p>
+<p>下面代码由<code>http://localhost:3000/index.html</code>向<code>http://localhost:4000/</code>跨域请求，正如我们上面所说的，后端是实现 CORS 通信的关键。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// index.html</span><br><span class="hljs-keyword">let</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest()<br><span class="hljs-built_in">document</span>.cookie = <span class="hljs-string">&#x27;name=xiamen&#x27;</span> <span class="hljs-comment">// cookie不能跨域</span><br>xhr.withCredentials = <span class="hljs-literal">true</span> <span class="hljs-comment">// 前端设置是否带cookie</span><br>xhr.open(<span class="hljs-string">&#x27;PUT&#x27;</span>, <span class="hljs-string">&#x27;http://localhost:4000/getData&#x27;</span>, <span class="hljs-literal">true</span>)<br>xhr.setRequestHeader(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;xiamen&#x27;</span>)<br>xhr.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (xhr.readyState === <span class="hljs-number">4</span>) &#123;<br>    <span class="hljs-keyword">if</span> ((xhr.status &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.status &lt; <span class="hljs-number">300</span>) || xhr.status === <span class="hljs-number">304</span>) &#123;<br>      <span class="hljs-built_in">console</span>.log(xhr.response)<br>      <span class="hljs-comment">//得到响应头，后台需设置Access-Control-Expose-Headers</span><br>      <span class="hljs-built_in">console</span>.log(xhr.getResponseHeader(<span class="hljs-string">&#x27;name&#x27;</span>))<br>    &#125;<br>  &#125;<br>&#125;<br>xhr.send()<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//server1.js</span><br><span class="hljs-keyword">let</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">let</span> app = express();<br>app.use(express.static(__dirname));<br>app.listen(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//server2.js</span><br><span class="hljs-keyword">let</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>)<br><span class="hljs-keyword">let</span> app = express()<br><span class="hljs-keyword">let</span> whitList = [<span class="hljs-string">&#x27;http://localhost:3000&#x27;</span>] <span class="hljs-comment">//设置白名单</span><br>app.use(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> origin = req.headers.origin<br>  <span class="hljs-keyword">if</span> (whitList.includes(origin)) &#123;<br>    <span class="hljs-comment">// 设置哪个源可以访问我</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span>, origin)<br>    <span class="hljs-comment">// 允许携带哪个头访问我</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Allow-Headers&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>)<br>    <span class="hljs-comment">// 允许哪个方法访问我</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Allow-Methods&#x27;</span>, <span class="hljs-string">&#x27;PUT&#x27;</span>)<br>    <span class="hljs-comment">// 允许携带cookie</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Allow-Credentials&#x27;</span>, <span class="hljs-literal">true</span>)<br>    <span class="hljs-comment">// 预检的存活时间</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Max-Age&#x27;</span>, <span class="hljs-number">6</span>)<br>    <span class="hljs-comment">// 允许返回的头</span><br>    res.setHeader(<span class="hljs-string">&#x27;Access-Control-Expose-Headers&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>)<br>    <span class="hljs-keyword">if</span> (req.method === <span class="hljs-string">&#x27;OPTIONS&#x27;</span>) &#123;<br>      res.end() <span class="hljs-comment">// OPTIONS请求不做任何处理</span><br>    &#125;<br>  &#125;<br>  next()<br>&#125;)<br>app.put(<span class="hljs-string">&#x27;/getData&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(req.headers)<br>  res.setHeader(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;jw&#x27;</span>) <span class="hljs-comment">//返回一个响应头，后台需设置</span><br>  res.end(<span class="hljs-string">&#x27;我不爱你&#x27;</span>)<br>&#125;)<br>app.get(<span class="hljs-string">&#x27;/getData&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(req.headers)<br>  res.end(<span class="hljs-string">&#x27;我不爱你&#x27;</span>)<br>&#125;)<br>app.use(express.static(__dirname))<br>app.listen(<span class="hljs-number">4000</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-Node中间件代理-两次跨域"><a href="#3-Node中间件代理-两次跨域" class="headerlink" title="3.  Node中间件代理(两次跨域)"></a><span id="jumpc3"><strong>3.  Node中间件代理(两次跨域)</strong></span></h3><p>实现原理：<strong>同源策略是浏览器需要遵循的标准，而如果是服务器向服务器请求就无需遵循同源策略。</strong><br>代理服务器，需要做以下几个步骤：</p>
+<ul>
+<li>接受客户端请求 。</li>
+<li>将请求 转发给服务器。</li>
+<li>拿到服务器 响应 数据。</li>
+<li>将 响应 转发给客户端。</li>
+</ul>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1588316115701.png" srcset="/img/loading.gif" lazyload alt="1588316115701"></p>
+<p>我们先来看个例子：本地文件index.html文件，通过代理服务器<code>http://localhost:3000</code>向目标服务器<code>http://localhost:4000</code>请求数据。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs html">// index.html(http://127.0.0.1:5500)<br> <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">      $.ajax(&#123;</span><br><span class="javascript">        <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:3000&#x27;</span>,</span><br><span class="javascript">        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;post&#x27;</span>,</span><br><span class="javascript">        <span class="hljs-attr">data</span>: &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;xiamen&#x27;</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;123456&#x27;</span> &#125;,</span><br><span class="javascript">        <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span>,</span><br><span class="javascript">        <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>&#123;</span><br><span class="javascript">          <span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// &#123;&quot;title&quot;:&quot;fontend&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</span></span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-attr">error</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>&#123;</span><br><span class="javascript">          <span class="hljs-built_in">console</span>.log(msg)</span><br><span class="javascript">        &#125;</span><br><span class="javascript">      &#125;)</span><br><span class="javascript">     </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// server1.js 代理服务器(http://localhost:3000)</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-comment">// 第一步：接受客户端请求</span><br><span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>  <span class="hljs-comment">// 代理服务器，直接和浏览器直接交互，需要设置CORS 的首部字段</span><br>  response.writeHead(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="hljs-string">&#x27;*&#x27;</span>,<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Methods&#x27;</span>: <span class="hljs-string">&#x27;*&#x27;</span>,<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Headers&#x27;</span>: <span class="hljs-string">&#x27;Content-Type&#x27;</span><br>  &#125;)<br>  <span class="hljs-comment">// 第二步：将请求转发给服务器</span><br>  <span class="hljs-keyword">const</span> proxyRequest = http<br>    .request(<br>      &#123;<br>        <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,<br>        <span class="hljs-attr">port</span>: <span class="hljs-number">4000</span>,<br>        <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/&#x27;</span>,<br>        <span class="hljs-attr">method</span>: request.method,<br>        <span class="hljs-attr">headers</span>: request.headers<br>      &#125;,<br>      <span class="hljs-function"><span class="hljs-params">serverResponse</span> =&gt;</span> &#123;<br>        <span class="hljs-comment">// 第三步：收到服务器的响应</span><br>        <span class="hljs-keyword">var</span> body = <span class="hljs-string">&#x27;&#x27;</span><br>        serverResponse.on(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function"><span class="hljs-params">chunk</span> =&gt;</span> &#123;<br>          body += chunk<br>        &#125;)<br>        serverResponse.on(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;The data is &#x27;</span> + body)<br>          <span class="hljs-comment">// 第四步：将响应结果转发给浏览器</span><br>          response.end(body)<br>        &#125;)<br>      &#125;<br>    )<br>    .end()<br>&#125;)<br>server.listen(<span class="hljs-number">3000</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;The proxyServer is running at http://localhost:3000&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// server2.js(http://localhost:4000)</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">const</span> data = &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;fontend&#x27;</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;123456&#x27;</span> &#125;<br><span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (request.url === <span class="hljs-string">&#x27;/&#x27;</span>) &#123;<br>    response.end(<span class="hljs-built_in">JSON</span>.stringify(data))<br>  &#125;<br>&#125;)<br>server.listen(<span class="hljs-number">4000</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;The server is running at http://localhost:4000&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>上述代码经过两次跨域，值得注意的是浏览器向代理服务器发送请求，也遵循同源策略，最后在index.html文件打印出<code>&#123;&quot;title&quot;:&quot;fontend&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</code></p>
+<h3 id="4-nginx代理跨域"><a href="#4-nginx代理跨域" class="headerlink" title="4. nginx代理跨域"></a><span id="jumpc4"><strong>4. nginx代理跨域</strong></span></h3><p>实现原理类似于Node中间件代理，需要你搭建一个中转nginx服务器，用于转发请求。</p>
+<p>使用nginx反向代理实现跨域，是最简单的跨域方式。只需要修改nginx的配置即可解决跨域问题，支持所有浏览器，支持session，不需要修改任何代码，并且不会影响服务器性能。</p>
+<p>实现思路：通过nginx配置一个代理服务器（域名与domain1相同，端口不同）做跳板机，反向代理访问domain2接口，并且可以顺便修改cookie中domain信息，方便当前域cookie写入，实现跨域登录。</p>
+<p>先下载<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">nginx</a>，然后将nginx目录下的nginx.conf修改如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// proxy服务器</span><br>server &#123;<br>    listen       <span class="hljs-number">81</span>;<br>    server_name  www.domain1.com;<br>    location / &#123;<br>        proxy_pass   http:<span class="hljs-comment">//www.domain2.com:8080;  #反向代理</span><br>        proxy_cookie_domain www.domain2.com www.domain1.com; #修改cookie里域名<br>        index  index.html index.htm;<br><br>        # 当用webpack-dev-server等中间件代理接口访问nignx时，此时无浏览器参与，故没有同源限制，下面的跨域配置可不启用<br>        add_header Access-Control-Allow-Origin http:<span class="hljs-comment">//www.domain1.com;  #当前端只跨域不带cookie时，可为*</span><br>        add_header Access-Control-Allow-Credentials <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后通过命令行<code>nginx -s reload</code>启动nginx</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// index.html</span><br><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest();<br><span class="hljs-comment">// 前端开关：浏览器是否读写cookie</span><br>xhr.withCredentials = <span class="hljs-literal">true</span>;<br><span class="hljs-comment">// 访问nginx中的代理服务器</span><br>xhr.open(<span class="hljs-string">&#x27;get&#x27;</span>, <span class="hljs-string">&#x27;http://www.domain1.com:81/?user=admin&#x27;</span>, <span class="hljs-literal">true</span>);<br>xhr.send();<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// server.js</span><br><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>);<br><span class="hljs-keyword">var</span> server = http.createServer();<br><span class="hljs-keyword">var</span> qs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>);<br>server.on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> params = qs.parse(req.url.substring(<span class="hljs-number">2</span>));<br>    <span class="hljs-comment">// 向前台写cookie</span><br>    res.writeHead(<span class="hljs-number">200</span>, &#123;<br>        <span class="hljs-string">&#x27;Set-Cookie&#x27;</span>: <span class="hljs-string">&#x27;l=a123456;Path=/;Domain=www.domain2.com;HttpOnly&#x27;</span>   <span class="hljs-comment">// HttpOnly:脚本无法读取</span><br>    &#125;);<br>    res.write(<span class="hljs-built_in">JSON</span>.stringify(params));<br>    res.end();<br>&#125;);<br>server.listen(<span class="hljs-string">&#x27;8080&#x27;</span>);<br><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Server is running at port 8080...&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-websocket"><a href="#5-websocket" class="headerlink" title="5. websocket"></a><span id="jumpc5"><strong>5. websocket</strong></span></h3><p>Websocket是HTML5的一个持久化的协议，它实现了浏览器与服务器的全双工通信，同时也是跨域的一种解决方案。</p>
+<p>WebSocket和HTTP都是应用层协议，都基于 TCP 协议。但是 <strong>WebSocket 是一种双向通信协议，在建立连接之后，WebSocket 的 server 与 client 都能主动向对方发送或接收数据</strong>。同时，WebSocket 在建立连接时需要借助 HTTP 协议，连接建立好了之后 client 与 server 之间的双向通信就与 HTTP 无关了。</p>
+<p>原生WebSocket API使用起来不太方便，我们使用<code>Socket.io</code>，它很好地封装了webSocket接口，提供了更简单、灵活的接口，也对不支持webSocket的浏览器提供了向下兼容。</p>
+<p>我们先来看个例子：本地文件socket.html向<code>localhost:3000</code>发生数据和接受数据</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs html">// socket.html<br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">    <span class="hljs-keyword">let</span> socket = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">&#x27;ws://localhost:3000&#x27;</span>);</span><br><span class="javascript">    socket.onopen = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">      socket.send(<span class="hljs-string">&#x27;我爱你&#x27;</span>);<span class="hljs-comment">//向服务器发送数据</span></span><br><span class="javascript">    &#125;</span><br><span class="javascript">    socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">console</span>.log(e.data);<span class="hljs-comment">//接收服务器返回的数据</span></span><br><span class="javascript">    &#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// server.js</span><br><span class="hljs-keyword">let</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">let</span> app = express();<br><span class="hljs-keyword">let</span> WebSocket = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ws&#x27;</span>);<span class="hljs-comment">//记得安装ws</span><br><span class="hljs-keyword">let</span> wss = <span class="hljs-keyword">new</span> WebSocket.Server(&#123;<span class="hljs-attr">port</span>:<span class="hljs-number">3000</span>&#125;);<br>wss.on(<span class="hljs-string">&#x27;connection&#x27;</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ws</span>) </span>&#123;<br>  ws.on(<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(data);<br>    ws.send(<span class="hljs-string">&#x27;我不爱你&#x27;</span>)<br>  &#125;);<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-postMessage跨域"><a href="#6-postMessage跨域" class="headerlink" title="6. postMessage跨域"></a><span id="jumpc6"><strong>6. postMessage跨域</strong></span></h3><p>postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题：</p>
+<ul>
+<li>页面和其打开的新窗口的数据传递</li>
+<li>多窗口之间消息传递</li>
+<li>页面与嵌套的iframe消息传递</li>
+<li>上面三个场景的跨域数据传递</li>
+</ul>
+<p><strong>postMessage()方法允许来自不同源的脚本采用异步方式进行有限的通信，可以实现跨文本档、多窗口、跨域消息传递</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">otherWindow.postMessage(message, targetOrigin, [transfer]);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>message: 将要发送到其他 window的数据。</li>
+<li>targetOrigin:通过窗口的origin属性来指定哪些窗口能接收到消息事件，其值可以是字符串”*”（表示无限制）或者一个URI。在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的任意一项不匹配targetOrigin提供的值，那么消息就不会被发送；只有三者完全匹配，消息才会被发送。</li>
+<li>transfer(可选)：是一串和message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。</li>
+</ul>
+<p><strong>例子</strong>：</p>
+<p>接下来我们看个例子： <code>http://localhost:3000/a.html</code>页面向<code>http://localhost:4000/b.html</code>传递“我爱你”,然后后者传回”我不爱你”。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// a.html</span><br>  &lt;iframe src=<span class="hljs-string">&quot;http://localhost:4000/b.html&quot;</span> frameborder=<span class="hljs-string">&quot;0&quot;</span> id=<span class="hljs-string">&quot;frame&quot;</span> onload=<span class="hljs-string">&quot;load()&quot;</span>&gt;&lt;<span class="hljs-regexp">/iframe&gt; /</span><span class="hljs-regexp">/等它加载完触发一个事件</span><br><span class="hljs-regexp">  /</span><span class="hljs-regexp">/内嵌在http:/</span><span class="hljs-regexp">/localhost:3000/</span>a.html<br>    &lt;script&gt;<br>      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">load</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">let</span> frame = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;frame&#x27;</span>)<br>        frame.contentWindow.postMessage(<span class="hljs-string">&#x27;我爱你&#x27;</span>, <span class="hljs-string">&#x27;http://localhost:4000&#x27;</span>) <span class="hljs-comment">//发送数据</span><br>        <span class="hljs-built_in">window</span>.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123; <span class="hljs-comment">//接受返回数据</span><br>          <span class="hljs-built_in">console</span>.log(e.data) <span class="hljs-comment">//我不爱你</span><br>        &#125;<br>      &#125;<br>    &lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// b.html</span><br>  <span class="hljs-built_in">window</span>.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(e.data) <span class="hljs-comment">//我爱你</span><br>    e.source.postMessage(<span class="hljs-string">&#x27;我不爱你&#x27;</span>, e.origin)<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-window-name-iframe跨域"><a href="#7-window-name-iframe跨域" class="headerlink" title="7. window.name + iframe跨域"></a><span id="jumpc7"><strong>7. window.name + iframe跨域</strong></span></h3><p>window.name属性的独特之处：name值在不同的页面（甚至不同域名）加载后依旧存在，并且可以支持非常长的 name 值（2MB）。</p>
+<p>其中a.html和b.html是同域的，都是<code>http://localhost:3000</code>;而c.html是<code>http://localhost:4000</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// a.html(http://localhost:3000/b.html)</span><br> &lt;iframe src=<span class="hljs-string">&quot;http://localhost:4000/c.html&quot;</span> frameborder=<span class="hljs-string">&quot;0&quot;</span> onload=<span class="hljs-string">&quot;load()&quot;</span> id=<span class="hljs-string">&quot;iframe&quot;</span>&gt;&lt;/iframe&gt;<br> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="javascript"><span class="xml">   <span class="hljs-keyword">let</span> first = <span class="hljs-literal">true</span></span></span><br><span class="javascript"><span class="xml">   <span class="hljs-comment">// onload事件会触发2次，第1次加载跨域页，并留存数据于window.name</span></span></span><br><span class="javascript"><span class="xml">   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">load</span>(<span class="hljs-params"></span>) </span>&#123;</span></span><br><span class="javascript"><span class="xml">     <span class="hljs-keyword">if</span>(first)&#123;</span></span><br><span class="javascript"><span class="xml">     <span class="hljs-comment">// 第1次onload(跨域页)成功后，切换到同域代理页面</span></span></span><br><span class="javascript"><span class="xml">       <span class="hljs-keyword">let</span> iframe = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;iframe&#x27;</span>);</span></span><br><span class="javascript"><span class="xml">       iframe.src = <span class="hljs-string">&#x27;http://localhost:3000/b.html&#x27;</span>;</span></span><br><span class="javascript"><span class="xml">       first = <span class="hljs-literal">false</span>;</span></span><br><span class="javascript"><span class="xml">     &#125;<span class="hljs-keyword">else</span>&#123;</span></span><br><span class="javascript"><span class="xml">     <span class="hljs-comment">// 第2次onload(同域b.html页)成功后，读取同域window.name中数据</span></span></span><br><span class="javascript"><span class="xml">       <span class="hljs-built_in">console</span>.log(iframe.contentWindow.name);</span></span><br><span class="javascript"><span class="xml">     &#125;</span></span><br><span class="javascript"><span class="xml">   &#125;</span></span><br><span class="javascript"><span class="xml"> </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>b.html为中间代理页，与a.html同域，内容为空。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html">// c.html(http://localhost:4000/c.html)<br> <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">   <span class="hljs-built_in">window</span>.name = <span class="hljs-string">&#x27;我不爱你&#x27;</span>  </span><br><span class="javascript"> </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>总结：通过iframe的src属性由外域转向本地域，跨域数据即由iframe的window.name从外域传递到本地域。这个就巧妙地绕过了浏览器的跨域访问限制，但同时它又是安全操作。</p>
+<h3 id="8-location-hash-iframe跨域"><a href="#8-location-hash-iframe跨域" class="headerlink" title="8.  location.hash + iframe跨域"></a><span id="jumpc8"><strong>8.  location.hash + iframe跨域</strong></span></h3><p>实现原理： a.html欲与c.html跨域相互通信，通过中间页b.html来实现。 三个页面，不同域之间利用iframe的location.hash传值，相同域之间直接js访问来通信。</p>
+<p>具体实现步骤：一开始a.html给c.html传一个hash值，然后c.html收到hash值后，再把hash值传递给b.html，最后b.html将结果放到a.html的hash值中。<br>同样的，a.html和b.html是同域的，都是<code>http://localhost:3000</code>;而c.html是<code>http://localhost:4000</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html">// a.html<br>  <span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://localhost:4000/c.html#iloveyou&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">    <span class="hljs-built_in">window</span>.onhashchange = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123; <span class="hljs-comment">//检测hash的变化</span></span><br><span class="javascript">      <span class="hljs-built_in">console</span>.log(location.hash);</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html">// b.html<br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">    <span class="hljs-built_in">window</span>.parent.parent.location.hash = location.hash </span><br><span class="javascript">    <span class="hljs-comment">//b.html将结果放到a.html的hash值中，b.html可通过parent.parent访问a.html页面</span></span><br><span class="javascript">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// c.html</span><br> <span class="hljs-built_in">console</span>.log(location.hash);<br>  <span class="hljs-keyword">let</span> iframe = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;iframe&#x27;</span>);<br>  iframe.src = <span class="hljs-string">&#x27;http://localhost:3000/b.html#idontloveyou&#x27;</span>;<br>  <span class="hljs-built_in">document</span>.body.appendChild(iframe);<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-document-domain-iframe跨域"><a href="#9-document-domain-iframe跨域" class="headerlink" title=" 9 document.domain + iframe跨域"></a><span id="jumpc9"> <strong>9 document.domain + iframe跨域</strong></span></h3><p>此方案仅限主域相同，子域不同的跨域应用场景。<strong>比如 a.test.com 和 b.test.com 适用于该方式</strong>。</p>
+<p>只需要给页面添加 <code>document.domain =&#39;test.com&#39;</code> 表示二级域名都相同就可以实现跨域。</p>
+<p>实现原理：两个页面都通过js强制设置document.domain为基础主域，就实现了同域。</p>
+<p>我们看个例子：页面<code>a.zf1.cn:3000/a.html</code>获取页面<code>b.zf1.cn:3000/b.html</code>中a的值</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs html">// a.html<br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br> helloa<br>  <span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://b.zf1.cn:3000/b.html&quot;</span> <span class="hljs-attr">frameborder</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">onload</span>=<span class="hljs-string">&quot;load()&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;frame&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">    <span class="hljs-built_in">document</span>.domain = <span class="hljs-string">&#x27;zf1.cn&#x27;</span></span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">load</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">console</span>.log(frame.contentWindow.a);</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html">// b.html<br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>   hellob<br>   <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">     <span class="hljs-built_in">document</span>.domain = <span class="hljs-string">&#x27;zf1.cn&#x27;</span></span><br><span class="javascript">     <span class="hljs-keyword">var</span> a = <span class="hljs-number">100</span>;</span><br><span class="javascript">   </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a><span id="jumpc10"><strong>10. 总结</strong></span></h3><ul>
+<li>CORS支持所有类型的HTTP请求，是跨域HTTP请求的根本解决方案</li>
+<li>JSONP只支持GET请求，JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。</li>
+<li>不管是Node中间件代理还是nginx反向代理，主要是通过同源策略对服务器不加限制。</li>
+<li>日常工作中，用得比较多的跨域方案是cors和nginx反向代理</li>
+</ul>
+<p><strong>本文的内容来自于</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018017118">九种跨域方式实现原理（完整版）</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Promise/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Promise</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/30/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/HTTPS/">
+                        <span class="hidden-mobile">HTTPS</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

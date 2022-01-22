@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数组数组定义：数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。 这个定义里有几个关键词。 第一是线性表（Linear List）。顾名思义，线性表就是数据排成像一条线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表、队列、栈等也是线性表结构。  而与它相对立的概念是非线性表，比如二叉树、堆、图等。之所以叫非线性，是因为，在非线性表中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《数据结构与算法之美》学习笔记(3) 数据结构">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/22/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="数组数组定义：数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。 这个定义里有几个关键词。 第一是线性表（Linear List）。顾名思义，线性表就是数据排成像一条线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表、队列、栈等也是线性表结构。  而与它相对立的概念是非线性表，比如二叉树、堆、图等。之所以叫非线性，是因为，在非线性表中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584881336544.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584881391322.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584882913719.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584884713397.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584884820589.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584885146988.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584885188020.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584969788718.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584969807141.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584970108932.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584970158563.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584970306742.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584970380335.png">
+<meta property="article:published_time" content="2020-03-22T12:24:20.378Z">
+<meta property="article:modified_time" content="2022-01-22T04:28:50.186Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584881336544.png">
+  
+  
+  <title>《数据结构与算法之美》学习笔记(3) 数据结构 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《数据结构与算法之美》学习笔记(3) 数据结构">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-22 20:24" pubdate>
+        2020年3月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《数据结构与算法之美》学习笔记(3) 数据结构</h1>
+            
+            <div class="markdown-body">
+              <h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><h4 id="数组定义："><a href="#数组定义：" class="headerlink" title="数组定义："></a>数组定义：</h4><p><strong>数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。</strong></p>
+<p>这个定义里有几个关键词。</p>
+<p>第一是<strong>线性表</strong>（Linear List）。顾名思义，线性表就是数据排成像一条线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表、队列、栈等也是线性表结构。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584881336544.png" srcset="/img/loading.gif" lazyload alt="1584881336544"></p>
+<p>而与它相对立的概念是<strong>非线性表</strong>，比如二叉树、堆、图等。之所以叫非线性，是因为，在非线性表中，数据之间并不是简单的前后关系。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584881391322.png" srcset="/img/loading.gif" lazyload alt="1584881391322"></p>
+<p>第二个是<strong>连续的内存空间和相同类型的数据</strong>。正是因为这两个限制，它才有了一个堪称“杀手锏”的特性：“随机访问”。但有利就有弊，这两个限制也让数组的很多操作变得非常低效，比如要想在数组中删除、插入一个数据，为了保证连续性，就需要做大量的数据搬移工作。</p>
+<p>在进行数组的插入、删除操作时，为了保持内存数据的连续性，需要做大量的数据搬移，所以时间复杂度是 O(n)。</p>
+<h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><p>链表并不需要一块连续的内存空间，它通过“指针”将一组<strong>零散的内存块</strong>串联起来使用。</p>
+<p>三种最常见的链表结构，它们分别是：单链表、双向链表和循环链表。</p>
+<h3 id="（1）单链表"><a href="#（1）单链表" class="headerlink" title="（1）单链表"></a>（1）单链表</h3><p>首先来看最简单、最常用的<strong>单链表</strong>。</p>
+<p>每个链表的结点除了存储数据之外，还需要记录链上的下一个结点的地址。如图所示，把这个记录下个结点地址的指针叫作<strong>后继指针 next</strong>。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584882913719.png" srcset="/img/loading.gif" lazyload alt="1584882913719"></p>
+<p>把第一个结点叫作<strong>头结点</strong>，把最后一个结点叫作<strong>尾结点</strong>。其中，头结点用来记录链表的基地址。有了它，就可以遍历得到整条链表。而尾结点特殊的地方是：指针不是指向下一个结点，而是指向一个<strong>空地址 NULL</strong>，表示这是链表上最后一个结点。</p>
+<p>针对链表的插入和删除操作，只需要考虑相邻结点的指针改变，所以对应的时间复杂度是 O(1)。链表随机访问的性能没有数组好，需要 O(n) 的时间复杂度。</p>
+<h3 id="（2）循环链表"><a href="#（2）循环链表" class="headerlink" title="（2）循环链表"></a>（2）循环链表</h3><p><strong>循环链表是一种特殊的单链表</strong>。实际上，循环链表也很简单。它跟单链表唯一的区别就在尾结点。</p>
+<p>单链表的尾结点指针指向空地址，表示这就是最后的结点了。而循环链表的尾结点指针是指向链表的头结点。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584884713397.png" srcset="/img/loading.gif" lazyload alt="1584884713397"></p>
+<p>和单链表相比，<strong>循环链表</strong>的优点是从链尾到链头比较方便。当要处理的数据具有环型结构特点时，就特别适合采用循环链表。</p>
+<h3 id="（3）双向链表"><a href="#（3）双向链表" class="headerlink" title="（3）双向链表"></a>（3）双向链表</h3><p>单向链表只有一个方向，结点只有一个后继指针 next 指向后面的结点。而双向链表，顾名思义，它支持两个方向，每个结点不止有一个后继指针 next 指向后面的结点，还有一个前驱指针 prev 指向前面的结点。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584884820589.png" srcset="/img/loading.gif" lazyload alt="1584884820589"></p>
+<p>双向链表需要额外的两个空间来存储后继结点和前驱结点的地址。所以，如果存储同样多的数据，双向链表要比单链表占用更多的内存空间。虽然两个指针比较浪费存储空间，但可以支持双向遍历，这样也带来了双向链表操作的灵活性。</p>
+<p><strong>相比单链表，双向链表适合解决哪种问题呢？</strong></p>
+<p>从结构上来看，双向链表可以支持 O(1) 时间复杂度的情况下找到前驱结点，正是这样的特点，也使双向链表在某些情况下的插入、删除等操作都要比单链表简单、高效。</p>
+<p>而单链表的插入、删除操作的时间复杂度已经是 O(1) 了，双向链表还能再怎么高效呢？</p>
+<p>先来看<strong>删除操作</strong>。</p>
+<p>在实际的软件开发中，从链表中删除一个数据无外乎这两种情况：</p>
+<ul>
+<li>删除结点中“值等于某个给定值”的结点；</li>
+<li>删除给定指针指向的结点。</li>
+</ul>
+<p>对于第一种情况，不管是单链表还是双向链表，为了查找到值等于给定值的结点，都需要从头结点开始一个一个依次遍历对比，直到找到值等于给定值的结点，然后再通过指针操作将其删除。</p>
+<p>尽管单纯的删除操作时间复杂度是 O(1)，但遍历查找的时间是主要的耗时点，对应的时间复杂度为 O(n)。根据时间复杂度分析中的加法法则，删除值等于给定值的结点对应的链表操作的总时间复杂度为 O(n)。</p>
+<p>对于第二种情况，已经找到了要删除的结点，但是删除某个结点 q 需要知道其前驱结点，而单链表并不支持直接获取前驱结点，所以，为了找到前驱结点，我们还是要从头结点开始遍历链表，直到 p-&gt;next=q，说明 p 是 q 的前驱结点。</p>
+<p>但是对于双向链表来说，这种情况就比较有优势了。因为双向链表中的结点已经保存了前驱结点的指针，不需要像单链表那样遍历。所以，针对第二种情况，单链表删除操作需要 O(n) 的时间复杂度，而双向链表只需要在 O(1) 的时间复杂度内就搞定了！</p>
+<p>同理，如果希望在链表的某个指定结点前面插入一个结点，双向链表比单链表有很大的优势。双向链表可以在 O(1) 时间复杂度搞定，而单向链表需要 O(n) 的时间复杂度。</p>
+<p>除了插入、删除操作有优势之外，对于一个有序链表，双向链表的按值查询的效率也要比单链表高一些。因为，我们可以记录上次查找的位置 p，每次查询时，根据要查找的值与 p 的大小关系，决定是往前还是往后查找，所以平均只需要查找一半的数据。</p>
+<h3 id="（4）双向循环链表"><a href="#（4）双向循环链表" class="headerlink" title="（4）双向循环链表"></a>（4）双向循环链表</h3><p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584885146988.png" srcset="/img/loading.gif" lazyload alt="1584885146988"></p>
+<h3 id="（5）链表-VS-数组性能大比拼"><a href="#（5）链表-VS-数组性能大比拼" class="headerlink" title="（5）链表 VS 数组性能大比拼"></a>（5）链表 VS 数组性能大比拼</h3><p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584885188020.png" srcset="/img/loading.gif" lazyload alt="1584885188020"></p>
+<p>不过，数组和链表的对比，并不能局限于时间复杂度。而且，在实际的软件开发中，不能仅仅利用复杂度分析就决定使用哪个数据结构来存储数据。</p>
+<p>数组简单易用，在实现上使用的是连续的内存空间，可以借助 CPU 的缓存机制，预读数组中的数据，所以访问效率更高。而链表在内存中并不是连续存储，所以对 CPU 缓存不友好，没办法有效预读。</p>
+<p>数组的缺点是大小固定，一经声明就要占用整块连续内存空间。如果声明的数组过大，系统可能没有足够的连续内存空间分配给它，导致“内存不足（out of memory）”。如果声明的数组过小，则可能出现不够用的情况。这时只能再申请一个更大的内存空间，把原数组拷贝进去，非常费时。链表本身没有大小的限制，天然地支持动态扩容。</p>
+<p>和数组相比，链表更适合插入、删除操作频繁的场景，查询的时间复杂度较高。不过，在具体软件开发中，要对数组和链表的各种性能进行对比，综合来选择使用两者中的哪一个。</p>
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><h3 id="（1）相关概念"><a href="#（1）相关概念" class="headerlink" title="（1）相关概念"></a>（1）相关概念</h3><p>从栈的操作特性上来看，<strong>栈是一种“操作受限”的线性表</strong>，只允许在一端插入和删除数据。</p>
+<p><strong>当某个数据集合只涉及在一端插入和删除数据，并且满足后进先出、先进后出的特性，应该首选“栈”这种数据结构</strong>。</p>
+<p>栈既可以用数组来实现，也可以用链表来实现。用数组实现的栈，我们叫作<strong>顺序栈</strong>，用链表实现的栈，我们叫作<strong>链式栈</strong>。</p>
+<p>不管是顺序栈还是链式栈，我们存储数据只需要一个大小为 n 的数组就够了。在入栈和出栈过程中，只需要一两个临时变量存储空间，所以空间复杂度是 O(1)。</p>
+<p>不管是顺序栈还是链式栈，入栈、出栈只涉及栈顶个别数据的操作，所以时间复杂度都是 O(1)。</p>
+<h3 id="（2）栈的应用"><a href="#（2）栈的应用" class="headerlink" title="（2）栈的应用"></a>（2）栈的应用</h3><ul>
+<li><p><strong>栈在函数调用中的应用</strong></p>
+<p>操作系统给每个线程分配了一块独立的内存空间，这块内存被组织成“栈”这种结构, 用来存储函数调用时的临时变量。每进入一个函数，就会将临时变量作为一个栈帧入栈，当被调用函数执行完成，返回之后，将这个函数对应的栈帧出栈。</p>
+</li>
+<li><p><strong>栈在表达式求值中的应用</strong></p>
+</li>
+<li><p><strong>栈在括号匹配中的应用</strong></p>
+</li>
+</ul>
+<h1 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h1><p><strong>先进者先出，这就是典型的“队列”</strong>。</p>
+<p>栈只支持两个基本操作：**入栈 push()和出栈 pop()<strong>。队列跟栈非常相似，支持的操作也很有限，最基本的操作也是两个：</strong>入队 enqueue()<strong>，放一个数据到队列尾部；</strong>出队 dequeue()**，从队列头部取一个元素。</p>
+<p>队列跟栈一样，也是一种<strong>操作受限的线性表数据结构</strong>。</p>
+<h3 id="（1）顺序队列和链式队列"><a href="#（1）顺序队列和链式队列" class="headerlink" title="（1）顺序队列和链式队列"></a>（1）顺序队列和链式队列</h3><p>跟栈一样，队列可以用数组来实现，也可以用链表来实现。用数组实现的栈叫作顺序栈，用链表实现的栈叫作链式栈。同样，用数组实现的队列叫作<strong>顺序队列</strong>，用链表实现的队列叫作<strong>链式队列</strong>。</p>
+<p><strong>顺序队列：</strong></p>
+<p>队列需要两个指针：一个是 head 指针，指向队头；一个是 tail 指针，指向队尾。</p>
+<p>结合下面这幅图来理解。当 a、b、c、d 依次入队之后，队列中的 head 指针指向下标为 0 的位置，tail 指针指向下标为 4 的位置。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584969788718.png" srcset="/img/loading.gif" lazyload alt="1584969788718"></p>
+<p>当我们调用两次出队操作之后，队列中 head 指针指向下标为 2 的位置，tail 指针仍然指向下标为 4 的位置。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584969807141.png" srcset="/img/loading.gif" lazyload alt="1584969807141"></p>
+<p>随着不停地进行入队、出队操作，head 和 tail 都会持续往后移动。当 tail 移动到最右边，即使数组中还有空闲空间，也无法继续往队列中添加数据了。</p>
+<p><strong>链式队列：</strong></p>
+<p>同样需要两个指针：head 指针和 tail 指针。它们分别指向链表的第一个结点和最后一个结点。如图所示，入队时，tail-&gt;next= new_node, tail = tail-&gt;next；出队时，head = head-&gt;next。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584970108932.png" srcset="/img/loading.gif" lazyload alt="1584970108932"></p>
+<h3 id="（2）循环队列"><a href="#（2）循环队列" class="headerlink" title="（2）循环队列"></a>（2）循环队列</h3><p>刚才用数组来实现队列的时候，在 tail==n 时，会有数据搬移操作，这样入队操作性能就会受到影响。那有没有办法能够避免数据搬移呢？我们来看看循环队列的解决思路。</p>
+<p>循环队列，顾名思义，它长得像一个环。原本数组是有头有尾的，是一条直线。现在我们把首尾相连，扳成了一个环。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584970158563.png" srcset="/img/loading.gif" lazyload alt="1584970158563"></p>
+<p>图中这个队列的大小为 8，当前 head=4，tail=7。当有一个新的元素 a 入队时，我们放入下标为 7 的位置。但这个时候，我们并不把 tail 更新为 8，而是将其在环中后移一位，到下标为 0 的位置。当再有一个元素 b 入队时，我们将 b 放入下标为 0 的位置，然后 tail 加 1 更新为 1。所以，在 a，b 依次入队之后，循环队列中的元素就变成了下面的样子：</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584970306742.png" srcset="/img/loading.gif" lazyload alt="1584970306742"></p>
+<p>通过这样的方法，我们成功避免了数据搬移操作。看起来不难理解，但是循环队列的代码实现难度要比前面讲的非循环队列难多了。要想写出没有 bug 的循环队列的实现代码，最关键的是，<strong>确定好队空和队满的判定条件</strong>。</p>
+<p>在用数组实现的非循环队列中，队满的判断条件是 tail == n，队空的判断条件是 head == tail。那针对循环队列，如何判断队空和队满呢？</p>
+<p>队列为空的判断条件仍然是 head == tail。</p>
+<p>但队列满的判断条件就稍微有点复杂了。</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584970380335.png" srcset="/img/loading.gif" lazyload alt="1584970380335"></p>
+<p>图中画的队满的情况，tail=3，head=4，n=8，所以总结一下规律就是：(3+1)%8=4。</p>
+<p>当队满时，**(tail+1)%n=head**。</p>
+<p>图中的 tail 指向的位置实际上是没有存储数据的。所以，循环队列会浪费一个数组的存储空间。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《数据结构与算法之美》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JS%20%E5%B8%B8%E8%A7%81%E7%9A%84%E9%93%BE%E8%A1%A8%E6%93%8D%E4%BD%9C/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JS 常见的链表操作</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/22/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)%20%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">
+                        <span class="hidden-mobile">《数据结构与算法之美》学习笔记(2) 复杂度分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

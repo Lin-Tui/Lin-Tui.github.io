@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JavaScript设计模式设计模式代码经验的总结，是可重用的用于解决软件设计中一般问题的方案。设计模式都是面向对象的。 学习设计模式，有助于写出可复用和可维护性高的程序。 常用的12种设计模式：  工厂模式  单例模式  原型模式  适配器模式  代理模式  策略模式  迭代器模式  观察者模式  发布-订阅模式  命令模式  组合模式  建造者模式   设计原则 单一职责原则（SRP） 一个对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript设计模式">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/12/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="JavaScript设计模式设计模式代码经验的总结，是可重用的用于解决软件设计中一般问题的方案。设计模式都是面向对象的。 学习设计模式，有助于写出可复用和可维护性高的程序。 常用的12种设计模式：  工厂模式  单例模式  原型模式  适配器模式  代理模式  策略模式  迭代器模式  观察者模式  发布-订阅模式  命令模式  组合模式  建造者模式   设计原则 单一职责原则（SRP） 一个对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1585012888355.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1585013770931.png">
+<meta property="article:published_time" content="2020-03-12T07:01:50.588Z">
+<meta property="article:modified_time" content="2022-01-22T04:46:39.851Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1585012888355.png">
+  
+  
+  <title>JavaScript设计模式 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaScript设计模式">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-12 15:01" pubdate>
+        2020年3月12日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      20k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      170 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaScript设计模式</h1>
+            
+            <div class="markdown-body">
+              <h1 id="JavaScript设计模式"><a href="#JavaScript设计模式" class="headerlink" title="JavaScript设计模式"></a>JavaScript设计模式</h1><p><strong>设计模式</strong>代码经验的总结，是可重用的用于解决软件设计中一般问题的方案。<br>设计模式都是面向对象的。</p>
+<p>学习设计模式，有助于写出可复用和可维护性高的程序。</p>
+<h3 id="常用的12种设计模式："><a href="#常用的12种设计模式：" class="headerlink" title="常用的12种设计模式："></a>常用的12种设计模式：</h3><ul>
+<li><hr>
+<p><strong><a href="#jump1">工厂模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump2">单例模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump3">原型模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump4">适配器模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump5">代理模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump6">策略模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump7">迭代器模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump8">观察者模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump9">发布-订阅模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump10">命令模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump11">组合模式</a></strong></p>
+</li>
+<li><p><strong><a href="#jump12">建造者模式</a></strong></p>
+</li>
+</ul>
+<h3 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h3><ul>
+<li><p><strong>单一职责原则（SRP）</strong></p>
+<p>一个对象或方法只做一件事情。如果一个方法承担了过多的职责，那么在需求的变迁过程中，需要改写这个方法的可能性就越大。</p>
+<p>应该把对象或方法划分成较小的粒度。</p>
+</li>
+<li><p><strong>最少知识原则（LKP）</strong></p>
+<p>一个软件实体应当 尽可能少地与其他实体发生相互作用 </p>
+<p>应当尽量减少对象之间的交互。如果两个对象之间不必彼此直接通信，那么这两个对象就不要发生直接的 相互联系，可以转交给第三方进行处理</p>
+</li>
+<li><p><strong>开放-封闭原则（OCP）</strong></p>
+<p>软件实体（类、模块、函数）等应该是可以 扩展的，但是不可修改</p>
+<p>当需要改变一个程序的功能或者给这个程序增加新功能的时候，可以使用增加代码的方式，尽量避免改动程序的源代码，防止影响原系统的稳定</p>
+</li>
+</ul>
+<h2 id="（一）工厂模式"><a href="#（一）工厂模式" class="headerlink" title="（一）工厂模式"></a><span id="jump1">（一）工厂模式</span></h2><h4 id="1-什么是工厂模式？"><a href="#1-什么是工厂模式？" class="headerlink" title="1. 什么是工厂模式？"></a>1. 什么是工厂模式？</h4><p>工厂模式定义一个用于创建对象的接口，这个接口由子类决定实例化哪一个类。该模式使一个类的实例化延迟到了子类。而子类可以重写接口方法以便创建的时候指定自己的对象类型。</p>
+<p>工厂模式是用来创建对象的一种最常用的设计模式。我们不暴露创建对象的具体逻辑，而是将逻辑封装在一个函数中，那么这个函数就可以被视为一个工厂。</p>
+<p>工厂模式根据抽象程度的不同可以分为：简单工厂，工厂方法和抽象工厂。</p>
+<h4 id="2-工厂模式目的？"><a href="#2-工厂模式目的？" class="headerlink" title="2. 工厂模式目的？"></a>2. 工厂模式目的？</h4><p><strong>工厂模式</strong>的目的是为了创建对象，它通常在类或者类的静态方法中实现，具有以下目标：</p>
+<ul>
+<li>当创建相似对象时执行重复操作</li>
+<li>当编译时不知道具体类型的情况下，为工厂客户提供一个创建对象的接口</li>
+</ul>
+<p>与创建型模式类似，工厂模式创建对象（视为工厂里的产品）时无需指定创建对象的具体类。</p>
+<h4 id="3-工厂模式使用场景？"><a href="#3-工厂模式使用场景？" class="headerlink" title="3. 工厂模式使用场景？"></a>3. 工厂模式使用场景？</h4><p>那么什么时候使用工厂模式呢，以下几种情景下工厂模式特别有用：</p>
+<ul>
+<li>对象的构建十分复杂</li>
+<li>需要依赖具体环境创建不同实例</li>
+<li>处理大量具有相同属性的小对象</li>
+</ul>
+<p>什么时候不该用工厂模式：<br>不滥用运用工厂模式，有时候仅仅只是给代码增加了不必要的复杂度，同时使得测试难以运行下去。</p>
+<h4 id="4-详细内容与例子可学习："><a href="#4-详细内容与例子可学习：" class="headerlink" title="4. 详细内容与例子可学习："></a>4. 详细内容与例子可学习：</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/11918dd0f694">从ES6重新认识JavaScript设计模式(二): 工厂模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012422198">JS工厂模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/TomXu/archive/2012/02/23/2353389.html">设计模式之工厂模式</a></p>
+<h2 id="（二）单例模式"><a href="#（二）单例模式" class="headerlink" title="（二）单例模式"></a><span id="jump2">（二）单例模式</span></h2><h4 id="1-什么是单例模式"><a href="#1-什么是单例模式" class="headerlink" title="1. 什么是单例模式?"></a>1. 什么是单例模式?</h4><p>限制类实例化次数只能一次，一个类只有一个实例，并提供一个访问它的全局访问点。</p>
+<h4 id="2-单例模式的目的？"><a href="#2-单例模式的目的？" class="headerlink" title="2. 单例模式的目的？"></a>2. 单例模式的目的？</h4><p>通过单例模式可以保证系统中一个类只有一个实例而且该实例易于外界访问，从而方便对实例个数的控制并节约系统资源。如果希望在系统中某个类的对象只能存在一个，单例模式是最好的解决方案。</p>
+<h4 id="3-单例模式使用场景？"><a href="#3-单例模式使用场景？" class="headerlink" title="3. 单例模式使用场景？"></a>3. 单例模式使用场景？</h4><p>单例模式是一种常用的模式，有一些对象我们往往只需要一个，比如线程池、全局缓存、浏览器中的window对象等。在JavaScript开发中，单例模式的用途同样非常广泛。试想一下，当我们单击登录按钮的时候，页面中会出现一个登录浮窗，而这个登录浮窗是唯一的，无论单击多少次登录按钮，这个浮窗都只会被创建一次，那么这个登录浮窗用单例模式来创建。</p>
+<h4 id="4-单例模式的特点？"><a href="#4-单例模式的特点？" class="headerlink" title="4. 单例模式的特点？"></a>4. 单例模式的特点？</h4><ul>
+<li><p>类只有一个实例</p>
+</li>
+<li><p>全局可访问该实例</p>
+</li>
+<li><p>自行实例化（主动实例化）</p>
+</li>
+<li><p>可推迟初始化，即延迟执行（与静态类/对象的区别）</p>
+</li>
+</ul>
+<p>JavaScript 是一门非正规面向对象的语言，并没有类的定义。而单例模式要求一个 “唯一” 和 “全局访问” 的对象，在 JavaScript 中类似全局对象，刚好满足单例模式的两个特点：“唯一” 和 “可全局访问”。虽然它不是正规的单例模式，但不可否认确实具备类单例模式的特点。</p>
+<h5 id="使用全局变量会有以下问题："><a href="#使用全局变量会有以下问题：" class="headerlink" title="使用全局变量会有以下问题："></a>使用全局变量会有以下问题：</h5><ul>
+<li><p>命名空间污染（变量名冲突）</p>
+</li>
+<li><p>维护时不方便管控（容易不小心覆盖）</p>
+</li>
+</ul>
+<h5 id="全局变量问题折中的应对方案："><a href="#全局变量问题折中的应对方案：" class="headerlink" title="全局变量问题折中的应对方案："></a>全局变量问题折中的应对方案：</h5><ul>
+<li><p>使用命名空间</p>
+</li>
+<li><p>闭包封装私有变量（利用函数作用域）</p>
+</li>
+<li><p>ES6的 const/symbol</p>
+</li>
+</ul>
+<p>虽然全局变量可以实现单例，但因其自身的问题，不建议在实际项目中将其作为单例模式的应用，特别是中大型项目的应用中，全局变量的维护该是考虑的成本。</p>
+<h4 id="5-单例模式优缺点："><a href="#5-单例模式优缺点：" class="headerlink" title="5. 单例模式优缺点："></a>5. 单例模式优缺点：</h4><p><strong>优点：</strong></p>
+<ul>
+<li>单例模式会阻止其他对象实例化其自己的单例对象的副本，从而确保所有对象都访问唯一实例。</li>
+<li>灵活性<br>因为类控制了实例化过程，所以类可以灵活更改实例化过程。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>开销<br>虽然数量很少，但如果每次对象请求引用时都要检查是否存在类的实例，将仍然需要一些开销。可以通过使用静态初始化解决此问题。</li>
+<li>可能的开发混淆<br>使用单例对象（尤其在类库中定义的对象）时，开发人员必须记住自己不能使用new关键字实例化对象。因为可能无法访问库源代码，因此应用程序开发人员可能会意外发现自己无法直接实例化此类。</li>
+<li>就是不适用于变化的对象，如果同一类型的对象总是要在不同的用例场景发生变化，单例就会引起数据的错误，不能保存彼此的状态。</li>
+</ul>
+<h4 id="6-单例模式的思路："><a href="#6-单例模式的思路：" class="headerlink" title="6. 单例模式的思路："></a>6. 单例模式的思路：</h4><p>一个类能返回一个对象的引用（并且永远是同一个）和一个获得该实例的方法（静态方法，通常使用 getInstance 名称）。</p>
+<p>那么当我们调用这个方法时，如果类持有的引用不为空就返回该引用，否者就创建该类的实例，并且将实例引用赋值给该类保持的那个引用再返回。同时将该类的构造函数定义为私有方法，避免其他函数使用该构造函数来实例化对象，只通过该类的静态方法来得到该类的唯一实例</p>
+<h4 id="7-详细内容与例子可学习："><a href="#7-详细内容与例子可学习：" class="headerlink" title="7. 详细内容与例子可学习："></a>7. 详细内容与例子可学习：</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5386936acfec">从ES6重新认识JavaScript设计模式(一): 单例模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d11bcdcf265da1b94215726">JavaScript 设计模式（一）：单例模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/TomXu/archive/2012/02/20/2352817.html">深入理解JavaScript系列（25）：设计模式之单例模式</a></p>
+<h2 id="（三）原型模式？"><a href="#（三）原型模式？" class="headerlink" title="（三）原型模式？"></a><span id="jump3">（三）原型模式？</span></h2><h4 id="1-什么是原型模式？"><a href="#1-什么是原型模式？" class="headerlink" title="1. 什么是原型模式？"></a>1. 什么是原型模式？</h4><p>原型模式（prototype）是指用原型实例指向创建对象的种类，并且通过拷贝这些原型创建新的对象。</p>
+<h4 id="2-原型模式的实现"><a href="#2-原型模式的实现" class="headerlink" title="2. 原型模式的实现"></a>2. 原型模式的实现</h4><p>对于原型模式，我们可以利用JavaScript特有的原型继承特性去创建对象的方式，也就是创建的一个对象作为另外一个对象的prototype属性值。原型对象本身就是有效地利用了每个构造器创建的对象，例如，如果一个构造函数的原型包含了一个name属性，那通过这个构造函数创建的对象都会有这个属性。</p>
+<p>在现有的文献里查看原型模式的定义，没有针对JavaScript的，你可能发现很多讲解的都是关于类的，但是现实情况是基于原型继承的JavaScript完全避免了类（class）的概念。我们只是简单从现有的对象进行拷贝来创建对象。</p>
+<p>真正的原型继承是作为最新版的ECMAScript5标准提出的，使用<code>Object.create</code>方法来创建这样的对象，该方法创建指定的对象，其对象的prototype有指定的对象（也就是该方法传进的第一个参数对象），也可以包含其他可选的指定属性。例如<code>Object.create(prototype, optionalDescriptorObjects)</code>，下面的例子里也可以看到这个用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 因为不是构造函数，所以不用大写</span><br><span class="hljs-keyword">var</span> someCar = &#123;    <br>    <span class="hljs-attr">drive</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123; &#125;,    <br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;马自达 3&#x27;</span><br>&#125;;<br><span class="hljs-comment">// 使用Object.create创建一个新车x</span><br><span class="hljs-keyword">var</span> anotherCar = <span class="hljs-built_in">Object</span>.create(someCar);<br>notherCar.name = <span class="hljs-string">&#x27;丰田佳美&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>Object.create运行你直接从其它对象继承过来，使用该方法的第二个参数，你可以初始化额外的其它属性。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> vehicle = &#123;    <br>    <span class="hljs-attr">getModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;        <br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;车辆的模具是：&#x27;</span> + <span class="hljs-built_in">this</span>.model);    <br>    &#125;<br>&#125;;<br><span class="hljs-keyword">var</span> car = <span class="hljs-built_in">Object</span>.create(vehicle, &#123;    <br>    <span class="hljs-string">&#x27;id&#x27;</span>: &#123;        <br>        <span class="hljs-attr">value</span>: MY_GLOBAL.nextId(),        <br>        <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// 默认writable:false, configurable:false </span><br>    &#125;,    <br>    <span class="hljs-string">&#x27;model&#x27;</span>: &#123;        <br>        <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;福特&#x27;</span>,        <br>        <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>    <br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>这里，可以在Object.create的第二个参数里使用对象字面量传入要初始化的额外属性，其语法与<code>Object.defineProperties</code>或<code>Object.defineProperty</code>方法类型。它允许您设定属性的特性，例如enumerable, writable 或 configurable。</p>
+<p><strong>学习摘自：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/TomXu/archive/2012/04/16/2436460.html">深入理解JavaScript系列（42）：设计模式之原型模式</a></p>
+<h2 id="（四）适配器模式"><a href="#（四）适配器模式" class="headerlink" title="（四）适配器模式"></a><span id="jump4">（四）适配器模式</span></h2><h4 id="1-什么是适配器模式？"><a href="#1-什么是适配器模式？" class="headerlink" title="1. 什么是适配器模式？"></a>1. 什么是适配器模式？</h4><p>**适配器模式(Adapter)**：将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<h4 id="2-适配器模式使用场景？"><a href="#2-适配器模式使用场景？" class="headerlink" title="2. 适配器模式使用场景？"></a>2. 适配器模式使用场景？</h4><p>在前端开发中，我们可能会遇见这样的场景：当我们试图调用某个模块或者对象的接口时，却发现这个<strong>接口的格式不符合我们的需求</strong>。这时有两种解决办法：第一种是修改原来的接口实现，但如果原来的代码很复杂，例如是一个库或框架，更改原代码就显得很不现实了。所以这时就需要使用今天所讲的第二种办法：创建一个适配器，将原接口转换为客户希望的另一个接口，客户只需要使用适配器即可。</p>
+<p>前端项目中，适配器模式的使用场景一般有以下三种情况：库的适配、参数的适配和数据的适配。下面将以在项目中的实际例子来说明。</p>
+<h5 id="ES6中的适配器模式"><a href="#ES6中的适配器模式" class="headerlink" title="ES6中的适配器模式"></a>ES6中的适配器模式</h5><ul>
+<li> <strong>库的适配</strong></li>
+</ul>
+<p>  项目上线前通常会要求前端开发者在页面中会接入统计网页数据用的SDK，这些SDK能够采集用户的信息和网页行生成可视化的图表和表格，来帮助网站运营人员和产品经理更好的根据用户行为来提升网页质量。</p>
+<ul>
+<li><p><strong>参数的适配</strong></p>
+<p>有的情况下一个方法可能需要传入多个参数。</p>
+</li>
+<li><p><strong>数据的适配</strong></p>
+<p>数据的适配在前端中是最为常见的场景，这时适配器在解决前后端的数据依赖上有着重要的意义。通常服务器端传递的数据和我们前端需要使用的数据格式是不一致的，特别是在在使用一些UI框架时，框架所规定的数据有着固定的格式。所以，这个时候我们就需要对后端的数据格式进行适配。</p>
+</li>
+</ul>
+<h4 id="3-详细内容与示例见："><a href="#3-详细内容与示例见：" class="headerlink" title="3. 详细内容与示例见："></a>3. 详细内容与示例见：</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2701e7e59e69">从ES6重新认识JavaScript设计模式(四): 适配器模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d1321a7f265da1b802055e5">JavaScript 设计模式（四）：适配者模式</a></p>
+<h2 id="（五）代理模式"><a href="#（五）代理模式" class="headerlink" title="（五）代理模式"></a><span id="jump5">（五）代理模式</span></h2><h4 id="1-什么是代理模式？"><a href="#1-什么是代理模式？" class="headerlink" title="1. 什么是代理模式？"></a>1. 什么是代理模式？</h4><p>为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个对象不适合或者不能直接引用另一个对象，而代理对象可以在客户端和目标对象之间起到中介的作用。</p>
+<p>（当客户不方便直接访问一个 对象或者不满足需要的时候，提供一个替身对象 来控制对这个对象的访问，客户实际上访问的是 替身对象。</p>
+<p>替身对象对请求做出一些处理之后， 再把请求转交给本体对象</p>
+<p>代理和本体的接口具有一致性，本体定义了关键功能，而代理是提供或拒绝对它的访问，或者在访问本体之前做一 些额外的事情。）</p>
+<h4 id="2-代理模式使用场景？"><a href="#2-代理模式使用场景？" class="headerlink" title="2. 代理模式使用场景？"></a>2. 代理模式使用场景？</h4><p>利用ES6中的<code>Proxy</code>实现前端中3种代理模式的使用场景，分别是：</p>
+<p><strong>缓存代理</strong>、<strong>验证代理</strong>、<strong>实现私有属性</strong>。</p>
+<p>ES6所提供<code>Proxy</code>构造函数能够让我们轻松的使用代理模式:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> proxy = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>(target, handler);<br></code></pre></td></tr></table></figure>
+
+<p><code>Proxy</code>构造函数传入两个参数，第一个参数<code>target</code>表示所要代理的对象，第二个参数<code>handler</code>也是一个对象用来设置对所代理的对象的行为。如果想知道<code>Proxy</code>的具体使用方法，可参考阮一峰的<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/proxy">《 ECMAScript入门 - Proxy 》</a>。</p>
+<h5 id="缓存代理"><a href="#缓存代理" class="headerlink" title="缓存代理"></a>缓存代理</h5><p>缓存代理可以将一些开销很大的方法的运算结果进行缓存，再次调用该函数时，若参数一致，则可以直接返回缓存中的结果，而不用再重新进行运算。例如在采用后端分页的表格时，每次页码改变时需要重新请求后端数据，我们可以将页码和对应结果进行缓存，当请求同一页时就不用在进行ajax请求而是直接返回缓存中的数据。</p>
+<h5 id="验证代理"><a href="#验证代理" class="headerlink" title="验证代理"></a>验证代理</h5><p><code>Proxy</code>构造函数第二个参数中的<code>set</code>方法，可以很方便的验证向一个对象的传值。我们以一个传统的登陆表单举例，该表单对象有两个属性,分别是<code>account</code>和<code>password</code>，每个属性值都有一个简单和其属性名对应的验证方法</p>
+<h5 id="实现私有属性"><a href="#实现私有属性" class="headerlink" title="实现私有属性"></a>实现私有属性</h5><p>代理模式还有一个很重要的应用是实现访问限制。总所周知，JavaScript是没有私有属性这一个概念的，通常私有属性的实现是通过函数作用域中变量实现的，虽然实现了私有属性，但对于可读性来说并不好。</p>
+<p>私有属性一般是以<code>_</code>下划线开头，通过<code>Proxy</code>构造函数中的第二个参数所提供的方法，我们可以很好的去限制以<code>_</code>开头的属性的访问。</p>
+<h4 id="3-使用代理模式的意义"><a href="#3-使用代理模式的意义" class="headerlink" title="3. 使用代理模式的意义"></a>3. 使用代理模式的意义</h4><ul>
+<li><p>遵循“单一职责原则”，面向对象设计中鼓励将不同的职责分布到细粒度的对象中，<code>Proxy</code> 在原对象的基础上进行了功能的衍生而又不影响原对象，符合松耦合高内聚的设计理念</p>
+</li>
+<li><p>遵循“开放-封闭原则”，代理可以随时从程序中去掉，而不用对其他部分的代码进行修改，在实际场景中，随着版本的迭代可能会有多种原因不再需要代理，那么就可以容易的将代理对象换成原对象的调用</p>
+</li>
+</ul>
+<h4 id="4-详细内容与例子见："><a href="#4-详细内容与例子见：" class="headerlink" title="4. 详细内容与例子见："></a>4. 详细内容与例子见：</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d791a84c5733">从ES6重新认识JavaScript设计模式(五): 代理模式和Proxy</a></p>
+<h2 id="（六）策略模式"><a href="#（六）策略模式" class="headerlink" title="（六）策略模式"></a><span id="jump6">（六）策略模式</span></h2><h4 id="1-什么是策略模式？"><a href="#1-什么是策略模式？" class="headerlink" title="1. 什么是策略模式？"></a>1. 什么是策略模式？</h4><p>定义一系列的算法，把它们一个个封装起来，并使它们可以替换。</p>
+<p><strong>栗子：</strong></p>
+<p>诸葛给刘备的锦囊妙计，遇到任何困难都有应对计策。策略模式实现的也是类似的场景。</p>
+<p>给喜欢的女生买冰淇淋，事先不了解其喜好，只能集齐各种味道，总会命中。就是比较 “费钱”，这也是策略模式的缺点，需事先考虑所有应对场景。</p>
+<h4 id="2-策略模式特点？"><a href="#2-策略模式特点？" class="headerlink" title="2. 策略模式特点？"></a>2. 策略模式特点？</h4><ul>
+<li><p>策略类：算法封装成独立的函数/对象</p>
+</li>
+<li><p>环境类：根据不同参数调用对应的策略函数/对象执行</p>
+</li>
+</ul>
+<h4 id="3-策略模式实现："><a href="#3-策略模式实现：" class="headerlink" title="3. 策略模式实现："></a>3. 策略模式实现：</h4><p>将算法的使用和算法的实现分离开来。</p>
+<p><strong>实现方式：</strong></p>
+<p>一个基于策略模式的程序至少由两部分组成，</p>
+<p>第一个部分是一组策略类 Strategies（可变），策略类封装类具体的算法，并负责具体的计算过程。</p>
+<p>第二个部分是环境类 Context（不变）， Context 接收客户的请求，随后把请求委托给某一个策略类。</p>
+<p><strong>例子：</strong></p>
+<p>假设我们一个开发团队，人员组成包括（开发组长，后端，前端，测试）。开发组长领取开发任务（不变），但具体的任务执行人员可根据类型划分（可变）。</p>
+<p>比如开发任务有以下几项：</p>
+<ul>
+<li><p>优化服务器缓存（后端任务）</p>
+</li>
+<li><p>优化首屏加载速度（前端任务）</p>
+</li>
+<li><p>完成系统并发测试（测试任务）</p>
+</li>
+</ul>
+<p>开发组长会根据任务类型，分发到对应的开发人员头上，组长不承担具体开发任务。所以每一个开发人员就承担 Strategy 的作用（独立的任务执行），而组长拥有并可支配所有开发人员的资源，充当 Context 的角色。团队每一个开发人员<strong>“组合”</strong>起来就是一个 Strategies 类（执行开发任务）。 这个 Strategies 是可变的，如果说后续开发任务需要安卓的、IOS的支持，只要添加安卓、IOS开发人员配置即可（可扩展）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 策略类（开发人员）</span><br><span class="hljs-keyword">var</span> Strategies = &#123;<br>    <span class="hljs-string">&quot;backend&quot;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行后端任务：&#x27;</span>, task);<br>    &#125;,<br>    <span class="hljs-string">&quot;frontend&quot;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行前端任务：&#x27;</span>, task);<br>    &#125;,<br>    <span class="hljs-string">&quot;testend&quot;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行测试任务：&#x27;</span>, task);<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">//  环境类（开发组长）</span><br><span class="hljs-keyword">var</span> Context = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type, task</span>) </span>&#123;<br>    <span class="hljs-keyword">typeof</span> Strategies[type] === <span class="hljs-string">&#x27;function&#x27;</span> &amp;&amp; Strategies[type](task);<br>&#125;<br><br><span class="hljs-comment">// 若没有使用策略模式的组长...</span><br><span class="hljs-keyword">var</span> Context = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type, task</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;backend&#x27;</span>) &#123;<br>        <span class="hljs-comment">// 把后端给我叫来</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;frontend&#x27;</span>) &#123;<br>        <span class="hljs-comment">// 把前端给我叫来</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;testend&#x27;</span>) &#123;<br>        <span class="hljs-comment">// 把测试给我叫来</span><br>    &#125;<br>&#125;<br><br>Context(<span class="hljs-string">&#x27;backend&#x27;</span>, <span class="hljs-string">&#x27;优化服务器缓存&#x27;</span>);<br>Context(<span class="hljs-string">&#x27;frontend&#x27;</span>, <span class="hljs-string">&#x27;优化首页加载速度&#x27;</span>);<br>Context(<span class="hljs-string">&#x27;testend&#x27;</span>, <span class="hljs-string">&#x27;完成系统并发测试&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>JavaScript 中，函数作为“一等公民“，也称“一等对象”。JavaScript 中 ”高阶函数“ 应用中，函数可被作为变量或参数进行传递或调用。因此在 JavaScript 中，我们可将算法封装成独立的函数，并将它作为参数传递给另一个函数调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 封装独立的函数</span><br><span class="hljs-keyword">var</span> backend = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行后端任务：&#x27;</span>, task);<br>&#125;;<br><span class="hljs-keyword">var</span> frontend = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行前端任务：&#x27;</span>, task);<br>&#125;;<br><span class="hljs-keyword">var</span> testend = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">task</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;进行测试任务：&#x27;</span>, task);<br>&#125;;<br><br><span class="hljs-comment">//  环境类（开发组长）</span><br><span class="hljs-keyword">var</span> Context = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">func, task</span>) </span>&#123;<br>    <span class="hljs-keyword">typeof</span> func === <span class="hljs-string">&#x27;function&#x27;</span> &amp;&amp; func(task);<br>&#125;<br><br>Context(backend, <span class="hljs-string">&#x27;优化服务器缓存&#x27;</span>);<br>Context(frontend, <span class="hljs-string">&#x27;优化首页加载速度&#x27;</span>);<br>Context(testend, <span class="hljs-string">&#x27;完成系统并发测试&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>少了 Strategies 策略类的外层包裹，函数更加独立，并不妨碍其调用。使用函数替代策略类方式，正是我们日常开发中经常用到的 “隐形” 策略模式。</p>
+<h4 id="4-策略模式适用场景："><a href="#4-策略模式适用场景：" class="headerlink" title="4. 策略模式适用场景："></a>4. 策略模式适用场景：</h4><ul>
+<li><p>多重条件语句判断，执行对应的算法场景</p>
+</li>
+<li><p>表单校验（validator)</p>
+</li>
+</ul>
+<h4 id="5-策略模式优缺点："><a href="#5-策略模式优缺点：" class="headerlink" title="5. 策略模式优缺点："></a>5. 策略模式优缺点：</h4><h5 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h5><ul>
+<li><p>利用组合、委托、多态的技术和思想，避免多重条件选择语句 <code>if...else/switch...case</code>；</p>
+</li>
+<li><p>复用性更高，算法函数可在系统其它地方使用；</p>
+</li>
+<li><p>支持设计模式 “开发-封闭原则“ ，算法封装在独立的 Strategy 中，易于维护和扩展；</p>
+</li>
+<li><p>策略模式使用 “组合和委托” 来让 Context 拥有执行算法的能力，一种替换对象继承的可行方案</p>
+</li>
+</ul>
+<h5 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h5><ul>
+<li><p>增加了许多策略类或对象（开发人员职能划分明确，人员成本有所增加）；</p>
+</li>
+<li><p>必须了解各个 Strategy 的不同点，违反 “最少知识原则”（组长手底下有对应的开发人员，才不用自己那么苦逼）</p>
+</li>
+</ul>
+<p><strong>摘自好文：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d11bd7ff265da1b8811e9c2">JavaScript 设计模式（二）：策略模式</a></p>
+<h2 id="（七）迭代器模式"><a href="#（七）迭代器模式" class="headerlink" title="（七）迭代器模式"></a><span id="jump7">（七）迭代器模式</span></h2><h4 id="1-什么是迭代器模式？"><a href="#1-什么是迭代器模式？" class="headerlink" title="1. 什么是迭代器模式？"></a>1. 什么是迭代器模式？</h4><p>迭代器模式是指一种顺序访问一个聚合对象中的各个元素，而不需要暴露该对象</p>
+<p>的内部表示。迭代器模式可以把迭代的过程从业务逻辑中分离出来，在使用迭代器模式之后，即使不关心对象的内部构造，也可以按顺序访问其中的每个元素。</p>
+<p>简单理解（白话理解）：统一 “集合” 型数据结构的遍历接口，实现可循环遍历获取集合中各数据项（不关心数据项中的数据结构）。</p>
+<p><strong>栗子：</strong></p>
+<p>清单 TodoList。每日清单有学习类、生活类、工作类、运动类等项目，清单列表只管罗列，不管类别。</p>
+<h4 id="2-迭代器模式特点："><a href="#2-迭代器模式特点：" class="headerlink" title="2. 迭代器模式特点："></a>2. 迭代器模式特点：</h4><ul>
+<li><p>访问一个聚合对象的内容而无需暴露它的内部表示。</p>
+</li>
+<li><p>为遍历不同的集合结构提供一个统一的接口，从而支持同样的算法在不同的集合结构上进行操作。</p>
+</li>
+<li><p>遍历的同时更改迭代器所在的集合结构可能会导致问题</p>
+</li>
+</ul>
+<h4 id="3-使用场景："><a href="#3-使用场景：" class="headerlink" title="3. 使用场景："></a>3. 使用场景：</h4><p>不同数据结构类型的 “数据集合”，需要对外提供统一的遍历接口，而又不暴露或修改内部结构时，可应用迭代器模式实现。</p>
+<h4 id="4-迭代器模式实现"><a href="#4-迭代器模式实现" class="headerlink" title="4. 迭代器模式实现"></a>4. 迭代器模式实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 统一遍历接口实现</span><br><span class="hljs-keyword">var</span> each = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr, callBack</span>) </span>&#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>, len = arr.length; i &lt; len; i++) &#123;<br>    <span class="hljs-comment">// 将值，索引返回给回调函数callBack处理</span><br>    <span class="hljs-keyword">if</span> (callBack(i, arr[i]) === <span class="hljs-literal">false</span>) &#123;<br>      <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// 中止迭代器，跳出循环</span><br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 外部调用</span><br>each([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">index, value</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (value &gt; <span class="hljs-number">3</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 返回false中止each</span><br>    &#125;<br>    <span class="hljs-built_in">console</span>.log([index, value]);<br>&#125;)<br><br><span class="hljs-comment">// 输出：[0, 1]  [1, 2]  [2, 3]</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>“迭代器模式的核心，就是实现统一遍历接口。”</strong></p>
+<h4 id="5-迭代器模式细分"><a href="#5-迭代器模式细分" class="headerlink" title="5. 迭代器模式细分"></a>5. 迭代器模式细分</h4><ul>
+<li>内部迭代器 （jQuery 的 $.each / for…of)</li>
+<li>外部迭代器 （ES6 的 yield)</li>
+</ul>
+<h5 id="内部迭代器："><a href="#内部迭代器：" class="headerlink" title="内部迭代器："></a>内部迭代器：</h5><p>内部迭代器: 内部定义迭代规则，控制整个迭代过程，外部只需一次初始调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// jQuery 的 $.each（跟上文each函数实现原理类似）</span><br>$.each([<span class="hljs-string">&#x27;Angular&#x27;</span>, <span class="hljs-string">&#x27;React&#x27;</span>, <span class="hljs-string">&#x27;Vue&#x27;</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">index, value</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log([index, value]);<br>&#125;);<br><br><span class="hljs-comment">// 输出：[0, Angular]  [1, React]  [2, Vue]</span><br>复制代码<br></code></pre></td></tr></table></figure>
+
+<p>优点：调用方式简单，外部仅需一次调用 缺点：迭代规则预先设置，欠缺灵活性。无法实现复杂遍历需求（如: 同时迭代比对两个数组）</p>
+<h5 id="外部迭代器："><a href="#外部迭代器：" class="headerlink" title="外部迭代器："></a>外部迭代器：</h5><p>外部迭代器： 外部显示（手动）地控制迭代下一个数据项</p>
+<p>借助 ES6 新增的 <code>Generator</code> 函数中的 <code>yield*</code> 表达式来实现外部迭代器。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// ES6 的 yield 实现外部迭代器</span><br><span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">generatorEach</span>(<span class="hljs-params">arr</span>) </span>&#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> [index, value] <span class="hljs-keyword">of</span> arr.entries()) &#123;<br>    <span class="hljs-keyword">yield</span> <span class="hljs-built_in">console</span>.log([index, value]);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">let</span> each = generatorEach([<span class="hljs-string">&#x27;Angular&#x27;</span>, <span class="hljs-string">&#x27;React&#x27;</span>, <span class="hljs-string">&#x27;Vue&#x27;</span>]);<br>each.next();<br>each.next();<br>each.next();<br><br><span class="hljs-comment">// 输出：[0, &#x27;Angular&#x27;]  [1, &#x27;React&#x27;]  [2, &#x27;Vue&#x27;]</span><br>复制代码<br></code></pre></td></tr></table></figure>
+
+<p>优点：灵活性更佳，适用面广，能应对更加复杂的迭代需求 缺点：需显示调用迭代进行（手动控制迭代过程），外部调用方式较复杂</p>
+<p><strong>参考好文：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d1a1adde51d45778f076d8c">JavaScript 设计模式（五）：迭代器模式</a></p>
+<h2 id="（八）观察者模式"><a href="#（八）观察者模式" class="headerlink" title="（八）观察者模式"></a><span id="jump8">（八）观察者模式</span></h2><h4 id="1-什么是观察者模式？"><a href="#1-什么是观察者模式？" class="headerlink" title="1. 什么是观察者模式？"></a>1. 什么是观察者模式？</h4><p>观察者模式：定义了对象间一种一对多的依赖关系（一个目标者，即：被观察者，多个观察者），当目标对象 Subject 的状态发生改变时，所有依赖它的对象 Observer 都会得到通知。</p>
+<h4 id="2-观察者模式特征"><a href="#2-观察者模式特征" class="headerlink" title="2. 观察者模式特征"></a>2. 观察者模式特征</h4><ul>
+<li><p>一个目标者（被观察者）对象 <code>Subject</code>，拥有方法：添加 / 删除 / 通知 <code>Observer</code>；</p>
+</li>
+<li><p>多个观察者对象 <code>Observer</code>，拥有方法：接收 <code>Subject</code> 状态变更通知并处理；</p>
+</li>
+<li><p>目标对象 <code>Subject</code> 状态变更时，通知所有 <code>Observer</code>。</p>
+</li>
+</ul>
+<p><code>Subject</code> 添加一系列 <code>Observer</code>， <code>Subject</code> 负责维护与这些 <code>Observer</code> 之间的联系，“你对我有兴趣，我更新就会通知你”。</p>
+<h4 id="3-观察者模式的实现"><a href="#3-观察者模式的实现" class="headerlink" title="3. 观察者模式的实现"></a>3. 观察者模式的实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 目标者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Subject</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.observers = [];  <span class="hljs-comment">// 观察者列表</span><br>  &#125;<br>  <span class="hljs-comment">// 添加</span><br>  <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">observer</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.observers.push(observer);<br>  &#125;<br>  <span class="hljs-comment">// 删除</span><br>  <span class="hljs-function"><span class="hljs-title">remove</span>(<span class="hljs-params">observer</span>)</span> &#123;<br>    <span class="hljs-keyword">let</span> idx = <span class="hljs-built_in">this</span>.observers.findIndex(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item === observer);<br>    idx &gt; -<span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">this</span>.observers.splice(idx, <span class="hljs-number">1</span>);<br>  &#125;<br>  <span class="hljs-comment">// 通知</span><br>  <span class="hljs-function"><span class="hljs-title">notify</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> observer <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>.observers) &#123;<br>      observer.update();<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 观察者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observer</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.name = name;<br>  &#125;<br>  <span class="hljs-comment">// 目标对象更新时触发的回调</span><br>  <span class="hljs-function"><span class="hljs-title">update</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`目标者通知我更新了，我是：<span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.name&#125;</span>`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 实例化目标者</span><br><span class="hljs-keyword">let</span> subject = <span class="hljs-keyword">new</span> Subject();<br><br><span class="hljs-comment">// 实例化两个观察者</span><br><span class="hljs-keyword">let</span> obs1 = <span class="hljs-keyword">new</span> Observer(<span class="hljs-string">&#x27;前端开发者&#x27;</span>);<br><span class="hljs-keyword">let</span> obs2 = <span class="hljs-keyword">new</span> Observer(<span class="hljs-string">&#x27;后端开发者&#x27;</span>);<br><br><span class="hljs-comment">// 向目标者添加观察者</span><br>subject.add(obs1);<br>subject.add(obs2);<br><br><span class="hljs-comment">// 目标者通知更新</span><br>subject.notify();  <br><span class="hljs-comment">// 输出：</span><br><span class="hljs-comment">// 目标者通知我更新了，我是前端开发者</span><br><span class="hljs-comment">// 目标者通知我更新了，我是后端开发者</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-观察者模式优缺点："><a href="#4-观察者模式优缺点：" class="headerlink" title="4. 观察者模式优缺点："></a>4. 观察者模式优缺点：</h4><p><strong>优点：</strong></p>
+<ul>
+<li><p>目标者与观察者，功能耦合度降低，专注自身功能逻辑；</p>
+</li>
+<li><p>观察者被动接收更新，时间上解耦，实时接收目标者更新状态。</p>
+</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<p>观察者模式虽然实现了对象间依赖关系的低耦合，但却不能对事件通知进行细分管控，如 “筛选通知”，“指定主题事件通知” 。</p>
+<p>比如上面的例子，仅通知 “前端开发者” ？观察者对象如何只接收自己需要的更新通知？上例中，两个观察者接收目标者状态变更通知后，都执行了 <code>update()</code>，并无区分。</p>
+<p>“00后都在追求个性的时代，我能不能有点不一样？”，这就引出我们的下一个模式。进阶版的观察者模式。“发布订阅模式”，部分文章对两者是否一样都存在争议。</p>
+<p>仅代表个人观点：两种模式很类似，但是还是略有不同，就是多了个第三者，因 JavaScript 非正规面向对象语言，且函数回调编程的特点，使得 “发布订阅模式” 在 JavaScript 中代码实现可等同为 “观察模式”。</p>
+<p><strong>摘自好文：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d25a2316fb9a07f04207010">JavaScript 设计模式（六）：观察者模式与发布订阅模式</a></p>
+<h2 id="（九）发布订阅模式（Publisher-amp-amp-Subscriber）"><a href="#（九）发布订阅模式（Publisher-amp-amp-Subscriber）" class="headerlink" title="（九）发布订阅模式（Publisher &amp;&amp; Subscriber）"></a><span id="jump9">（九）发布订阅模式（Publisher &amp;&amp; Subscriber）</span></h2><h4 id="1-什么是发布订阅模式？"><a href="#1-什么是发布订阅模式？" class="headerlink" title="1. 什么是发布订阅模式？"></a>1. 什么是发布订阅模式？</h4><p>发布订阅模式：基于一个事件（主题）通道，希望接收通知的对象 Subscriber 通过自定义事件订阅主题，被激活事件的对象 Publisher 通过发布主题事件的方式通知各个订阅该主题的 Subscriber 对象。</p>
+<p>发布订阅模式与观察者模式的不同，“第三者” （事件中心）出现。目标对象并不直接通知观察者，而是通过事件中心来派发通知。</p>
+<h4 id="2-发布订阅模式的实现"><a href="#2-发布订阅模式的实现" class="headerlink" title="2. 发布订阅模式的实现"></a>2. 发布订阅模式的实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 事件中心</span><br><span class="hljs-keyword">let</span> pubSub = &#123;<br>  <span class="hljs-attr">list</span>: &#123;&#125;,<br>  <span class="hljs-attr">subscribe</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, fn</span>) </span>&#123;   <span class="hljs-comment">// 订阅</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.list[key]) &#123;<br>      <span class="hljs-built_in">this</span>.list[key] = [];<br>    &#125;<br>    <span class="hljs-built_in">this</span>.list[key].push(fn);<br>  &#125;,<br>  <span class="hljs-attr">publish</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, ...arg</span>) </span>&#123;  <span class="hljs-comment">// 发布</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> fn <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>.list[key]) &#123;<br>      fn.call(<span class="hljs-built_in">this</span>, ...arg);<br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">unSubscribe</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, fn</span>) </span>&#123;     <span class="hljs-comment">// 取消订阅</span><br>    <span class="hljs-keyword">let</span> fnList = <span class="hljs-built_in">this</span>.list[key];<br>    <span class="hljs-keyword">if</span> (!fnList) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>    <span class="hljs-keyword">if</span> (!fn) &#123;<br>      <span class="hljs-comment">// 不传入指定取消的订阅方法，则清空所有key下的订阅</span><br>      fnList &amp;&amp; (fnList.length = <span class="hljs-number">0</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      fnList.forEach(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (item === fn) &#123;<br>          fnList.splice(index, <span class="hljs-number">1</span>);<br>        &#125;<br>      &#125;)<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 订阅</span><br>pubSub.subscribe(<span class="hljs-string">&#x27;onwork&#x27;</span>, <span class="hljs-function"><span class="hljs-params">time</span> =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`上班了：<span class="hljs-subst">$&#123;time&#125;</span>`</span>);<br>&#125;)<br>pubSub.subscribe(<span class="hljs-string">&#x27;offwork&#x27;</span>, <span class="hljs-function"><span class="hljs-params">time</span> =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`下班了：<span class="hljs-subst">$&#123;time&#125;</span>`</span>);<br>&#125;)<br>pubSub.subscribe(<span class="hljs-string">&#x27;launch&#x27;</span>, <span class="hljs-function"><span class="hljs-params">time</span> =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`吃饭了：<span class="hljs-subst">$&#123;time&#125;</span>`</span>);<br>&#125;)<br><br><span class="hljs-comment">// 发布</span><br>pubSub.publish(<span class="hljs-string">&#x27;offwork&#x27;</span>, <span class="hljs-string">&#x27;18:00:00&#x27;</span>); <br>pubSub.publish(<span class="hljs-string">&#x27;launch&#x27;</span>, <span class="hljs-string">&#x27;12:00:00&#x27;</span>);<br><br><span class="hljs-comment">// 取消订阅</span><br>pubSub.unSubscribe(<span class="hljs-string">&#x27;onwork&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>发布订阅模式中，订阅者各自实现不同的逻辑，且只接收自己对应的事件通知。实现你想要的 “不一样”。</p>
+<h4 id="3-发布订阅发布的应用"><a href="#3-发布订阅发布的应用" class="headerlink" title="3. 发布订阅发布的应用"></a>3. 发布订阅发布的应用</h4><h5 id="DOM-事件监听也是-“发布订阅模式”-的应用："><a href="#DOM-事件监听也是-“发布订阅模式”-的应用：" class="headerlink" title="DOM 事件监听也是 “发布订阅模式” 的应用："></a>DOM 事件监听也是 “发布订阅模式” 的应用：</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> loginBtn = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;#loginBtn&#x27;</span>);<br><br><span class="hljs-comment">// 监听回调函数（指定事件）</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notifyClick</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;我被点击了&#x27;</span>);<br>&#125;<br><br><span class="hljs-comment">// 添加事件监听</span><br>loginBtn.addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, notifyClick);<br><span class="hljs-comment">// 触发点击, 事件中心派发指定事件</span><br>loginBtn.click();             <br><br><span class="hljs-comment">// 取消事件监听</span><br>loginBtn.removeEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, notifyClick);<br>复制代码<br></code></pre></td></tr></table></figure>
+
+<p>发布订阅的通知顺序：</p>
+<ol>
+<li>先订阅后发布时才通知（常规）</li>
+<li>订阅后可获取过往以后的发布通知 （QQ离线消息，上线后获取之前的信息）</li>
+</ol>
+<h5 id="流行库的应用："><a href="#流行库的应用：" class="headerlink" title="流行库的应用："></a>流行库的应用：</h5><ul>
+<li><p>jQuery 的 <code>on</code> 和 <code>trigger</code>，<code>$.callback()</code>;</p>
+</li>
+<li><p>Vue 的双向数据绑定;</p>
+</li>
+<li><p>Vue 的父子组件通信 <code>$on/$emit</code></p>
+</li>
+</ul>
+<h5 id="jQuery-的-Callback-："><a href="#jQuery-的-Callback-：" class="headerlink" title="jQuery 的 $.Callback()："></a>jQuery 的 $.Callback()：</h5><p>jQuery 的 $.Callback() 更像是观察者模式的应用，不能更细粒度管控。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notifyHim</span>(<span class="hljs-params">value</span>) </span>&#123;<br> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;He say &#x27;</span> + value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notifyHer</span>(<span class="hljs-params">value</span>) </span>&#123;<br> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;She say &#x27;</span> + value);<br>&#125;<br><br>$cb = $.Callbacks();    <span class="hljs-comment">// 声明一个回调容器：订阅列表 </span><br><br>$cb.add(notifyHim);     <span class="hljs-comment">// 向回调列表添加回调：订阅</span><br>$cb.add(notifyHer);     <span class="hljs-comment">// 向回调列表添加回调：订阅</span><br><br>$cb.fire(<span class="hljs-string">&#x27;help&#x27;</span>);       <span class="hljs-comment">// 调用所有回调： 发布</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="（十）命令模式"><a href="#（十）命令模式" class="headerlink" title="（十）命令模式"></a><span id="jump10">（十）命令模式</span></h2><h4 id="1-什么是命令模式？"><a href="#1-什么是命令模式？" class="headerlink" title="1. 什么是命令模式？"></a>1. 什么是命令模式？</h4><p>命令模式：请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。</p>
+<p>例子：客户下单，订单记录了客户购买的产品，仓库根据订单给客户备货。</p>
+<h4 id="2-命令模式的特点"><a href="#2-命令模式的特点" class="headerlink" title="2. 命令模式的特点"></a>2. 命令模式的特点</h4><p>命令模式由三种角色构成：</p>
+<ul>
+<li>发布者 <code>invoker</code>（发出命令，调用命令对象，不知道如何执行与谁执行）；</li>
+<li>接收者 <code>receiver</code> (提供对应接口处理请求，不知道谁发起请求）；</li>
+<li>命令对象 <code>command</code>（接收命令，调用接收者对应接口处理发布者的请求）。</li>
+</ul>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1585012888355.png" srcset="/img/loading.gif" lazyload alt="1585012888355"></p>
+<p>发布者 <code>invoker</code> 和接收者 <code>receiver</code> 各自独立，将请求封装成命令对象 <code>command</code> ，请求的具体执行由命令对象 <code>command</code> 调用接收者 <code>receiver</code> 对应接口执行。</p>
+<p>命令对象 <code>command</code> 充当发布者 <code>invoker</code> 与接收者 <code>receiver</code> 之间的连接桥梁（中间对象介入）。实现发布者与接收之间的解耦，对比过程化请求调用，命令对象 <code>command</code> 拥有更长的生命周期，接收者 <code>receiver</code> 属性方法被封装在命令对象 <code>command</code> 属性中，使得程序执行时可任意时刻调用接收者对象 <code>receiver</code> 。因此 <code>command</code> 可对请求进行进一步管控处理，如实现延时、预定、排队、撤销等功能。</p>
+<h4 id="3-命令模式的实现"><a href="#3-命令模式的实现" class="headerlink" title="3. 命令模式的实现"></a>3. 命令模式的实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Receiver</span> </span>&#123;  <span class="hljs-comment">// 接收者类</span><br>  <span class="hljs-function"><span class="hljs-title">execute</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;接收者执行请求&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Command</span> </span>&#123;   <span class="hljs-comment">// 命令对象类</span><br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">receiver</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.receiver = receiver;<br>  &#125;<br>  execute () &#123;    <span class="hljs-comment">// 调用接收者对应接口执行</span><br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;命令对象-&gt;接收者-&gt;对应接口执行&#x27;</span>);<br>    <span class="hljs-built_in">this</span>.receiver.execute();<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Invoker</span> </span>&#123;   <span class="hljs-comment">// 发布者类</span><br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">command</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.command = command;<br>  &#125;<br>  <span class="hljs-function"><span class="hljs-title">invoke</span>(<span class="hljs-params"></span>)</span> &#123;      <span class="hljs-comment">// 发布请求，调用命令对象</span><br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;发布者发布请求&#x27;</span>);<br>    <span class="hljs-built_in">this</span>.command.execute();<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> warehouse = <span class="hljs-keyword">new</span> Receiver();       <span class="hljs-comment">// 仓库</span><br><span class="hljs-keyword">const</span> order = <span class="hljs-keyword">new</span> Command(warehouse);   <span class="hljs-comment">// 订单</span><br><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Invoker(order);      <span class="hljs-comment">// 客户</span><br>client.invoke();<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">输出：</span><br><span class="hljs-comment">  发布者发布请求</span><br><span class="hljs-comment">  命令对象-&gt;接收者-&gt;对应接口执行</span><br><span class="hljs-comment">  接收者执行请求</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-命令模式应用场景"><a href="#4-命令模式应用场景" class="headerlink" title="4. 命令模式应用场景"></a>4. 命令模式应用场景</h4><p>有时候需要向某些对象发送请求，但是并不知道请求的接收者是谁，也不知道被请求的操作是什么。需要一种松耦合的方式来设计程序，使得发送者和接收者能够消除彼此之间的耦合关系。</p>
+<ul>
+<li><p>不关注执行者，不关注执行过程；</p>
+</li>
+<li><p>只要结果，支持撤销请求、延后处理、日志记录等。</p>
+</li>
+</ul>
+<h4 id="5-命令模式的优缺点"><a href="#5-命令模式的优缺点" class="headerlink" title="5. 命令模式的优缺点"></a>5. 命令模式的优缺点</h4><p><strong>优点：</strong></p>
+<ul>
+<li>发布者与接收者实现解耦；</li>
+<li>可扩展命令，对请求可进行排队或日志记录。（支持撤销，队列，宏命令等功能）。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>额外增加命令对象，非直接调用，存在一定开销。</li>
+</ul>
+<p><strong>学习并摘自：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d2ad5eb6fb9a07f0b03f0ea">JavaScript设计模式（七）：命令模式</a></p>
+<h2 id="（十一）组合模式"><a href="#（十一）组合模式" class="headerlink" title="（十一）组合模式"></a><span id="jump11">（十一）组合模式</span></h2><h4 id="1-什么是组合模式？"><a href="#1-什么是组合模式？" class="headerlink" title="1. 什么是组合模式？"></a>1. 什么是组合模式？</h4><p>组合模式：又叫 “部分整体” 模式，将对象组合成树形结构，以表示 “部分-整体” 的层次结构。通过对象的多态性表现，使得用户对单个对象和组合对象的使用具有一致性。</p>
+<p><strong>栗子：</strong>文件目录，DOM 文档树</p>
+<h4 id="2-组合模式的特点"><a href="#2-组合模式的特点" class="headerlink" title="2. 组合模式的特点"></a>2. 组合模式的特点</h4><ul>
+<li>表示 “部分-整体” 的层次结构，生成 “树叶型” 结构；</li>
+<li>一致操作性，树叶对象对外接口保存一致（操作与数据结构一致）；</li>
+<li>自上而下的的请求流向，从树对象传递给叶对象；</li>
+<li>调用顶层对象，会自行遍历其下的叶对象执行。</li>
+</ul>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1585013770931.png" srcset="/img/loading.gif" lazyload alt="1585013770931"></p>
+<h4 id="3-组合模式的实现"><a href="#3-组合模式的实现" class="headerlink" title="3. 组合模式的实现"></a>3. 组合模式的实现</h4><p>树对象和叶对象接口统一，树对象增加一个缓存数组，存储叶对象。执行树对象方法时，将请求传递给其下叶对象执行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 树对象 - 文件目录</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CFolder</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>        <span class="hljs-built_in">this</span>.files = [];<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">file</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.files.push(file);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">scan</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> file <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>.files) &#123;<br>            file.scan();<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 叶对象 - 文件</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CFile</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">file</span>)</span> &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;文件下面不能再添加文件&#x27;</span>);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">scan</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`开始扫描文件：<span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.name&#125;</span>`</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">let</span> mediaFolder = <span class="hljs-keyword">new</span> CFolder(<span class="hljs-string">&#x27;娱乐&#x27;</span>);<br><span class="hljs-keyword">let</span> movieFolder = <span class="hljs-keyword">new</span> CFolder(<span class="hljs-string">&#x27;电影&#x27;</span>);<br><span class="hljs-keyword">let</span> musicFolder = <span class="hljs-keyword">new</span> CFolder(<span class="hljs-string">&#x27;音乐&#x27;</span>);<br><br><span class="hljs-keyword">let</span> file1 = <span class="hljs-keyword">new</span> CFile(<span class="hljs-string">&#x27;钢铁侠.mp4&#x27;</span>);<br><span class="hljs-keyword">let</span> file2 = <span class="hljs-keyword">new</span> CFile(<span class="hljs-string">&#x27;再谈记忆.mp3&#x27;</span>);<br>movieFolder.add(file1);<br>musicFolder.add(file2);<br>mediaFolder.add(movieFolder);<br>mediaFolder.add(musicFolder);<br>mediaFolder.scan();<br><br><span class="hljs-comment">/* 输出:</span><br><span class="hljs-comment">开始扫描文件：钢铁侠.mp4</span><br><span class="hljs-comment">开始扫描文件：再谈记忆.mp3</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<p><code>CFolder</code> 与 <code>CFile</code> 接口保持一致。执行 <code>scan()</code> 时，若发现是树对象，则继续遍历其下的叶对象，执行 <code>scan()</code>。</p>
+<h4 id="4-组合模式误区规避"><a href="#4-组合模式误区规避" class="headerlink" title="4. 组合模式误区规避"></a>4. 组合模式误区规避</h4><ul>
+<li><p><strong>组合不是继承，树叶对象并不是父子对象</strong></p>
+<p>组合模式的树型结构是一种 HAS-A（聚合）的关系，而不是 IS-A 。树叶对象能够合作的关键，是它们对外保持统一接口，而不是叶对象继承树对象的属性方法，两者之间不是父子关系。</p>
+</li>
+<li><p><strong>叶对象操作保持一致性</strong></p>
+<p>叶对象除了与树对象接口一致外，操作也必须保持一致性。一片叶子只能生在一颗树上。调用顶层对象时，每个叶对象只能接收一次请求，一个叶对象不能从属多个树对象。</p>
+</li>
+<li><p><strong>叶对象实现冒泡传递</strong></p>
+<p>请求传递由树向叶传递，如果想逆转传递过程，需在叶对象中保留对树对象的引用，冒泡传递给树对象处理。</p>
+</li>
+<li><p><strong>不只是简单的子集遍历</strong></p>
+<p>调用对象的接口方法时，如果该对象是树对象，则会将请求传递给叶对象，由叶对象执行方法，以此类推。不同于迭代器模式，迭代器模式遍历并不会做请求传导。</p>
+</li>
+</ul>
+<h4 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h4><ul>
+<li>优化处理递归或分级数据结构（文件系统 - 目录文件管理）；</li>
+<li>与其它设计模式联用，如与命令模式联用实现 “宏命令”。</li>
+</ul>
+<h4 id="6-组合模式优缺点"><a href="#6-组合模式优缺点" class="headerlink" title="6. 组合模式优缺点"></a>6. 组合模式优缺点</h4><p><strong>优点：</strong></p>
+<ul>
+<li>忽略组合对象和单个对象的差别，对外一致接口使用；</li>
+<li>解耦调用者与复杂元素之间的联系，处理方式变得简单。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>树叶对象接口一致，无法区分，只有在运行时方可辨别；</li>
+<li>包裹对象创建太多，额外增加内存负担。</li>
+</ul>
+<p><strong>学习摘自：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d2d33226fb9a07f070e5e03">JavaScript设计模式（八）：组合模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9c3f55e47399">https://www.jianshu.com/p/9c3f55e47399</a>)</p>
+<h2 id="（十二）建造者模式"><a href="#（十二）建造者模式" class="headerlink" title="（十二）建造者模式"></a><span id="jump12">（十二）建造者模式</span></h2><h4 id="1-什么是建造者模式？"><a href="#1-什么是建造者模式？" class="headerlink" title="1. 什么是建造者模式？"></a>1. 什么是建造者模式？</h4><p>**建造者模式(Builder)**是将一个复杂对象的构建层与其表示层相互分离，同样的构建过程可采用不同的表示。</p>
+<p>建造者模式的特点是分步构建一个复杂的对象，可以用不同组合或顺序建造出不同意义的对象，通常使用者并不需要知道建造的细节，通常使用<strong>链式调用</strong>来进行建造过程，最后调用<code>build</code>方法来生成最终对象。</p>
+<p>同样作为创建型的设计模式，需要注意和工厂模式的区别，工厂虽然也是创建对象，但怎样创建无所谓，<strong>工厂模式关注的是创建的结果</strong>；而建造者模式不仅得到了结果，同时也<strong>参与了创建的具体过程</strong>，适合用来创建一个复杂的复合对象。</p>
+<h4 id="2-建造者模式的实现"><a href="#2-建造者模式的实现" class="headerlink" title="2. 建造者模式的实现"></a>2. 建造者模式的实现</h4><p> <strong>ES6中的建造者模式：</strong></p>
+<p>假设一个出版社的书籍后台录入系统的业务场景，书籍有四个必填信息，分别是：书名，作者，价格，分类；我们希望创建一个书籍对象返回给后端。下面我们来一步一步深入使用ES6的语法结合建造者模式创建对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//书籍建造者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookBuilder</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.author = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.price = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">this</span>.category = <span class="hljs-string">&#x27;&#x27;</span>;<br>  &#125;<br>  <br>  <span class="hljs-function"><span class="hljs-title">withName</span>(<span class="hljs-params">name</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.name = name;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">withAuthor</span>(<span class="hljs-params">author</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.author = author;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">withPrice</span>(<span class="hljs-params">price</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.price = price;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">withCategory</span>(<span class="hljs-params">category</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.category = category;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-built_in">this</span>;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-built_in">this</span>.name,<br>      <span class="hljs-attr">author</span>: <span class="hljs-built_in">this</span>.author,<br>      <span class="hljs-attr">prices</span>: <span class="hljs-built_in">this</span>.price,<br>      <span class="hljs-attr">category</span>: <span class="hljs-built_in">this</span>.category<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//调用建造者类</span><br><span class="hljs-keyword">const</span> book = <span class="hljs-keyword">new</span> BookBuilder()<br>  .withName(<span class="hljs-string">&quot;高效能人士的七个习惯&quot;</span>)<br>  .withAuthor(<span class="hljs-string">&#x27;史蒂芬·柯维&#x27;</span>)<br>  .withPrice(<span class="hljs-number">51</span>)<br>  .withCategory(<span class="hljs-string">&#x27;励志&#x27;</span>)<br>  .build();<br></code></pre></td></tr></table></figure>
+
+<p>上面就通过<code>BookBuilder</code>这个创建者类的写法和调用方法，但是仅仅是一个4个属性的对象，我们使用了如此多的代码去创建，这远比直接在<code>constructor</code>传递参数创建对象要复杂得多。这是由于在创建的过程中，我们有太多的<code>withxxxx</code>方法。我们其实可以自动创建这类<code>withxxxx</code>方法以简化代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//书籍建造者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookBuilder</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.author = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.price = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">this</span>.category = <span class="hljs-string">&#x27;&#x27;</span>;<br>  <br>    <span class="hljs-built_in">Object</span>.keys(<span class="hljs-built_in">this</span>).forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> withName = <span class="hljs-string">`with<span class="hljs-subst">$&#123;key.substring(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>).toUpperCase()&#125;</span><span class="hljs-subst">$&#123;key.substring(<span class="hljs-number">1</span>)&#125;</span>`</span>;<br>      <span class="hljs-built_in">this</span>[withName] = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">this</span>[key] = value;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>      &#125;<br>    &#125;)<br>  &#125;<br>  <br>  <span class="hljs-comment">//调用建造者</span><br>  <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> keysNoWithers = <span class="hljs-built_in">Object</span>.keys(<span class="hljs-built_in">this</span>).filter(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">this</span>[key] !== <span class="hljs-string">&#x27;function&#x27;</span>);<br><br>    <span class="hljs-keyword">return</span> keysNoWithers.reduce(<span class="hljs-function">(<span class="hljs-params">returnValue, key</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">return</span> &#123;<br>        ...returnValue,<br>        [key]: <span class="hljs-built_in">this</span>[key]<br>      &#125;<br>    &#125;, &#123;&#125;)<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> book = <span class="hljs-keyword">new</span> BookBuilder()<br>  .withName(<span class="hljs-string">&quot;高效能人士的七个习惯&quot;</span>)<br>  .withAuthor(<span class="hljs-string">&#x27;史蒂芬·柯维&#x27;</span>)<br>  .withPrice(<span class="hljs-number">51</span>)<br>  .withCategory(<span class="hljs-string">&#x27;励志&#x27;</span>)<br>  .build();<br></code></pre></td></tr></table></figure>
+
+<p>上面的<code>BookBuilder</code>这个类和第一个例子的效果一样，但是长度确减少不少，在有更多属性的时候，减少的代码量会更为明显。我们将所有的建造方法<code>withxxxx</code>在<code>constructor</code>调用时自动被创建，这里我们使用了一些ES6的新语法：<code>Object.keys</code>获取对象属性数组，<code>...</code>的合并对象的语法。</p>
+<p>虽然该写法在阅读起来会比第一个方法难以理解，但是这样写法的真正作用在于，当我们需要许多的建造者类时，我们可以将上面自动创建<code>withxxx</code>和<code>build</code>的代码提取为一个父类。在创建其他建造者类时继承该父类，这使得在创建多个建造者类时变得十分容易。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//父类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseBuilder</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">Object</span>.keys(<span class="hljs-built_in">this</span>).forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> withName = <span class="hljs-string">`with<span class="hljs-subst">$&#123;key.substring(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>).toUpperCase()&#125;</span><span class="hljs-subst">$&#123;key.substring(<span class="hljs-number">1</span>)&#125;</span>`</span>;<br>      <span class="hljs-built_in">this</span>[withName] = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">this</span>[key] = value;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>      &#125;<br>    &#125;)<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> keysNoWithers = <span class="hljs-built_in">Object</span>.keys(<span class="hljs-built_in">this</span>).filter(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">this</span>[key] !== <span class="hljs-string">&#x27;function&#x27;</span>);<br><br>    <span class="hljs-keyword">return</span> keysNoWithers.reduce(<span class="hljs-function">(<span class="hljs-params">returnValue, key</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">return</span> &#123;<br>        ...returnValue,<br>        [key]: <span class="hljs-built_in">this</span>[key]<br>      &#125;<br>    &#125;, &#123;&#125;)<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//子类1: 书籍建造者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookBuilder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseBuilder</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">super</span>();<br><br>    <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.author = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.price = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">this</span>.category = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <br>    <span class="hljs-built_in">super</span>.init();<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//子类2: 印刷厂建造者类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">printHouseBuilder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseBuilder</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">super</span>();<br><br>    <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.location = <span class="hljs-string">&#x27;&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.quality = <span class="hljs-string">&#x27;&#x27;</span>;<br><br>    <span class="hljs-built_in">super</span>.init();<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//调用书籍建造者类</span><br><span class="hljs-keyword">const</span> book = <span class="hljs-keyword">new</span> BookBuilder()<br>  .withName(<span class="hljs-string">&quot;高效能人士的七个习惯&quot;</span>)<br>  .withAuthor(<span class="hljs-string">&#x27;史蒂芬·柯维&#x27;</span>)<br>  .withPrice(<span class="hljs-number">51</span>)<br>  .withCategory(<span class="hljs-string">&#x27;励志&#x27;</span>)<br>  .build();<br><br><br><span class="hljs-comment">//调用印刷厂建造类</span><br><span class="hljs-keyword">const</span> printHouse = <span class="hljs-keyword">new</span> printHouseBuilder()<br>  .withName(<span class="hljs-string">&#x27;新华印刷厂&#x27;</span>)<br>  .withLocation(<span class="hljs-string">&#x27;北京海淀区&#x27;</span>)<br>  .withQuality(<span class="hljs-string">&#x27;A&#x27;</span>)<br>  .build();<br></code></pre></td></tr></table></figure>
+
+<p>建造者模式的使用有且只适合创建极为复杂的对象。在前端的实际业务中，在没有这类极为复杂的对象的创建时，还是应该直接使用对象字面或工厂模式等方式创建对象。</p>
+<p><strong>学习摘于：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/be61fcc47a2f">从ES6重新认识JavaScript设计模式(三): 建造者模式</a></p>
+<p><strong>以上内容为零碎资料和以下好文的学习笔记</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/nb/23500380">ES6设计模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/user/597950e0f265da3e292a3e46/posts">以乐为名的专栏</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/imwtr/p/9451129.html">JavaScript中常见的十五种设计模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/TomXu/archive/2011/12/15/2288411.html">深入理解JavaScript系列</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/15/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/props-model-vuex/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">props-model-vuex</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/21/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Nodejs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                        <span class="hidden-mobile">Nodejs相关知识点</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

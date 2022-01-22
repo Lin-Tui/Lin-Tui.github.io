@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="订单确认页面目录 订单父组件结构封装 地址和商品数据加载 地址删除功能实现 新增地址交互实现 地址编辑和订单提交  订单确认页面 如下：  （1）订单父组件结构封装 回顾路由文件router.js中关于order的路由:  123456789101112131415161718192021222324252627&amp;#123;     path: &amp;#x27;&#x2F;order&amp;#x27;,     na">
+<meta property="og:type" content="article">
+<meta property="og:title" content="订单确认页面">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/04/06/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E8%AE%A2%E5%8D%95%E7%A1%AE%E8%AE%A4%E9%A1%B5%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="订单确认页面目录 订单父组件结构封装 地址和商品数据加载 地址删除功能实现 新增地址交互实现 地址编辑和订单提交  订单确认页面 如下：  （1）订单父组件结构封装 回顾路由文件router.js中关于order的路由:  123456789101112131415161718192021222324252627&amp;#123;     path: &amp;#x27;&#x2F;order&amp;#x27;,     na">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1586171626629.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1586181472047.png">
+<meta property="article:published_time" content="2020-04-06T07:50:06.170Z">
+<meta property="article:modified_time" content="2022-01-22T04:51:16.310Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue项目实战">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1586171626629.png">
+  
+  
+  <title>订单确认页面 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="订单确认页面">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-06 15:50" pubdate>
+        2020年4月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      73 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">订单确认页面</h1>
+            
+            <div class="markdown-body">
+              <h2 id="订单确认页面"><a href="#订单确认页面" class="headerlink" title="订单确认页面"></a>订单确认页面</h2><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#jump1"><strong>订单父组件结构封装</strong></a></li>
+<li><a href="#jump2"><strong>地址和商品数据加载</strong></a></li>
+<li><a href="#jump3"><strong>地址删除功能实现</strong></a></li>
+<li><a href="#jump4"><strong>新增地址交互实现</strong></a></li>
+<li><a href="#jump5"><strong>地址编辑和订单提交</strong></a></li>
+</ul>
+<p><strong>订单确认页面 如下</strong>：</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1586171626629.png" srcset="/img/loading.gif" lazyload alt="1586171626629"></p>
+<h4 id="（1）订单父组件结构封装"><a href="#（1）订单父组件结构封装" class="headerlink" title="（1）订单父组件结构封装"></a><span id="jump1">（1）订单父组件结构封装</span></h4><ul>
+<li>回顾路由文件router.js中关于order的路由:</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><pre><code class="hljs js">&#123;<br>     <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/order&#x27;</span>,<br>     <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;order&#x27;</span>,<br>     <span class="hljs-attr">component</span>: Order,<br>     <span class="hljs-attr">children</span>: [<br>         &#123;<br>             <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;list&#x27;</span>,<br>             <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;order-list&#x27;</span>,<br>             <span class="hljs-attr">component</span>: OrderList<br>         &#125;,<br>         &#123;<br>             <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;confirm&#x27;</span>,<br>             <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;order-confirm&#x27;</span>,<br>             <span class="hljs-attr">component</span>: OrderConfirm<br>         &#125;,<br>         &#123;<br>             <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;pay&#x27;</span>,<br>             <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;order-pay&#x27;</span>,<br>             <span class="hljs-attr">component</span>: OrderPay<br>         &#125;,<br>         &#123;<br>             <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;alipay&#x27;</span>,<br>             <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;alipay&#x27;</span>,<br>             <span class="hljs-attr">component</span>: AliPay<br>         &#125;<br>     ]<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面那样子定义路由是因为订单列表、支付、确认页面的页面结构相似。所以把他们封装在order路由下。</p>
+<ul>
+<li>order.vue文件如下：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">order-header</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">order-header</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">ServiceBar</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ServiceBar</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">nav-footer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nav-footer</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">import</span> OrderHeader <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./../components/OrderHeader&#x27;</span>;</span><br><span class="javascript"><span class="hljs-keyword">import</span> ServiceBar <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./../components/ServiceBar&#x27;</span>;</span><br><span class="javascript"><span class="hljs-keyword">import</span> NavFooter <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./../components/NavFooter&#x27;</span>;</span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="javascript">    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;order&#x27;</span>,</span><br><span class="javascript">    <span class="hljs-attr">components</span>: &#123;</span><br><span class="javascript">        OrderHeader,</span><br><span class="javascript">        NavFooter，</span><br><span class="javascript">        ServiceBar</span><br><span class="javascript">    &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>订单确定、列表、支付页面的<code>&lt;order-header&gt;&lt;/order-header&gt;</code>组件中的文字内容不一样。</p>
+<p>我们可以通过在各个页面中去单独引入<code>&lt;order-header&gt;&lt;/order-header&gt;</code>同时绑定不同的文字内容，添加展示内容。或者像上面order.vue文件一样，在order.vue中引入，然后通过路由判断当前页面属于哪个，并展示不同内容。</p>
+<p>下面是第二种方式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs html">        <span class="hljs-tag">&lt;<span class="hljs-name">order-header</span> <span class="hljs-attr">v-bind:title</span>=<span class="hljs-string">&quot;title&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-slot:tip</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;&#123;tip&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">order-header</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">            <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;&#x27;</span>,</span><br><span class="javascript">            <span class="hljs-attr">tip</span>: <span class="hljs-string">&#x27;&#x27;</span></span><br><span class="javascript">        &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">       <span class="hljs-keyword">let</span> path = <span class="hljs-built_in">this</span>.$route.path;</span><br><span class="javascript">       <span class="hljs-keyword">if</span> (path == <span class="hljs-string">&#x27;/order/confirm&#x27;</span>) &#123;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.title = <span class="hljs-string">&#x27;订单确认&#x27;</span>;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.tip = <span class="hljs-string">&#x27;请认真填写收货地址&#x27;</span>;</span><br><span class="javascript">       &#125;  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (path == <span class="hljs-string">&#x27;/order/list&#x27;</span>) &#123;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.title = <span class="hljs-string">&#x27;订单列表&#x27;</span>;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.tip = <span class="hljs-string">&#x27;请谨防钓鱼链接或咋骗电话，了解更多&#x27;</span>;           </span><br><span class="javascript">       &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (path == <span class="hljs-string">&#x27;/order/pay&#x27;</span>) &#123;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.title = <span class="hljs-string">&#x27;订单支付&#x27;</span>;</span><br><span class="javascript">           <span class="hljs-built_in">this</span>.tip = <span class="hljs-string">&#x27;请谨防钓鱼链接或咋骗电话，了解更多&#x27;</span>;           </span><br><span class="javascript">       &#125;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（2）地址和商品数据加载"><a href="#（2）地址和商品数据加载" class="headerlink" title="（2）地址和商品数据加载"></a><span id="jump2">（2）地址和商品数据加载</span></h4><p>在orderConfirm.vue中添加：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--省略样式和结构代码--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">      <span class="hljs-attr">list</span>: [], <span class="hljs-comment">//收货地址列表</span></span><br><span class="javascript">      <span class="hljs-attr">cartList</span>: [], <span class="hljs-comment">//购物车中需要结算的商品列表</span></span><br><span class="javascript">      <span class="hljs-attr">cartTotalPrice</span>: <span class="hljs-number">0</span>,  <span class="hljs-comment">//商品总金额</span></span><br><span class="javascript">      <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-comment">//商品结算数量  </span></span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.getAddressList();</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.getCartList();</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">getAddressList</span>(<span class="hljs-params"></span>)</span> &#123; <span class="hljs-comment">//获取收货地址列表</span></span><br><span class="javascript">        <span class="hljs-built_in">this</span>.axios.get(<span class="hljs-string">&#x27;/shippings&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.list = res.list;</span><br><span class="javascript">        &#125;)</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">getCartList</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.axios.get(<span class="hljs-string">&#x27;/carts&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">let</span> list = res.cartProductVoList; <span class="hljs-comment">//获取购物车中所有商品数据</span></span><br><span class="javascript">            <span class="hljs-built_in">this</span>.cartTotalPrice = res.cartTotalPrice;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.cartList = list.filter(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item.productSelected);</span><br><span class="javascript">            list.cartList.map(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;</span><br><span class="javascript">                <span class="hljs-built_in">this</span>.count += item.quantity;</span><br><span class="javascript">            &#125;)</span><br><span class="javascript">        &#125;)</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（3）地址删除功能实现"><a href="#（3）地址删除功能实现" class="headerlink" title="（3）地址删除功能实现"></a><span id="jump3">（3）地址删除功能实现</span></h4><p>在orderConfirm.vue中添加：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">import</span> Modal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./../components/Modal&#x27;</span>   </span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">      <span class="hljs-attr">checkedItem</span>: &#123;&#125;, <span class="hljs-comment">// 选中的商品对象</span></span><br><span class="javascript">      <span class="hljs-attr">userAction</span>: <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-comment">// 用户行为， 0是新增，1是编辑，2是删除</span></span><br><span class="javascript">      <span class="hljs-attr">showDelModal</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">//是否弹窗   </span></span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">components</span>:&#123;</span><br><span class="javascript">    Modal</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">delAddress</span>(<span class="hljs-params">item</span>)</span> &#123; <span class="hljs-comment">//点击删除图标会出现弹窗</span></span><br><span class="javascript">        <span class="hljs-built_in">this</span>.checkedItem = item;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.userAction = <span class="hljs-number">2</span>;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.showDelModal = <span class="hljs-literal">true</span>;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">submitAddress</span>(<span class="hljs-params"></span>)</span> &#123; <span class="hljs-comment">//在弹窗中点击“确认”时会触发该方法</span></span><br><span class="javascript">        <span class="hljs-comment">//地址删除、编辑、新增功能</span></span><br><span class="javascript">        <span class="hljs-keyword">let</span> &#123;checkedItem, userAction&#125; = <span class="hljs-built_in">this</span>;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> method, url;</span><br><span class="javascript">        <span class="hljs-keyword">if</span> (userAction == <span class="hljs-number">0</span>) &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;post&#x27;</span>, url = <span class="hljs-string">&#x27;/shippings&#x27;</span>;</span><br><span class="javascript">        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (userAction == <span class="hljs-number">1</span>) &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;put&#x27;</span>, url = <span class="hljs-string">`/shippings/<span class="hljs-subst">$&#123;checkedItem.id&#125;</span>`</span>;</span><br><span class="javascript">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;delete&#x27;</span>, url = <span class="hljs-string">`/shippings/<span class="hljs-subst">$&#123;checkedItem.id&#125;</span>`</span></span><br><span class="javascript">        &#125;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.axios[method](url).then(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.closeModal();</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.getAddressList();</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&#x27;操作成功&#x27;</span>);</span><br><span class="javascript">        &#125;);</span><br><span class="javascript">    &#125;, </span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">closeModal</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.checkedItem = &#123;&#125;;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.userAction = <span class="hljs-string">&#x27;&#x27;</span>;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showDelModal = <span class="hljs-literal">false</span>;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（4）新增地址交互实现"><a href="#（4）新增地址交互实现" class="headerlink" title="（4）新增地址交互实现"></a><span id="jump4">（4）新增地址交互实现</span></h4><ul>
+<li>在点击 “添加新地址” 后触发<code>openAddressModal()</code>方法，弹出如下弹窗：</li>
+</ul>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1586181472047.png" srcset="/img/loading.gif" lazyload alt="1586181472047"></p>
+<ul>
+<li>在orderConfirm.vue中添加：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><code class="hljs html">   <span class="hljs-tag">&lt;<span class="hljs-name">modal</span></span><br><span class="hljs-tag">      <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;新增确认&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">btnType</span>=<span class="hljs-string">&quot;1&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">:showModal</span>=<span class="hljs-string">&quot;showEditModal&quot;</span></span><br><span class="hljs-tag">      @<span class="hljs-attr">cancel</span>=<span class="hljs-string">&quot;showEditModal=false&quot;</span></span><br><span class="hljs-tag">      @<span class="hljs-attr">submit</span>=<span class="hljs-string">&quot;submitAddress&quot;</span></span><br><span class="hljs-tag">    &gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-slot:body</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;edit-wrap&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;姓名&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverName&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;手机号&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverMobile&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;province&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverProvince&quot;</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;北京&quot;</span>&gt;</span>北京<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;天津&quot;</span>&gt;</span>天津<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;city&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverCity&quot;</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;北京&quot;</span>&gt;</span>北京<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;district&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverDistrict&quot;</span>&gt;</span> <br>              <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;北京&quot;</span>&gt;</span>昌平区<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;天津&quot;</span>&gt;</span>海淀区<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;street&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.recevierAddress&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">textarea</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;邮编&quot;</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;checkedItem.receiverZip&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">modal</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">      <span class="hljs-attr">showDelModal</span>:<span class="hljs-literal">false</span>, <span class="hljs-comment">//是否弹窗      </span></span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">submitAddress</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> &#123;checkedItem, userAction&#125; = <span class="hljs-built_in">this</span>;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> method, url,params = &#123;&#125;;</span><br><span class="javascript">        <span class="hljs-keyword">if</span> (userAction == <span class="hljs-number">0</span>) &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;post&#x27;</span>, url = <span class="hljs-string">&#x27;/shippings&#x27;</span>;</span><br><span class="javascript">        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (userAction == <span class="hljs-number">1</span>) &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;put&#x27;</span>, url = <span class="hljs-string">`/shippings/<span class="hljs-subst">$&#123;checkedItem.id&#125;</span>`</span>;</span><br><span class="javascript">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">            method = <span class="hljs-string">&#x27;delete&#x27;</span>, url = <span class="hljs-string">`/shippings/<span class="hljs-subst">$&#123;checkedItem.id&#125;</span>`</span></span><br><span class="javascript">        &#125;</span><br><span class="javascript">        <span class="hljs-keyword">if</span> (userAction == <span class="hljs-number">0</span> || userAction == <span class="hljs-number">1</span>) &#123;</span><br><span class="javascript">          <span class="hljs-keyword">let</span> &#123; receiverName, receiverMobile, receiverProvince, receiverCity, receiverDistrict, receiverAddress, receiverZip &#125; = checkedItem;</span><br><span class="javascript">          <span class="hljs-keyword">let</span> errMsg;</span><br><span class="javascript">          <span class="hljs-keyword">if</span>(!receiverName) &#123;</span><br><span class="javascript">            errMsg=<span class="hljs-string">&quot;请输入收货人名称&quot;</span>;</span><br><span class="javascript">          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!receiverMobile || !<span class="hljs-regexp">/\d&#123;11&#125;/</span>.test(receiverMobile)) &#123;</span><br><span class="javascript">            errMsg=<span class="hljs-string">&quot;请输入正确格式的手机号&quot;</span>;</span><br><span class="javascript">          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!receiverProvince) &#123;</span><br><span class="javascript">             errMsg=<span class="hljs-string">&quot;请选择省份&quot;</span>;</span><br><span class="javascript">          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!receiverCity) &#123;</span><br><span class="javascript">            errMsg=<span class="hljs-string">&quot;请选择对应的城市&quot;</span>;</span><br><span class="javascript">          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!receiverDistrict || !receiverAddress) &#123;</span><br><span class="javascript">            errMsg=<span class="hljs-string">&quot;请输入收货地址&quot;</span>;</span><br><span class="javascript">          &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\d&#123;6&#125;/</span>.test(receiverZip)) &#123;</span><br><span class="javascript">            errMsg=<span class="hljs-string">&quot;请输入邮编&quot;</span>;</span><br><span class="javascript">          &#125;</span><br><span class="javascript">          <span class="hljs-keyword">if</span> (errMsg) &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$message.error(errMsg)</span><br><span class="javascript">            <span class="hljs-keyword">return</span>;</span><br><span class="javascript">          &#125;</span><br><span class="javascript">          params = &#123;</span><br><span class="javascript">            receiverName,</span><br><span class="javascript">            receiverMobile,</span><br><span class="javascript">            receiverProvince,</span><br><span class="javascript">            receiverCity,</span><br><span class="javascript">            receiverDistrict,</span><br><span class="javascript">            receiverAddress,</span><br><span class="javascript">            receiverZip</span><br><span class="javascript">          &#125;</span><br><span class="javascript">        &#125;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.axios[method](url, params).then(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.closeModal();</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.getAddressList();</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&#x27;操作成功&#x27;</span>);</span><br><span class="javascript">        &#125;);</span><br><span class="javascript">    &#125;, </span><br><span class="javascript">    <span class="hljs-comment">// 打开新增地址弹框</span></span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">openAddressModal</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showEditModal = <span class="hljs-literal">true</span>;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.checkedItem = &#123;&#125;;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showEditModal = <span class="hljs-literal">true</span>;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">      <span class="hljs-comment">// 关闭弹框</span></span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">closeModal</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showEditModal = <span class="hljs-literal">false</span>;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.checkedItem = &#123;&#125;;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.userAction = <span class="hljs-string">&#x27;&#x27;</span>;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showDelModal = <span class="hljs-literal">false</span>;</span><br><span class="javascript">    &#125;     </span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（5）地址编辑和订单提交"><a href="#（5）地址编辑和订单提交" class="headerlink" title="（5）地址编辑和订单提交"></a><span id = "jump5">（5）地址编辑和订单提交</span></h4><ul>
+<li><p>地址编辑</p>
+<p>点击编辑图标会出现弹窗，在弹窗表单中编辑新地址后，点击确认后弹出消失，页面中出现新地址项。</p>
+<p>当点击地址项时，地址项的边框会变色。</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;addr-info&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;&#123;&#x27;checked&#x27;: index == checkIndex&#125;&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;checkIndex=index&quot;</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(item, index) in list&quot;</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;index&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">      <span class="hljs-attr">checkIndex</span>:<span class="hljs-number">0</span>, <span class="hljs-comment">//当前收货地址中索引  </span></span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">ditAddressModal</span>(<span class="hljs-params">item</span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.userAction = <span class="hljs-number">1</span>;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.checkedItem = &#123;&#125;;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.showEditModal = <span class="hljs-literal">true</span>;</span><br><span class="javascript">    &#125;      </span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>订单提交</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fr&quot;</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon icon-edit&quot;</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">use</span> <span class="hljs-attr">xlink:href</span>=<span class="hljs-string">&quot;#icon-edit&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;editAddressModal(item)&quot;</span> /&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript"><span class="hljs-comment">// 订单提交</span></span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">orderSubmit</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-keyword">let</span> item = <span class="hljs-built_in">this</span>.list[<span class="hljs-built_in">this</span>.checkIndex];</span><br><span class="javascript">      <span class="hljs-keyword">if</span> (!item) &#123;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&quot;请选择一个收货地址&quot;</span>);</span><br><span class="javascript">        <span class="hljs-keyword">return</span>;</span><br><span class="javascript">      &#125;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.axios</span><br><span class="javascript">        .post(<span class="hljs-string">&quot;/orders&quot;</span>, &#123;</span><br><span class="javascript">          <span class="hljs-attr">shippingId</span>: item.id</span><br><span class="javascript">        &#125;)</span><br><span class="javascript">        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;</span><br><span class="javascript">          <span class="hljs-built_in">this</span>.$router.push(&#123;</span><br><span class="javascript">            <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/order/pay&quot;</span>,</span><br><span class="javascript">            <span class="hljs-attr">query</span>: &#123;</span><br><span class="javascript">              <span class="hljs-attr">orderNo</span>: res.orderNo</span><br><span class="javascript">            &#125;</span><br><span class="javascript">          &#125;);</span><br><span class="javascript">        &#125;);</span><br><span class="javascript">    &#125;     </span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/">Vue项目实战:从零独立开发企业级电商系统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">Vue项目实战</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/07/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E8%AE%A2%E5%8D%95%E7%BB%93%E7%AE%97%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">订单结算功能实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/06/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E9%80%80%E5%87%BA%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">
+                        <span class="hidden-mobile">退出功能实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

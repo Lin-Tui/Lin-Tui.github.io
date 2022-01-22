@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="创建版本库123git clone git@github.com:Lin-Tui&#x2F;gitTest.git &#x2F;&#x2F;克隆远程版本库到本地（这个步骤前无需添加该远程仓库）git clone -b remote_branchName git@github.com:Lin-Tui&#x2F;gitTest.git &#x2F;&#x2F;克隆指定的远程分支到本地git init &#x2F;&#x2F;初始化本地版本库  修改和提交1234567891011">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="https://lin-tui.github.io.com/2021/07/06/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="创建版本库123git clone git@github.com:Lin-Tui&#x2F;gitTest.git &#x2F;&#x2F;克隆远程版本库到本地（这个步骤前无需添加该远程仓库）git clone -b remote_branchName git@github.com:Lin-Tui&#x2F;gitTest.git &#x2F;&#x2F;克隆指定的远程分支到本地git init &#x2F;&#x2F;初始化本地版本库  修改和提交1234567891011">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-06T11:59:52.753Z">
+<meta property="article:modified_time" content="2022-01-22T04:41:48.500Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Git - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Git">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-06 19:59" pubdate>
+        2021年7月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Git</h1>
+            
+            <div class="markdown-body">
+              <h4 id="创建版本库"><a href="#创建版本库" class="headerlink" title="创建版本库"></a>创建版本库</h4><figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs js">git clone git@github.com:Lin-Tui/gitTest.git <span class="hljs-comment">//克隆远程版本库到本地（这个步骤前无需添加该远程仓库）</span><br>git clone -b remote_branchName git@github.com:Lin-Tui/gitTest.git <span class="hljs-comment">//克隆指定的远程分支到本地</span><br>git init <span class="hljs-comment">//初始化本地版本库</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="修改和提交"><a href="#修改和提交" class="headerlink" title="修改和提交"></a>修改和提交</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js">touch fileName <span class="hljs-comment">//创建文件</span><br>mkdir dirName <span class="hljs-comment">//在当前目录创建文件夹</span><br>rm fileName <span class="hljs-comment">//删除指定文件 </span><br>rm -r dirName  <span class="hljs-comment">//删除指定文件夹</span><br>cat fileName <span class="hljs-comment">//查看文件内容</span><br>cd dirName <span class="hljs-comment">//进入该文件夹</span><br>cd . <span class="hljs-comment">//返回上级目录</span><br>cd .. <span class="hljs-comment">//返回上上级目录</span><br>git status <span class="hljs-comment">// 查看状态</span><br>git diff <span class="hljs-comment">// 查看变更内容</span><br>git mv oldFileName newFileName  <span class="hljs-comment">//更改文件名</span><br>git * rm <span class="hljs-comment">//删除所有文件 </span><br>git * rm -r <span class="hljs-comment">//删除所有文件夹</span><br>git add . <span class="hljs-comment">//暂存所有文件</span><br>git add fileName <span class="hljs-comment">//暂存指定文件</span><br>git commit fileName -m <span class="hljs-string">&quot;commit message&quot;</span> <span class="hljs-comment">//提交指定文件</span><br>git commit -m <span class="hljs-string">&quot;commit message&quot;</span> <span class="hljs-comment">//提交所有更新过的文件</span><br>git commit -m <span class="hljs-string">&quot;commit message&quot;</span> -a <span class="hljs-comment">//暂存所有修改并提交</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="查看提交历史"><a href="#查看提交历史" class="headerlink" title="查看提交历史"></a>查看提交历史</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js">git log <span class="hljs-comment">//查看历史</span><br>git log -p fileName <span class="hljs-comment">//查看指定文件的提交历史</span><br>git blame fileName <span class="hljs-comment">//修改最后一次提交</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="分支与标签"><a href="#分支与标签" class="headerlink" title="分支与标签"></a>分支与标签</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js">git branch <span class="hljs-comment">//列出所有本地分支 </span><br>git branch -r <span class="hljs-comment">//列出所有远程分支</span><br>git branch local_branchName <span class="hljs-comment">//创建本地分支</span><br>git branch -d local_branchName <span class="hljs-comment">//删除指定的本地分支</span><br>git checkout local_branchName <span class="hljs-comment">//切换到指定分支</span><br>git checkout -b local-branchName <span class="hljs-comment">//创建并切换到新的本地分支</span><br>git tag <span class="hljs-comment">//查看所有本地标签</span><br>git tag --list <span class="hljs-comment">//查看所有本地标签</span><br>git tag tagName <span class="hljs-comment">//给当前分支打标签</span><br>git push origin tagName  <span class="hljs-comment">//推送当前标签</span><br>git push --tag <span class="hljs-comment">//上传所有标签</span><br>git tag -d tagName <span class="hljs-comment">//删除当前分支标签</span><br>git push origin :tagName  <span class="hljs-comment">//删除当前分支标签</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="分支与合"><a href="#分支与合" class="headerlink" title="分支与合"></a>分支与合</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js">git merge branchName <span class="hljs-comment">//合并分支</span><br>git rebase branchName <span class="hljs-comment">//</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="远程操作"><a href="#远程操作" class="headerlink" title="远程操作"></a>远程操作</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js">git remote -v  <span class="hljs-comment">//查看远程版本库信息</span><br>git remote show &lt;remote&gt; <span class="hljs-comment">//查看指定远程版本库信息</span><br>git remote add origin git@github.com:Lin-Tui/gitTest.git<span class="hljs-comment">//添加指定远程版本库。新建一个本地仓库就要为该本地仓库添加远程版本库。</span><br>git fetch &lt;remote&gt; <span class="hljs-comment">//从远程版本库获取代码</span><br>git pull <span class="hljs-comment">//将当前分支推送到远程同名且关联的分支上</span><br>git pull origin master <span class="hljs-comment">//这个命令可以在本地任意分支上使用，拉取默认分支代码及快速合并</span><br>git pull origin remote_branchName <span class="hljs-comment">//拉取指定分支的代码并快速合并</span><br>git push --set-upstream origin remote_branchName <span class="hljs-comment">//将当前分支与指定远程分支建立关联</span><br>git push  <span class="hljs-comment">//在当前本地分支推送到远程同名的且关联的分支上，并快速合并</span><br>git push origin master (--force)<span class="hljs-comment">// 将本地master分支推送到默认远程仓库master上并快速合并，括号内容可选（不是强制提交）</span><br>git push origin local_branchName:remote_branchName <span class="hljs-comment">//推送任意指定本地分支上的代码到任意指定远程仓库分支上.local_branchName必须为你本地存在的分支，remote_branchName为远程分支，如果remote_branchName不存在则会自动创建分支。</span><br>git push origin remote_branchName<span class="hljs-comment">// 创建一个远程仓库的新分支</span><br>git push origin :remote_branchName <span class="hljs-comment">// 删除远程分支</span><br>下载和上传指定分支<br></code></pre></td></tr></table></figure>
+
+<h4 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js">git checkout a.js <span class="hljs-comment">//撤销对指定的还未暂存(工作区)的文件的修改.(这个命令会用暂存区指定的文件替换工作区的文件。这个操作很危险，会清除工作区中未添加到暂存区的改动。)</span><br>git checkout . <span class="hljs-comment">//撤销对所有的还未暂存(工作区)的文件的修改.(这个命令会用暂存区全部文件替换工作区的文件。这个操作很危险，会清除工作区中未添加到暂存区的改动。)</span><br>git checkout head a.js <span class="hljs-comment">// 撤销对暂存区和工作区中指定文件的修改，将上次提交的内容替换到暂存区和工作区中。</span><br>git checkout head . <span class="hljs-comment">// 撤销对暂存区和工作区中所有文件的修改，将上次提交的内容替换到暂存区和工作区中。</span><br>git reset HEAD a.js <span class="hljs-comment">// 撤销对暂存区的修改，但工作区仍和原来一样。(将咱暂存区和HEAD的提交保持一致)</span><br>git reset --hard HEAD <span class="hljs-comment">// 撤销对暂存区和工作区的修改。(将工作区、暂存取和HEAD保持一致)</span><br>git revert &lt;commit&gt; <span class="hljs-comment">//撤销指定的提交，回退到指定版本。&lt;commit&gt;为想回退的版本后一个版本</span><br>git reset --hard &lt;commit&gt; <span class="hljs-comment">//撤销指定的提交，回退到指定版本。并且在git push 后远程的相关提交历史会被清除。&lt;commit&gt;为想回退的版本。</span><br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://juejin.im/entry/5b802f2f6fb9a019eb43bb42?tdsourcetag=s_pctim_aiomsg">Git常用命令速查表（收藏大全）</a></p>
+<p>保存已修改的git stash</p>
+<p>建立新分支之后，将原来的改动放到现在的新分支上</p>
+<p>git stash pop</p>
+<ol>
+<li>上次提交后，hello.js 里面是空的。 </li>
+<li>在工作区往 hello.js 里添加一行 111</li>
+<li>git add hello.js</li>
+<li>现在工作区和暂存区的hello.js都是只有一行 111。</li>
+<li>将工作区的hello.js添加一行222</li>
+<li>git checkout hello.js</li>
+<li>现在工作区和暂存区的hello.js都是只有一行 111。</li>
+<li>将工作区的hello.js添加一行222</li>
+<li>git reset head hello.js</li>
+<li>现在工作区有两行，不变。暂存区回到上次提交时的样子，是0行。</li>
+<li>验证，用 git checkout hello.js</li>
+<li>现在工作区和暂存区的hello.js都为空。</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">项目开发常用工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Git/">Git</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/06/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git%E5%91%BD%E4%BB%A4%E5%BF%AB%E6%9F%A5/">
+                        <span class="hidden-mobile">Git命令快查</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

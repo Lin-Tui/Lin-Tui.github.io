@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第 10 章 正则表达式的模式匹配正则表达式是一个描述字符串模式的对象。 JavaScript的RegExp类表示正则表达式，String和RegExp都定义了方法，后者使用正则表达式进行强大的模式匹配和文本与替换功能。 正则表达式的定义JavaScript中正则表达式用RegExp对象表示，可以使用RegExp()构造函数来创建RegExp对象，不过RegExp对象更多的是通过一种特殊的直接量语">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《JavaScript权威指南》学习笔记(8) 正则表达式的模式匹配">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/02/17/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(8)%20%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="第 10 章 正则表达式的模式匹配正则表达式是一个描述字符串模式的对象。 JavaScript的RegExp类表示正则表达式，String和RegExp都定义了方法，后者使用正则表达式进行强大的模式匹配和文本与替换功能。 正则表达式的定义JavaScript中正则表达式用RegExp对象表示，可以使用RegExp()构造函数来创建RegExp对象，不过RegExp对象更多的是通过一种特殊的直接量语">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-17T12:14:51.493Z">
+<meta property="article:modified_time" content="2022-01-22T04:35:50.996Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>《JavaScript权威指南》学习笔记(8) 正则表达式的模式匹配 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《JavaScript权威指南》学习笔记(8) 正则表达式的模式匹配">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-17 20:14" pubdate>
+        2020年2月17日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《JavaScript权威指南》学习笔记(8) 正则表达式的模式匹配</h1>
+            
+            <div class="markdown-body">
+              <h1 id="第-10-章-正则表达式的模式匹配"><a href="#第-10-章-正则表达式的模式匹配" class="headerlink" title="第 10 章 正则表达式的模式匹配"></a>第 10 章 正则表达式的模式匹配</h1><p>正则表达式是一个描述字符串模式的对象。</p>
+<p>JavaScript的<code>RegExp</code>类表示正则表达式，String和RegExp都定义了方法，后者使用正则表达式进行强大的模式匹配和文本与替换功能。</p>
+<h2 id="正则表达式的定义"><a href="#正则表达式的定义" class="headerlink" title="正则表达式的定义"></a>正则表达式的定义</h2><p>JavaScript中正则表达式用RegExp对象表示，可以使用<code>RegExp()</code>构造函数来创建RegExp对象，不过RegExp对象更多的是通过一种特殊的直接量语法来创建。就像通过引号包裹字符的方式来定义字符串直接量一样，正则表达式直接量定义为包含在一堆斜杆（<code>/</code>）之间的字符。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> pattern = <span class="hljs-regexp">/s$/</span>; <br><span class="hljs-comment">//这段代码创建一个新的RegExp对象，并将它赋值给变量pattern。这个特殊的RegExp对象用来匹配所有以字母&quot;s&quot;结尾的字符串。</span><br><span class="hljs-comment">//用构造函数RegExp（）也可以定义个与之等价的正则表达式，代码如下：</span><br><span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">&quot;s$&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>RegExp直接量和对象的创建</strong>：</p>
+<p>就像字符串和数字一样，程序中每个取值相同的原始类型直接量均表示相同的值，这是显而易见。程序运行每次遇到对象直接量（初始化表达式）诸如{}和[]的时候都会创建新对象。比如，如果在循环中写<code>var a = []</code>，则每次遍历都会创建一个新的空数组。</p>
+<p>正则表达式直接量则与此不同，ECMAScript5规定 同一段代码所表示的正则表达式直接量的每次运算都返回新对象。</p>
+<h2 id="直接量字符"><a href="#直接量字符" class="headerlink" title="直接量字符"></a>直接量字符</h2><p><strong>字符                                 匹配</strong></p>
+<p><code>字母和数字字符</code>            自身</p>
+<p><code>\o</code>                                NUL字符</p>
+<p><code>\t</code>                                制表符</p>
+<p><code>\n</code>                                换行符</p>
+<p><code>\v</code>                                垂直制表符</p>
+<p><code>\f</code>                                换页符</p>
+<p><code>\r    </code>                                回车符</p>
+<p><code>\xnn</code>                            由十六进制数<code>nn</code>指定的拉丁字符</p>
+<p><code>\uxxxx    </code>                        由十六进制数<code>xxxx</code>指定的Unicode字符</p>
+<p><code>\cX    </code>                             控制字符<code>^X</code></p>
+<h2 id="正则表达式的字符类："><a href="#正则表达式的字符类：" class="headerlink" title="正则表达式的字符类："></a>正则表达式的字符类：</h2><p><strong>字符                     匹配</strong></p>
+<p><code>[...]    </code>             方括号内的任意字符                                </p>
+<p><code>[^...]</code>           不在方括号内的任意字符</p>
+<p><code>.    </code>                      除换行符和其他Unicode行终止符之外的任意字符</p>
+<p><code>\w    </code>                    任何ASCII字符组成的单词，等价于<code>[a-zA-Z0-9]</code></p>
+<p><code>\W    </code>                    任何不是ASCII字符组成的单词，等价于<code>[^a-zA-Z0-9]</code></p>
+<p><code>\s    </code>                    任何Unicode空白符</p>
+<p><code>\S</code>                    任何非Unicode空白符的字符，注意<code>\w</code>和<code>\S</code>不同</p>
+<p><code>\d    </code>                    任何ASCII数字，等价于<code>[0-9]</code></p>
+<p><code>\D</code>                    除了ASCII数字之外的任何字符，等价于<code>[^0-9]</code></p>
+<p><code>[\b]</code>                退格直接量</p>
+<h2 id="正则表达式的重复字符语法："><a href="#正则表达式的重复字符语法：" class="headerlink" title="正则表达式的重复字符语法："></a>正则表达式的重复字符语法：</h2><p><strong>字符               含义</strong></p>
+<p><code>&#123;n, m&#125;</code>        匹配前一项至少n次，但不能超过m次</p>
+<p><code>&#123;n, &#125;</code>          匹配前一项n次或更多次</p>
+<p><code>&#123;n&#125;</code>              匹配前一项n次</p>
+<p><code>?</code>                  匹配前一项0次或者1次，也就是说前一项是可选的</p>
+<p><code>+</code>                  匹配前一项1次或者多次，等价于{1, }</p>
+<p><code>*</code>                  匹配前一项0次或多次，等价于{0, }</p>
+<h2 id="非贪婪的重复"><a href="#非贪婪的重复" class="headerlink" title="非贪婪的重复"></a>非贪婪的重复</h2><p>只须在待匹配的字符后跟随一个问号即可：“<code>？？</code>”、“<code>+？</code>”、“<code>*？</code>”或“<code>&#123;1,5&#125;？</code>”。</p>
+<h2 id="选择、分组和引用"><a href="#选择、分组和引用" class="headerlink" title="选择、分组和引用"></a>选择、分组和引用</h2><p><strong>字符                含义</strong></p>
+<p><code>|    </code>                        选择，匹配的是该符号左边的子表达式或者右边的子表达式。若左边的选择项匹配，就忽略右边的匹配项，即使它产生更好的匹配。</p>
+<p><code>(...)    </code>                组合，将几个项组合为一个单元，这个单元可通过 “<code>*</code>”、“<code>+</code>”、“<code>？</code>”和“<code>|</code>”等符号加以修饰，而且可以记住和这个组合相匹配的字符串以供此后的引用使用。</p>
+<p><code>(?:...)</code>            只组合，把项组合到一个单元，但不记忆与该组相匹配的字符。</p>
+<p><code>\n</code>                        和第n个分组第一次匹配到字符相匹配，组是圆括号中的子表达式（也可能是嵌套的）。组索引是从左到右的左括号，“<code>（？：</code>”形式的分组不编码。</p>
+<h2 id="指定匹配位置"><a href="#指定匹配位置" class="headerlink" title="指定匹配位置"></a>指定匹配位置</h2><p><strong>字符                 含义</strong></p>
+<p><code>^        </code>                    匹配字符串的开头，在多行检索中，匹配一行的开头</p>
+<p><code>$</code>                    匹配字符串的结尾，在多行检索中，匹配一行的结尾</p>
+<p><code>\b</code>                  匹配一个单词的边界，简言之，就是位于字符<code>\w</code>和<code>\W</code>之间的位置，或者位于字符<code>\w</code>和字符串的开头或者结尾之间的位置。（<code>[\b]</code>匹配的是退格符）</p>
+<p><code>\B    </code>                 匹配非单词边界的位置</p>
+<p><code>(?=p)    </code>            零宽正向先行断言，要求接下来的字符都与p匹配，但不能包括匹配p的那些字符</p>
+<p><code>(?!p)    </code>            零宽负向先行断言，要求接下来的字符不与p匹配</p>
+<h2 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h2><p><strong>字符            含义</strong></p>
+<p><code>i</code>                执行不区分大小写的匹配</p>
+<p><code>g</code>                执行一个全局匹配，即找到所有的匹配，而不是在找到第一个之后就停止</p>
+<p><code>m</code>                多行匹配模式，<code>^</code>匹配一行的开头和字符串的开头，<code>$</code>匹配行的结束和字符串的结束</p>
+<h2 id="用于模式匹配的String方法"><a href="#用于模式匹配的String方法" class="headerlink" title="用于模式匹配的String方法"></a>用于模式匹配的String方法</h2><p>String支持4种正则表达式的方法。</p>
+<h4 id="search"><a href="#search" class="headerlink" title="search() :"></a><code>search()</code> :</h4><p>它的参数是一个正则表达式，返回一个与子匹配的子串的起始位置，如果找不到匹配的子串，它将返回-1 。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-string">&quot;JavaScript&quot;</span>.search(<span class="hljs-regexp">/script/i</span>); <span class="hljs-regexp">//</span>返回值为<span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+
+<p>如果search()的参数不是正则表达式，则首先会通过RegExp构造函数将它转换成正则表达式，search()方法不支持全局检索，因为它忽略正则表达式参数中的修饰符g。</p>
+<h4 id="replace"><a href="#replace" class="headerlink" title="replace() :"></a><code>replace()</code> :</h4><p>它的第一个参数是一个正则表达式，第二个参数是要进行替换的字符串。</p>
+<p>该方法会调用它的字符串进行检索，使用指定的模式来匹配。</p>
+<p>如果正则表达式中设置了修饰符g，那么源字符串中所有与模式匹配的子串都将替换成第二个参数指定的字符串；如果不带修饰符g则只替换所匹配的第一个子串。</p>
+<p>如果replace()的第一个参数是字符串而不是正则表达式，则replace()将直接搜索这个字符串，而不是像search()一样首先通过RegExp()将它转换为正则表达式。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>将文本中所有javascript统一替换为<span class="hljs-string">&quot;JavaScript&quot;</span>:<br>text.replace(<span class="hljs-regexp">/javacsript/gi</span>，<span class="hljs-string">&quot;JavaScript&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>如果在替换字符串中出现了$数字，那么replace()将用与指定子表达式相匹配的文本来替换这两个字符。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>将一个字符串中的英文引号替换为中文半角引号：<br><span class="hljs-regexp">//</span>一段引用文本起始于引号，结束与引号<br><span class="hljs-regexp">//</span>中间的内容区域不能包含引号<br>var quote = <span class="hljs-regexp">/&quot;([^&quot;]*)&quot;/g</span>;<br><span class="hljs-regexp">//</span>用中文半角引号替换英文引号，同时要保持引号之间的内容没有被修改<br>text.replace(quote, <span class="hljs-string">&#x27;“$1”&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>replace()方法的第二个参数可以是函数，该函数能够动态地计算替换字符串。</p>
+<h4 id="match"><a href="#match" class="headerlink" title="match() :"></a><code>match()</code> :</h4><p>它的唯一参数就是一个正则表达式，返回的是一个由匹配结果组成的数组。</p>
+<p>如果该正则表达式设置了修饰符g，则该方法返回的数组包含字符串中所有匹配结果。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-string">&quot;1 plus 2 equals 3&quot;</span>.match(<span class="hljs-regexp">/\d+/g</span><span class="hljs-regexp">/) /</span>/返回[<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;3&quot;</span>]<br></code></pre></td></tr></table></figure>
+
+<p>如果这个正则表达式没有设置修饰符g,match()就不会进行全局检索，它只检索第一个匹配。但即使match()执行的不是全局检索，它也返回一个数组。在这种情况下，数组的第一个元素就是匹配的字符串，余下的元素则是正则表达式中用圆括号括起来的子表达式。因此，如果match()返回一个数组a，那么a[0]存放的是完整的匹配，a[1]存放的则是与第一个用圆括号括起来的表达式相匹配的子串，以此类推。为了和方法replace()保持一致，a[n]存放的是$n的内容。</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs nim"><span class="hljs-keyword">var</span> url = /(\w+):\/\/([\w.]+)\/(\S*)/;<br><span class="hljs-keyword">var</span> text = <span class="hljs-string">&quot;Visit my blog at http://www.example.com/~david&quot;</span>;<br><span class="hljs-keyword">var</span> <span class="hljs-literal">result</span> = text.match(url);<br><span class="hljs-keyword">if</span> (<span class="hljs-literal">result</span> != null) &#123;<br><span class="hljs-keyword">var</span> fullurl = <span class="hljs-literal">result</span>[<span class="hljs-number">0</span>]; //包含<span class="hljs-string">&quot;http://www.example.com/~david&quot;</span><br><span class="hljs-keyword">var</span> protocol = <span class="hljs-literal">result</span>[<span class="hljs-number">1</span>]; //包含<span class="hljs-string">&quot;http&quot;</span><br><span class="hljs-keyword">var</span> host = <span class="hljs-literal">result</span>[<span class="hljs-number">2</span>]; //包含<span class="hljs-string">&quot;www.example.com&quot;</span><br><span class="hljs-keyword">var</span> path = <span class="hljs-literal">result</span>[<span class="hljs-number">3</span>]; //包含<span class="hljs-string">&quot;~david&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="split"><a href="#split" class="headerlink" title="split() :"></a><code>split()</code> :</h4><p>这个方法用以调用它的字符串拆分为一个子串组成的数组，使用的分隔符是split()的参数。</p>
+<p>split()方法的参数也可以是一个正则表达式。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-string">&quot;123,456,789&quot;</span>.split(<span class="hljs-string">&quot;,&quot;</span>); <span class="hljs-regexp">//</span>返回[<span class="hljs-string">&quot;123&quot;</span>, <span class="hljs-string">&quot;456&quot;</span>, <span class="hljs-string">&quot;789&quot;</span>];<br><br><span class="hljs-regexp">//</span>指定分隔符，允许两边可以留有任意多的空白符：<br><span class="hljs-string">&quot;1, 2, 3, 4, 5&quot;</span>.split(<span class="hljs-regexp">/\s*,\*/</span>); <span class="hljs-regexp">//</span>返回[<span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;2&quot;</span>,<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;4&quot;</span>,<span class="hljs-string">&quot;5&quot;</span>]<br></code></pre></td></tr></table></figure>
+
+<h2 id="RegExp对象"><a href="#RegExp对象" class="headerlink" title="RegExp对象"></a>RegExp对象</h2><p><code>RegExp()</code>构造函数带有两个字符串参数，其中第二个参数是可选的，RegExp()用以创建新的RegExp对象。</p>
+<p>第一个参数包容正则表达式的主体部分，也就是正则表达式直接量中两条斜线之间的文本。第二个参数是可选的，如果提供第二个参数，它就指定正则表达式的修饰符。不过只能传入修饰符g, i, m 或者它们的组合。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-comment">//全局匹配字符串中的5个数字，注意这里使用了&quot;\\&quot;，而不是&quot;\&quot;</span><br><span class="hljs-keyword">var</span> zipcode = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">&quot;\\d&#123;5&#125;&quot;</span>, <span class="hljs-string">&quot;g&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="exec"><a href="#exec" class="headerlink" title="exec() :"></a><code>exec()</code> :</h4><p>参数是一个字符串。该方法对一个指定的字符串执行一个正则表达式，简言之，就是在一个字符串中执行匹配检索。如果它没有任何匹配，就返回null，但如果它找到了一个匹配，它就返回一个数组。这个数组的第一个元素包含的与正则表达式相匹配的字符串，余下的元素是与圆括号内的子表达式相匹配的子串。属性index包含了发生匹配的字符串位置，属性input引用的是正在检索的字符串。</p>
+<p>不管正则表达式是否具有全局修饰符g，exec()都会返回一样的数组。</p>
+<p>当调用exec()的正则表达式对象具有修饰符g时，它将当前正则表达式对象的lastIndex属性设置为紧挨着匹配字符串位置。当同一个正则表达式第二次调用exec()时，它将从lastIndex属性所指示的字符处开始检索。如果exec()没有发现任何匹配结果，它会将lastIndex重置为0。</p>
+<h4 id="test"><a href="#test" class="headerlink" title="test() :"></a><code>test()</code> :</h4><p>它的参数是一个字符串，用test()对某个字符串进行检测，如果包含正则表达式的一个匹配结果，则返回true：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> pattern = <span class="hljs-regexp">/java/i</span>;<br>pattern.test(<span class="hljs-string">&quot;JavaScript&quot;</span>); <span class="hljs-comment">//返回true</span><br></code></pre></td></tr></table></figure>
+
+<p>调用test()和调用exec()等价，当exec()的返回结果不是null时，test()返回true。由于这种等价性，当一个全局正则表达式调用方法test()时，它的行为和exec()相同。（在lastIndex上也相同）</p>
+<p>与exec()和test()不同，String方法search()、replace()和match()并不会用到lastIndex属性。实际上，String方法只是简单地将lastIndex属性重置为0。如果让一个带有修饰符g的正则表达式对多个字符串执行exec()或test()，要么在每个字符串中找出所有的匹配以便将lastIndex自动重置为零，要么显示将lastIndex手动设置为0(当最后一次检索失败时需要手动设置lastIndex)。如果忘了手动设置lastIndex的值，那么下一次对新字符串进行检索时，执行检索的起始位置可能就不是字符串的开始位置，而可能是任意位置（由lastIndex决定）。当然，如果RegExp不带有修饰符g，则不必担心会发生这种情况。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《JavaScript权威指南》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/21/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Nodejs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Nodejs相关知识点</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/16/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(7)%20%E7%B1%BB%E5%92%8C%E6%A8%A1%E5%9D%97/">
+                        <span class="hidden-mobile">《JavaScript权威指南》学习笔记(7) 类和模块</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

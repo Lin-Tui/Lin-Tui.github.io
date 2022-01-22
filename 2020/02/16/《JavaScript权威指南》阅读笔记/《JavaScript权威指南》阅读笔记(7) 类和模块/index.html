@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第9章 类和模块在JavaScript中，类的实现是基于其原型继承机制。如果两个实例都从同一个原型对象上继承了属性，就说它们是同一个类的实例。如果两个对象继承自同一个原型，往往意味着（但不是绝对）它们是由同一个构造函数创建并初始化。 JavaScript中类的一个重要特性是“动态可继承”。 类和原型在JavaScript中，类的所有实例对象都从同一个原型对象上继承属性。因此，原型对象是类的核心。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《JavaScript权威指南》学习笔记(7) 类和模块">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/02/16/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(7)%20%E7%B1%BB%E5%92%8C%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="第9章 类和模块在JavaScript中，类的实现是基于其原型继承机制。如果两个实例都从同一个原型对象上继承了属性，就说它们是同一个类的实例。如果两个对象继承自同一个原型，往往意味着（但不是绝对）它们是由同一个构造函数创建并初始化。 JavaScript中类的一个重要特性是“动态可继承”。 类和原型在JavaScript中，类的所有实例对象都从同一个原型对象上继承属性。因此，原型对象是类的核心。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200218085134606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-02-16T13:14:46.300Z">
+<meta property="article:modified_time" content="2022-01-22T04:35:47.150Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200218085134606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>《JavaScript权威指南》学习笔记(7) 类和模块 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《JavaScript权威指南》学习笔记(7) 类和模块">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-16 21:14" pubdate>
+        2020年2月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《JavaScript权威指南》学习笔记(7) 类和模块</h1>
+            
+            <div class="markdown-body">
+              <h1 id="第9章-类和模块"><a href="#第9章-类和模块" class="headerlink" title="第9章 类和模块"></a>第9章 类和模块</h1><p>在JavaScript中，类的实现是基于其原型继承机制。如果两个实例都从同一个原型对象上继承了属性，就说它们是同一个类的实例。如果两个对象继承自同一个原型，往往意味着（但不是绝对）它们是由同一个构造函数创建并初始化。</p>
+<p>JavaScript中类的一个重要特性是“动态可继承”。</p>
+<h2 id="类和原型"><a href="#类和原型" class="headerlink" title="类和原型"></a>类和原型</h2><p>在JavaScript中，类的所有实例对象都从同一个原型对象上继承属性。因此，原型对象是类的核心。</p>
+<p><code>inherit（）</code>这个函数返回一个新创建的对象，后者继承自某个对象。如果定义了一个原型对象，然后通过<code>inherit（）</code>函数创建一个继承自它的对象，这样就定义了一个JavaScript类。通常，类的实例还需要进一步初始化，通常是通过定义一个函数来创建并初始化这个新对象。</p>
+<p>一个简单的JavaScript类：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//实现一个能表示值的范围的类</span><br><span class="hljs-comment">//这个工厂方法返回一个新的“范围对象”</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">range</span>(<span class="hljs-params"><span class="hljs-keyword">from</span>, to</span>) </span>&#123;<br><span class="hljs-comment">//使用inherit（）函数来创建对象，这个对象继承自在下面定义的原型对象</span><br><span class="hljs-comment">//原型对象作为函数的一个属性存储，并定义所有“范围对象”所共享的方法</span><br>	<span class="hljs-keyword">var</span> r = inherit(range.methods);<br><span class="hljs-comment">//存储新的“范围对象”的起始位置和结束位置（状态）</span><br><span class="hljs-comment">//这两个属性是不可继承的，每个对象都拥有唯一的属性</span><br>	r.from = <span class="hljs-keyword">from</span>;<br>	r.to = to;<br><span class="hljs-comment">//返回新创建的对象</span><br>	<span class="hljs-keyword">return</span> r;<br>&#125;<br><br><span class="hljs-comment">//原型对象定义方法，这些方法为每个范围对象所继承</span><br>range.methods = &#123;<br><span class="hljs-comment">//如果x在范围内，则返回true，否则返回false</span><br><span class="hljs-comment">//这个方法可以比较数字范围，也可以比较字符串和日期</span><br>	<span class="hljs-attr">includes</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>) </span>&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.from &lt;= x &amp;&amp; x &lt;= <span class="hljs-built_in">this</span>.to; &#125;,<br>	&#125;<br><span class="hljs-comment">//对于范围内的每个整数都调用一次f</span><br><span class="hljs-comment">//这个方法只可用做数字范围</span><br>	<span class="hljs-attr">foreach</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">f</span>) </span>&#123;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> x = <span class="hljs-built_in">Math</span>.ceil(<span class="hljs-built_in">this</span>.from); x &lt;= <span class="hljs-built_in">this</span>.to; f(x));<br>	&#125;,<br><span class="hljs-comment">//返回表示这个范围的字符串</span><br>	<span class="hljs-attr">toString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;(&quot;</span> + <span class="hljs-built_in">this</span>.from + <span class="hljs-string">&quot;...&quot;</span> + <span class="hljs-built_in">this</span>.to + <span class="hljs-string">&quot;)&quot;</span>;&#125;<br>&#125;;<br><br><span class="hljs-comment">//这里是使用“范围对象”的一些例子</span><br><span class="hljs-keyword">var</span> r = range(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>); <span class="hljs-comment">//创建一个范围对象</span><br>r.includes(<span class="hljs-number">2</span>); <span class="hljs-comment">//true,2在这个范围内</span><br>r.foreach(<span class="hljs-built_in">console</span>/log); <span class="hljs-comment">//输出1 2 3</span><br><span class="hljs-built_in">console</span>.log(r); <span class="hljs-comment">//输出(1...3)</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="类和构造函数"><a href="#类和构造函数" class="headerlink" title="类和构造函数"></a>类和构造函数</h2><p>调用构造函数的一个重要特征是，构造函数的<code>prototype</code>属性被用来做新对象的原型。这意味着通过同一个构造函数创建的所有对象都继承自一个相同的对象，因此它们都是同一个类的成员。</p>
+<p>对上一节中“范围类”做了修改，使用构造函数代替工厂函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//不是值的范围的类的另一种实现：</span><br><span class="hljs-comment">//这是构造函数，用以初始化创建的“范围对象”</span><br><span class="hljs-comment">//注意，这里并没有创建并返回一个对象，仅仅是初始化</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Range</span>(<span class="hljs-params"><span class="hljs-keyword">from</span>, to</span>) </span>&#123;<br><span class="hljs-comment">//存储“范围对象”的起始位置和结束位置（状态）</span><br><span class="hljs-comment">//这两个属性是不可继承的，每个对象都拥有唯一的属性</span><br>	<span class="hljs-built_in">this</span>.from = <span class="hljs-keyword">from</span>;<br>	<span class="hljs-built_in">this</span>.to = to;<br>&#125;<br><br><span class="hljs-comment">//所有的“范围对象”都继承自这个对象</span><br><span class="hljs-comment">//注意，属性的名字必须是&quot;prototype&quot;</span><br>Range.prototype = &#123;<br><span class="hljs-comment">//如果x在范围内，则返回true，否则返回false</span><br><span class="hljs-comment">//这个方法可以比较数字范围，也可以比较字符串和日期范围</span><br>	<span class="hljs-attr">includes</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>) </span>&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.from &lt;= x &amp;&amp; x &lt;= <span class="hljs-built_in">this</span>.to; &#125;,<br>	&#125;<br><span class="hljs-comment">//对于范围内的每个整数都调用一次f</span><br><span class="hljs-comment">//这个方法只可用做数字范围</span><br>	<span class="hljs-attr">foreach</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">f</span>) </span>&#123;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> x = <span class="hljs-built_in">Math</span>.ceil(<span class="hljs-built_in">this</span>.from); x &lt;= <span class="hljs-built_in">this</span>.to; f(x));<br>	&#125;,<br><span class="hljs-comment">//返回表示这个范围的字符串</span><br>	<span class="hljs-attr">toString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;(&quot;</span> + <span class="hljs-built_in">this</span>.from + <span class="hljs-string">&quot;...&quot;</span> + <span class="hljs-built_in">this</span>.to 		+ <span class="hljs-string">&quot;)&quot;</span>;&#125;<br>&#125;;<br><span class="hljs-comment">//这里是使用“范围对象”的一些例子</span><br><span class="hljs-keyword">var</span> r = range(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>); <span class="hljs-comment">//创建一个范围对象</span><br>r.includes(<span class="hljs-number">2</span>); <span class="hljs-comment">//true,2在这个范围内</span><br>r.foreach(<span class="hljs-built_in">console</span>/log); <span class="hljs-comment">//输出1 2 3</span><br><span class="hljs-built_in">console</span>.log(r); <span class="hljs-comment">//输出(1...3)</span><br></code></pre></td></tr></table></figure>
+
+<p>两种写法一个非常重要的区别，就是原型对象的命名。在第一段示例代码中，原型是<code>range.methods</code>。在第二段示例代码中的原型是<code>Range.prototype</code>，这是一个强制的命名。对<code>Range()</code>构造的调用会自动使用<code>Range.prototype</code>作为新的Range对象的原型。</p>
+<h4 id="1-构造函数和类的标识"><a href="#1-构造函数和类的标识" class="headerlink" title="1. 构造函数和类的标识"></a>1. 构造函数和类的标识</h4><p><img src="https://img-blog.csdnimg.cn/20200218085134606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="2-constructor属性"><a href="#2-constructor属性" class="headerlink" title="2. constructor属性"></a>2. constructor属性</h4><p>任何JavaScript函数都可以用做构造函数，并且调用构造函数是需要用到一个<code>prototype</code>属性的。因此，每个JavaScript函数（ECMASCript5中的<code>Function.bind（）</code>方法返回的函数除外）都自动拥有一个<code>prototype</code>属性。这个属性是一个对象，这个对象包含唯一一个不可枚举属性<code>constructor</code>。<code>constructor</code>属性的值是一个函数对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> F = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;&#125;; <span class="hljs-comment">// 这是一个函数对象</span><br><span class="hljs-keyword">var</span> p = F.prototype; <span class="hljs-comment">// 这是F相关联的原型对象</span><br><span class="hljs-keyword">var</span> c = p.constructor; <span class="hljs-comment">// 这是与原型相关的函数</span><br>c === F <span class="hljs-comment">// true，对于任意函数F.prototype.constructor == F</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="类的扩充"><a href="#类的扩充" class="headerlink" title="类的扩充"></a>类的扩充</h2><p>JavaScript中基于原型的继承机制是动态的：对象从其原型继承属性，如果创建对象之后原型的属性发生改变，也会影响到继承这个原型的所有实例对象。这意味着我们可以通过给原型对象添加新方法来扩充JavaScript类。</p>
+<h2 id="类和类型"><a href="#类和类型" class="headerlink" title="类和类型"></a>类和类型</h2><p>下面介绍三种用以检测任意对象的技术：<code>instanceof</code>运算符，<code>constructor</code>属性，以及构造函数的名字。</p>
+<h4 id="1-instanceof"><a href="#1-instanceof" class="headerlink" title="1. instanceof"></a>1. <code>instanceof</code></h4><p><code>instanceof</code>运算符的左操作数是待检测其类的对象，右操作数是定义类的构造函数。</p>
+<p>如果<code>o</code>继承自<code>c.prototype</code>，则表达式<code>o instanceof c</code>值为<code>true</code>。这里的继承可以不是直接继承，如果<code>o</code>所继承的对象继承自另一个对象，后一个对象继承自<code>c.prototype</code>，这个表达式的运算结果也是<code>true</code>。</p>
+<p><code>instanceof</code>运算符实际上是检测了对象的继承关系，而不是检测创建对象的构造函数。</p>
+<p>那如果想检测对象的原型链上是否存在某个特定的原型对象，有没有不使用构造函数作为中介的方法？ 有！</p>
+<p>可以使用<code>isPrototypeOf()</code>方法。比如，可以通过如下代码来检测对象r是否是之前说过的“范围类”的成员：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima"><span class="hljs-built_in">range</span>.methods.isPrototypeOf(r); //<span class="hljs-built_in">range</span>.<span class="hljs-built_in">method</span>是原型<br></code></pre></td></tr></table></figure>
+
+<p><code>instanceof</code>运算符和<code>isPrototypeOf()</code>方法的缺点是，我们无法通过对象来获得类名，只能检测对象是否属于指定的类名。</p>
+<h4 id="2-constructor属性-1"><a href="#2-constructor属性-1" class="headerlink" title="2. constructor属性"></a>2. constructor属性</h4><p>另一种识别对象是否属于某个类的方法是使用<code>constructor</code>属性。</p>
+<p>在JavaScript中并非所有对象都包含<code>constructor</code>属性。</p>
+<h4 id="3-构造函数的名称"><a href="#3-构造函数的名称" class="headerlink" title="3. 构造函数的名称"></a>3. 构造函数的名称</h4><p>使用<code>instanceof</code>运算符和<code>constructor</code>属性来检测对象所属的类有一个主要的问题，在多个执行上下文中存在构造函数的多个副本的时候，这两种函数看起来一模一样的，但它们是互相独立的对象，因此彼此也不相等。</p>
+<p>一种可能的解决方案是使用构造函数的名字而不是构造函数本身作为类标识符。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《JavaScript权威指南》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/17/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(8)%20%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《JavaScript权威指南》学习笔记(8) 正则表达式的模式匹配</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/13/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(5)%20%E6%95%B0%E7%BB%84/">
+                        <span class="hidden-mobile">《JavaScript权威指南》学习笔记(5) 数组</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

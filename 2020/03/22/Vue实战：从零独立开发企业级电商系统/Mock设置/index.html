@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Mock设置作用：  开发阶段，为了高效率，需要提前Mock 减少代码冗余，灵活插拔 减少沟通，减少接口联调时间  mock设置三种方式： 本地创建json 集成Mock API easy-mock平台  （1）本地加载请求静态json文件：  在public下创建文件夹mock，mock里创建文件夹user,user里添加文件login.json:  123456789101112&amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mock设置">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/22/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/Mock%E8%AE%BE%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="Mock设置作用：  开发阶段，为了高效率，需要提前Mock 减少代码冗余，灵活插拔 减少沟通，减少接口联调时间  mock设置三种方式： 本地创建json 集成Mock API easy-mock平台  （1）本地加载请求静态json文件：  在public下创建文件夹mock，mock里创建文件夹user,user里添加文件login.json:  123456789101112&amp;#123;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-22T12:18:37.693Z">
+<meta property="article:modified_time" content="2022-01-22T04:51:37.884Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue项目实战">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Mock设置 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Mock设置">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-22 20:18" pubdate>
+        2020年3月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Mock设置</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Mock设置"><a href="#Mock设置" class="headerlink" title="Mock设置"></a>Mock设置</h1><p><strong>作用：</strong></p>
+<ul>
+<li>开发阶段，为了高效率，需要提前Mock</li>
+<li>减少代码冗余，灵活插拔</li>
+<li>减少沟通，减少接口联调时间</li>
+</ul>
+<h4 id="mock设置三种方式："><a href="#mock设置三种方式：" class="headerlink" title="mock设置三种方式："></a>mock设置三种方式：</h4><ul>
+<li>本地创建json</li>
+<li>集成Mock API</li>
+<li>easy-mock平台</li>
+</ul>
+<p><strong>（1）本地加载请求静态json文件</strong>：</p>
+<ul>
+<li>在public下创建文件夹mock，mock里创建文件夹user,user里添加文件login.json:</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">&quot;data&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-number">12</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;admin&quot;</span>,<br>        <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;...&quot;</span>,<br>        <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-literal">null</span>,<br>        <span class="hljs-attr">&quot;role&quot;</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-attr">&quot;createTime&quot;</span>: <span class="hljs-number">123</span>,<br>        <span class="hljs-attr">&quot;updataTime&quot;</span>:<span class="hljs-number">456</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在App.vue中：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;App&#x27;</span>,<br>  <span class="hljs-attr">components</span>: &#123;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123; <br>      <span class="hljs-attr">res</span>: &#123;&#125;<br>    &#125;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;<br>   <span class="hljs-built_in">this</span>.axios.get(<span class="hljs-string">&#x27;/mock/user/login.json&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>     <span class="hljs-built_in">this</span>.res = res<br>   &#125;) <br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在main.js中将以下注释掉内容：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//import env from &#x27;./env&#x27;</span><br><span class="hljs-comment">//axios.defaults.baseURL = &#x27;/api&#x27;;</span><br><span class="hljs-comment">//axios.default.baseURL = env.baseURL;</span><br></code></pre></td></tr></table></figure>
+
+<p>这种方式虽然简单，但是请求的地址并不是真正的地址，但接口联调对接时，就需要改代码。</p>
+<p><strong>（2）本地集成mock.js实现数据mock：</strong></p>
+<ul>
+<li>先安装mock.js</li>
+</ul>
+<p><code>npm i mockjs --save-dev</code></p>
+<ul>
+<li>安装完，在main.js中加入:</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//mock开关</span><br><span class="hljs-keyword">const</span> mock = <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">if</span> (mock) &#123;<br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./mock/api&#x27;</span>)<br>&#125;<br>axios.defaults.baseURL = <span class="hljs-string">&#x27;/api&#x27;</span>;<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在src文件夹建一个mock文件夹，在改文件夹中新建api.js文件：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> Mock <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mockjs&#x27;</span><br>Mock.mock(<span class="hljs-string">&#x27;/api/user/login&#x27;</span>, &#123;<br>    <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-string">&quot;data&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">12</span>,<br>        <span class="hljs-string">&quot;username&quot;</span>: <span class="hljs-string">&quot;admin&quot;</span>,<br>        <span class="hljs-string">&quot;email&quot;</span>: <span class="hljs-string">&quot;...&quot;</span>,<br>        <span class="hljs-string">&quot;phone&quot;</span>: <span class="hljs-literal">null</span>,<br>        <span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-string">&quot;createTime&quot;</span>: <span class="hljs-number">123</span>,<br>        <span class="hljs-string">&quot;updataTime&quot;</span>:<span class="hljs-number">456</span><br>    &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在App.vue中，修改：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;App&#x27;</span>,<br>  <span class="hljs-attr">components</span>: &#123;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123; <br>      <span class="hljs-attr">res</span>: &#123;&#125;<br>    &#125;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;<br>   <span class="hljs-built_in">this</span>.axios.get(<span class="hljs-string">&#x27;/user/login&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>     <span class="hljs-built_in">this</span>.res = res<br>   &#125;) <br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>（3）easy-mock平台</strong></p>
+<ul>
+<li><p>在Easy Mock官网上创建好项目。（创建过程中将 项目基础URL可随便取）</p>
+</li>
+<li><p>在main.js中修改：</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//mock开关</span><br><span class="hljs-keyword">const</span> mock = <span class="hljs-literal">false</span>;<br><span class="hljs-keyword">if</span> (mock) &#123;<br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./mock/api&#x27;</span>)<br>&#125;<br>axios.defaults.baseURL = <span class="hljs-string">&#x27;...为Easy Mock上生成的base URL地址&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在Easy Mock官网创建接口，URL和数据都设置为自己需要的。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/">Vue项目实战:从零独立开发企业级电商系统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">Vue项目实战</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/22/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《数据结构与算法之美》学习笔记(1)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/22/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E6%8E%A5%E5%8F%A3%E9%94%99%E8%AF%AF%E6%8B%A6%E6%88%AA%E4%B8%8E%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">
+                        <span class="hidden-mobile">接口错误拦截与环境设置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="产品站与商品详情实现目录1. 产品站页面 组件吸顶实现 视频模块实现 视频模块实现 交互实现 解决一个视频模块bug  2. 商品详情页面 清楚浮动 交互实现  产品站页面（1）组件吸顶实现 在要实现吸顶的组件文件ProductParam.Vue中  12345678910111213141516171819202122232425262728293031323334353637383940414">
+<meta property="og:type" content="article">
+<meta property="og:title" content="产品站与商品详情实现">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/31/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E4%BA%A7%E5%93%81%E7%AB%99%E4%B8%8E%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="产品站与商品详情实现目录1. 产品站页面 组件吸顶实现 视频模块实现 视频模块实现 交互实现 解决一个视频模块bug  2. 商品详情页面 清楚浮动 交互实现  产品站页面（1）组件吸顶实现 在要实现吸顶的组件文件ProductParam.Vue中  12345678910111213141516171819202122232425262728293031323334353637383940414">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-31T09:09:03.325Z">
+<meta property="article:modified_time" content="2022-01-22T04:51:00.615Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue项目实战">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>产品站与商品详情实现 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="产品站与商品详情实现">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-31 17:09" pubdate>
+        2020年3月31日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      59 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">产品站与商品详情实现</h1>
+            
+            <div class="markdown-body">
+              <h2 id="产品站与商品详情实现"><a href="#产品站与商品详情实现" class="headerlink" title="产品站与商品详情实现"></a>产品站与商品详情实现</h2><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h4 id="1-产品站页面"><a href="#1-产品站页面" class="headerlink" title="1. 产品站页面"></a><a href="#jumpa">1. 产品站页面</a></h4><ul>
+<li><a href="#jump1"><strong>组件吸顶实现</strong></a></li>
+<li><a href="#jump2"><strong>视频模块实现</strong></a></li>
+<li><a href="#jump3"><strong>视频模块实现</strong></a></li>
+<li><a href="#jump4"><strong>交互实现</strong></a></li>
+<li><a href="#jump5"><strong>解决一个视频模块bug</strong></a></li>
+</ul>
+<h4 id="2-商品详情页面"><a href="#2-商品详情页面" class="headerlink" title="2. 商品详情页面"></a><a href="#jumpb">2. 商品详情页面</a></h4><ul>
+<li><a href="#jump6"><strong>清楚浮动</strong></a></li>
+<li><a href="#jump7"><strong>交互实现</strong></a></li>
+</ul>
+<h2 id="产品站页面"><a href="#产品站页面" class="headerlink" title="产品站页面"></a><span id = "jumpa">产品站页面</span></h2><h4 id="（1）组件吸顶实现"><a href="#（1）组件吸顶实现" class="headerlink" title="（1）组件吸顶实现"></a><span id = "jump1">（1）组件吸顶实现</span></h4><ul>
+<li>在要实现吸顶的组件文件ProductParam.Vue中</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></div></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;nav-bar&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;pro-title&quot;</span>&gt;</span><br>                小米8<br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;pro-param&quot;</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span>概述<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>|<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span>参数<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>|<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span>用户评价<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;buy&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="javascript">    <span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;nav-bar&#x27;</span>,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">        <span class="hljs-attr">isFixed</span>: <span class="hljs-literal">false</span></span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&#x27;scroll&#x27;</span>, <span class="hljs-built_in">this</span>.initHeight)  </span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-attr">methods</span>: &#123;</span><br><span class="javascript">      <span class="hljs-function"><span class="hljs-title">initHeight</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> scrollTop = <span class="hljs-built_in">window</span>.pageYOffset || <span class="hljs-built_in">document</span>.documentElement.scrollTop || <span class="hljs-built_in">document</span>.body.scrollTop;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.isFixed = scrollTop &gt; <span class="hljs-number">152</span>? <span class="hljs-literal">true</span>: <span class="hljs-literal">false</span></span><br><span class="javascript"></span><br><span class="javascript">      &#125;,</span><br><span class="javascript">      <span class="hljs-function"><span class="hljs-title">destroyed</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-built_in">window</span>.removeEventListener(<span class="hljs-string">&#x27;scroll&#x27;</span>, <span class="hljs-built_in">this</span>.initHeight, <span class="hljs-literal">false</span>)</span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span>&gt;</span><span class="css"></span><br><span class="css">  <span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;./../assets/scss/config.scss&#x27;</span>;</span><br><span class="css">  <span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;./../assets/scss/mixin.scss&#x27;</span>;</span><br><span class="css">  <span class="hljs-selector-class">.nav-bar</span>&#123;</span><br><span class="css">    <span class="hljs-attribute">height</span>:<span class="hljs-number">70px</span>;</span><br><span class="css">    <span class="hljs-attribute">line-height</span>:<span class="hljs-number">70px</span>;</span><br><span class="css">    <span class="hljs-attribute">border-top</span>:<span class="hljs-number">1px</span> solid $colorH;</span><br><span class="css">    <span class="hljs-attribute">background-color</span>:$colorG;</span><br><span class="css">    <span class="hljs-attribute">z-index</span>:<span class="hljs-number">10</span>;</span><br><span class="css">    &amp;<span class="hljs-selector-class">.is_fixed</span>&#123;</span><br><span class="css">      <span class="hljs-attribute">position</span>:fixed;</span><br><span class="css">      <span class="hljs-attribute">top</span>:<span class="hljs-number">0</span>;</span><br><span class="css">      <span class="hljs-attribute">width</span>:<span class="hljs-number">100%</span>;</span><br><span class="css">      <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">5px</span> <span class="hljs-number">5px</span> $colorE;</span><br><span class="css">    &#125;</span><br><span class="css">  &#125;</span><br><span class="css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（2）视频模块实现"><a href="#（2）视频模块实现" class="headerlink" title="（2）视频模块实现"></a><span id = "jump2">（2）视频模块实现</span></h4><ul>
+<li>在需要视频模块的文件product.vue中：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs html">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-box&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;overlay&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-close&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>            <span class="hljs-comment">&lt;!--controls属性指定视频控件, muted静音输出  --&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">video</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/imgs/product/video.mp4&quot;</span> <span class="hljs-attr">muted</span> <span class="hljs-attr">autoplay</span> <span class="hljs-attr">controls</span>=<span class="hljs-string">&quot;controls&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">video</span>&gt;</span>  <br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span>&gt;</span><span class="css"></span><br><span class="css">        <span class="hljs-selector-class">.video-box</span>&#123;</span><br><span class="css">          <span class="hljs-selector-class">.overlay</span>&#123;</span><br><span class="css">            <span class="hljs-keyword">@include</span> position(fixed);</span><br><span class="css">            <span class="hljs-attribute">background-color</span>:<span class="hljs-number">#333333</span>;</span><br><span class="css">            <span class="hljs-attribute">opacity</span>:.<span class="hljs-number">4</span>;</span><br><span class="css">            <span class="hljs-attribute">z-index</span>:<span class="hljs-number">10</span>;</span><br><span class="css">          &#125;</span><br><span class="css">          <span class="hljs-selector-class">.video</span>&#123;</span><br><span class="css">            <span class="hljs-attribute">position</span>:fixed;</span><br><span class="css">            <span class="hljs-attribute">top</span>:-<span class="hljs-number">50%</span>;</span><br><span class="css">            <span class="hljs-attribute">left</span>:<span class="hljs-number">50%</span>;</span><br><span class="css">            <span class="hljs-attribute">transform</span>:<span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>,-<span class="hljs-number">50%</span>);</span><br><span class="css">            <span class="hljs-attribute">z-index</span>:<span class="hljs-number">10</span>;</span><br><span class="css">            <span class="hljs-attribute">width</span>:<span class="hljs-number">1000px</span>;</span><br><span class="css">            <span class="hljs-attribute">height</span>:<span class="hljs-number">536px</span>;</span><br><span class="css">            <span class="hljs-selector-class">.icon-close</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">position</span>:absolute;</span><br><span class="css">              <span class="hljs-attribute">top</span>:<span class="hljs-number">20px</span>;</span><br><span class="css">              <span class="hljs-attribute">right</span>:<span class="hljs-number">20px</span>;</span><br><span class="css">              <span class="hljs-keyword">@include</span> bgImg(<span class="hljs-number">20px</span>,<span class="hljs-number">20px</span>,<span class="hljs-string">&#x27;/imgs/icon-close.png&#x27;</span>);</span><br><span class="css">              <span class="hljs-attribute">cursor</span>:pointer;</span><br><span class="css">              <span class="hljs-attribute">z-index</span>:<span class="hljs-number">11</span>;</span><br><span class="css">            &#125;</span><br><span class="css">            <span class="hljs-selector-tag">video</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">width</span>:<span class="hljs-number">100%</span>;</span><br><span class="css">              <span class="hljs-attribute">height</span>:<span class="hljs-number">100%</span>;</span><br><span class="css">              <span class="hljs-attribute">object-fit</span>:cover;</span><br><span class="css">              <span class="hljs-attribute">outline</span>:none;</span><br><span class="css">            &#125;</span><br><span class="css">          &#125;</span><br><span class="css">        &#125;</span><br><span class="css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（3）视频模块实现"><a href="#（3）视频模块实现" class="headerlink" title="（3）视频模块实现"></a><span id = "jump3">（3）视频模块实现</span></h4><ul>
+<li>在文件product.vue中：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs html">       <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-bg&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;showSlide=&#x27;slideDown&#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-box&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;overlay&quot;</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;showSlide=&#x27;slideDown&#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video&quot;</span> <span class="hljs-attr">v-bind:class</span>=<span class="hljs-string">&quot;showSlide&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-close&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;showSlide=&#x27;slideUp&#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">video</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/imgs/product/video.mp4&quot;</span> <span class="hljs-attr">muted</span> <span class="hljs-attr">autoplay</span> <span class="hljs-attr">controls</span>=<span class="hljs-string">&quot;controls&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">video</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">  <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">    <span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;product&#x27;</span>,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">        <span class="hljs-attr">showSlide</span>:<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-comment">//控制动画效果</span></span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css"></span><br><span class="css"> <span class="hljs-comment">/*省略重复样式代码*/</span></span><br><span class="css">    <span class="hljs-selector-class">.video-box</span>&#123;</span><br><span class="css">          <span class="hljs-keyword">@keyframes</span> slideDown&#123;</span><br><span class="css">            <span class="hljs-selector-tag">from</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">top</span>:-<span class="hljs-number">50%</span>;</span><br><span class="css">              <span class="hljs-attribute">opacity</span>:<span class="hljs-number">0</span>;</span><br><span class="css">            &#125;</span><br><span class="css">            <span class="hljs-selector-tag">to</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">top</span>:<span class="hljs-number">50%</span>;</span><br><span class="css">              <span class="hljs-attribute">opacity</span>:<span class="hljs-number">1</span>;</span><br><span class="css">            &#125;</span><br><span class="css">          &#125;</span><br><span class="css">          <span class="hljs-keyword">@keyframes</span> slideUp&#123;</span><br><span class="css">            <span class="hljs-selector-tag">from</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">top</span>:<span class="hljs-number">50%</span>;</span><br><span class="css">              <span class="hljs-attribute">opacity</span>:<span class="hljs-number">1</span>;</span><br><span class="css">            &#125;</span><br><span class="css">            <span class="hljs-selector-tag">to</span>&#123; </span><br><span class="css">              <span class="hljs-attribute">top</span>:-<span class="hljs-number">50%</span>;</span><br><span class="css">              <span class="hljs-attribute">opacity</span>:<span class="hljs-number">0</span>;</span><br><span class="css">            &#125;</span><br><span class="css">          &#125;</span><br><span class="css">          <span class="hljs-selector-class">.video</span>&#123;</span><br><span class="css">            <span class="hljs-attribute">opacity</span>:<span class="hljs-number">1</span>; </span><br><span class="css">            &amp;<span class="hljs-selector-class">.slideDown</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">animation</span>:slideDown .<span class="hljs-number">6s</span> linear;</span><br><span class="css">              <span class="hljs-attribute">top</span>:<span class="hljs-number">50%</span>;</span><br><span class="css">            &#125;</span><br><span class="css">            &amp;<span class="hljs-selector-class">.slideUp</span>&#123;</span><br><span class="css">              <span class="hljs-attribute">animation</span>:slideUp .<span class="hljs-number">6s</span> linear;</span><br><span class="css">            &#125;</span><br><span class="css">          &#125;</span><br><span class="css">        &#125;</span><br><span class="css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（4）交互实现"><a href="#（4）交互实现" class="headerlink" title="（4）交互实现"></a><span id = "jump4">（4）交互实现</span></h4><ul>
+<li>在product.vue页面中：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--省略了无关代码--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;product&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">product-param</span> <span class="hljs-attr">v-bind:title</span>=<span class="hljs-string">&quot;product.name&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-slot:buy</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;btn&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;buy&quot;</span>&gt;</span>立即购买<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">product-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;content&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item-bg&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>&#123;&#123;product.name&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>&#123;&#123;product.subtitle&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;price&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>￥<span class="hljs-tag">&lt;<span class="hljs-name">em</span>&gt;</span>&#123;&#123;product.price&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">em</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">  <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">    <span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;product&#x27;</span>,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">        <span class="hljs-attr">product</span>:&#123;&#125;,<span class="hljs-comment">//商品信息</span></span><br><span class="javascript">        &#125;</span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.getProductInfo();</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">      <span class="hljs-function"><span class="hljs-title">getProductInfo</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> id = <span class="hljs-built_in">this</span>.$route.params.id;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.axios.get(<span class="hljs-string">`/products/<span class="hljs-subst">$&#123;id&#125;</span>`</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>)=&gt;</span>&#123;</span><br><span class="javascript">          <span class="hljs-built_in">this</span>.product = res;</span><br><span class="javascript">        &#125;)</span><br><span class="javascript">      &#125;,</span><br><span class="javascript">      <span class="hljs-function"><span class="hljs-title">buy</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">        <span class="hljs-keyword">let</span> id = <span class="hljs-built_in">this</span>.$route.params.id;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.$router.push(<span class="hljs-string">`/detail/<span class="hljs-subst">$&#123;id&#125;</span>`</span>); <span class="hljs-comment">//跳转到商品详情页面</span></span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（5）解决一个视频模块bug"><a href="#（5）解决一个视频模块bug" class="headerlink" title="（5）解决一个视频模块bug"></a><span id = "jump5">（5）解决一个视频模块bug</span></h4><p><strong>问题</strong>：在调试时，用于页面窗口变小时，视频样式出现问题。</p>
+<ul>
+<li>在文件product.vue中修改：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs html">       <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-bg&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;showSlide=&#x27;slideDown&#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-box&quot;</span>  <span class="hljs-attr">v-show</span>=<span class="hljs-string">&quot;showSlide&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;overlay&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video&quot;</span> <span class="hljs-attr">v-bind:class</span>=<span class="hljs-string">&quot;showSlide&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-close&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;closeVideo&#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">video</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/imgs/product/video.mp4&quot;</span> <span class="hljs-attr">muted</span> <span class="hljs-attr">autoplay</span> <span class="hljs-attr">controls</span>=<span class="hljs-string">&quot;controls&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">video</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript">  <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">    <span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;product&#x27;</span>,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">      <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">        <span class="hljs-attr">showSlide</span>:<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-comment">//控制动画效果</span></span><br><span class="javascript">      &#125;,</span><br><span class="javascript">      <span class="hljs-attr">methods</span>: &#123;</span><br><span class="javascript">      	 <span class="hljs-function"><span class="hljs-title">closeVideo</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">        	<span class="hljs-built_in">this</span>.showSlide=<span class="hljs-string">&#x27;slideUp&#x27;</span>;</span><br><span class="javascript">        	<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">()=&gt;</span>&#123;</span><br><span class="javascript">          	<span class="hljs-built_in">this</span>.showSlide=<span class="hljs-string">&#x27;&#x27;</span>;</span><br><span class="javascript">        &#125;,<span class="hljs-number">600</span>)</span><br><span class="javascript">      &#125;</span><br><span class="javascript">      &#125;</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="商品详情页面"><a href="#商品详情页面" class="headerlink" title="商品详情页面"></a><span id = "jumpb">商品详情页面</span></h2><h4 id="（1）清除浮动"><a href="#（1）清除浮动" class="headerlink" title="（1）清除浮动"></a><span id = "jump6">（1）清除浮动</span></h4><ul>
+<li>在需要清除浮动的页面：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item-version clearfix&quot;</span>&gt;</span><br>     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;phone fl&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;&#123;&#x27;checked&#x27;:version==1&#125;&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;version=1&quot;</span>&gt;</span>6GB+64GB 全网通<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;phone fr&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;&#123;&#x27;checked&#x27;:version==2&#125;&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;version=2&quot;</span>&gt;</span>4GB+64GB 移动4G<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在base.scss文件中：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-selector-class">.clearfix</span>:before,.clearfix:after&#123;<br>  content:<span class="hljs-string">&#x27; &#x27;</span>;<br>  <span class="hljs-attribute">display</span>:table;<br>&#125;<br><span class="hljs-selector-class">.clearfix</span>:after&#123;<br>  clear: both;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（2）交互实现"><a href="#（2）交互实现" class="headerlink" title="（2）交互实现"></a><span id = "jump7">（2）交互实现</span></h4><ul>
+<li>在detail.vue文件中：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>&#123;</span><br><span class="javascript">  <span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;detail&#x27;</span>,</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">      <span class="hljs-attr">err</span>:<span class="hljs-string">&#x27;&#x27;</span>,</span><br><span class="javascript">      <span class="hljs-attr">id</span>: <span class="hljs-built_in">this</span>.$router.params.id,</span><br><span class="javascript">      <span class="hljs-attr">Product</span>: &#123;&#125;,</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="javascript">    <span class="hljs-built_in">this</span>.getProductInfo();</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">methods</span>:&#123;</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">getProductInfo</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.axois.get(<span class="hljs-string">`/product/<span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.id&#125;</span>`</span>).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.Product = res;</span><br><span class="javascript">      &#125;)</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">addCart</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">      <span class="hljs-built_in">this</span>.axios.post(<span class="hljs-string">&#x27;/carts&#x27;</span>, &#123;</span><br><span class="javascript">        <span class="hljs-attr">productId</span>: <span class="hljs-built_in">this</span>.id,</span><br><span class="javascript">        <span class="hljs-attr">selected</span>: <span class="hljs-literal">true</span></span><br><span class="javascript">      &#125;).then(<span class="hljs-function">(<span class="hljs-params">res = &#123;cartProductVoList:<span class="hljs-number">0</span>&#125;</span>) =&gt;</span> &#123;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.$store.dispatch(<span class="hljs-string">&#x27;saveCartCount&#x27;</span>, res.cartProductVoList.length);</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.$router.push(<span class="hljs-string">&#x27;/cart&#x27;</span>);</span><br><span class="javascript">      &#125;).catch(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;</span><br><span class="javascript">        <span class="hljs-built_in">this</span>.error = res;</span><br><span class="javascript">      &#125;)</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/">Vue项目实战:从零独立开发企业级电商系统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">Vue项目实战</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/02/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E8%B4%AD%E7%89%A9%E8%BD%A6%E9%A1%B5%E9%9D%A2%E5%AE%9E%E7%8E%B0%E4%B8%8EElementUI%E9%9B%86%E6%88%90/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">购物车页面实现与ElementUI集成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
+                        <span class="hidden-mobile">算法 - 动态规划</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

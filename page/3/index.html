@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Lin Tui">
+<meta property="og:url" content="https://lin-tui.github.io.com/page/3/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Lin Tui">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="道阻且长，保持努力。">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/05/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%EF%BC%9A%E6%A6%82%E8%BF%B0/" target="_self">
+          异步操作：概述
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/05/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%EF%BC%9A%E6%A6%82%E8%BF%B0/" target="_self">
+          
+          目录1. 单线程模型 什么是单线程模型  JS为什么采用单线程模式 单线程模式的优缺点  2. 同步任务 和 异步任务3. 任务队列 和 事件循环4. 单线程模型 回调函数 事件监听 发布&#x2F;订阅  5. 单线程模型 串行执行 并行执行 并行和串行的结合    本文转载于：异步操作概述    （一）单线程模型1. 什么是单线程模型？单线程模型指：JavaScript 只在一个线程上运行。也就是说，J
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-05 10:45" pubdate>
+              2020-05-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/05/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E7%BB%84%E3%80%81%E5%AF%B9%E8%B1%A1%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" target="_self">
+          数组、对象常用方法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/05/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E7%BB%84%E3%80%81%E5%AF%B9%E8%B1%A1%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" target="_self">
+          
+          数组常用方法1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&#x2F;&#x2F; reduce:const arr1 &#x3D; [1, 2, 3, 4, 5];let res1 &#x3D; arr1.reduce((acc, cur, index, arr) &#x3D;&gt;
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-05 10:45" pubdate>
+              2020-05-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/03/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          NodeJs学习笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/03/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          
+          NodeJs概念：Node.js 就是运行在服务端的 JavaScript。 Node.js 是一个基于Chrome JavaScript 运行时建立的一个平台。 Node.js是一个事件驱动I&#x2F;O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。 NodeJs特点： 它是一个Javascript运行环境 依赖于Chrome V8
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-03 16:30" pubdate>
+              2020-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">NodeJs学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/NodeJs/">NodeJs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/03/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/NodeJs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/" target="_self">
+          NodeJs相关知识点
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/03/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/NodeJs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/" target="_self">
+          
+          NodeJs 就是运行在服务端的 JavaScript。 NodeJs事件驱动&#x2F;事件循环: 每个NodeJs进程只有一个主线程在执行程序代码，形成一个执行栈（execution context stack)。 主线程之外，还维护了一个”事件队列“（Event queue）。当用户的网络请求或者其它的异步操作到来时，node都会把它放到Event Queue之中，此时并不会立即执行它，代码也不会被阻
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-03 16:30" pubdate>
+              2020-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/NodeJs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">NodeJs学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/NodeJs/">NodeJs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%98%B2%E6%8A%96%20%E8%8A%82%E6%B5%81%20%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%20%E6%87%92%E5%8A%A0%E8%BD%BD/" target="_self">
+          防抖 节流 和预加载 懒加载
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%98%B2%E6%8A%96%20%E8%8A%82%E6%B5%81%20%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%20%E6%87%92%E5%8A%A0%E8%BD%BD/" target="_self">
+          
+          目录1. 防抖 节流2. 预加载3. 懒加载（一）防抖 节流1. 防抖对于短时间内连续触发的事件（如滚动事件），防抖的含义就是让某个时间期限（如上面的1000毫秒）内，事件处理函数只执行一次。 防抖实现思路：在第一次触发事件时，不立即执行函数，而是给出一个期限值比如200ms，然后：  如果在200ms内没有再次触发滚动事件，那么就执行函数 如果在200ms内再次触发滚动事件，那么当前的计时取消，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-03 16:30" pubdate>
+              2020-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E7%BB%A7%E6%89%BF%20%E4%B8%8E%20new%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          类的创建继承 与 new原理实现
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E7%BB%A7%E6%89%BF%20%E4%B8%8E%20new%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+          目录1. 类的创建 工厂模式 构造函数模式 原型模式 组合模式  2. 类的继承 原型链继承 构造继承 实例继承 拷贝继承 组合继承 寄生组合继承  3. new 的原理实现  学习和参考于： JS定义类的六种方式详解 JS实现继承的几种方式 JavaScript深入之创建对象的多种方式以及优缺点 js new一个对象的过程，实现一个简单的new方法   （一）类的创建1. 工厂模式1234567
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-03 11:17" pubdate>
+              2020-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/call%20%20apply%20%20bind%20%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          call  apply  bind 原理实现
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/call%20%20apply%20%20bind%20%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+          目录1. call 的模拟实现2. apply 的模拟实现3. bind 的模拟实现4. 三者异同  学习并参考于： JavaScript深入之call和apply的模拟实现 JS的call,apply与bind详解，及其模拟实现   （一）call的模拟实现call 用法 ： MDN  Function.prototype.call() call() 方法使用一个指定的 this 值和可选的参数
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-03 08:28" pubdate>
+              2020-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/02/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/async%20await%20Generator%20%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          async await Generator 原理实现
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/02/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/async%20await%20Generator%20%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/" target="_self">
+          
+          目录1. async  await2. Generator3. async await 和 Generator 区别  本文主要是学习：异步编程二三事 | Promise&#x2F;async&#x2F;Generator实现原理解析 中一部分内容的学习笔记，（强烈推荐阅读原本）   （一）async await在多个回调依赖的场景中，尽管Promise通过链式调用取代了回调嵌套，但过多的链式调用可读性仍然不佳，流程
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-02 11:39" pubdate>
+              2020-05-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Promise/" target="_self">
+          Promise
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Promise/" target="_self">
+          
+          目录1. Promise 基本结构2. Promise 状态和值3. Promise 的 then 方法4. Promise基本实现5. Promise零碎知识学习Promise 用法  见 ：MDN Promise 学习Promise底层实现  见：Promise实现原理（附源码） （本文学习并参考的一篇博客，推荐直接阅读） 其他推荐：Promise简单实现 （一）Promise 基本结构Pro
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-01 15:30" pubdate>
+              2020-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E8%B7%A8%E5%9F%9F/" target="_self">
+          跨域
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/01/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E8%B7%A8%E5%9F%9F/" target="_self">
+          
+          目录1. 同源策略及其限制内容 同源策略 同源策略限制  2. 跨域 什么是跨域 跨域的常见场景  3. 跨域解决方案 JSONP 跨域 CORS 跨域资源共享 Node 中间件代理(两次跨域) nginx 代理跨域 websocket postMessage 跨域 window.name + iframe 跨域 location.hash + iframe 跨域 document.domain
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-01 12:28" pubdate>
+              2020-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaScript/">JavaScript</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

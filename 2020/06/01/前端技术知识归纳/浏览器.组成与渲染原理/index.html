@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="（一）浏览器组成结构1. 从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？ 在接收到用户输入的网址后，浏览器会开启一个线程来处理这个请求，对用户输入的URL地址进行分析判断，如果是HTTP协议就按照HTTP方式来处理。 调用浏览器引擎中对应方法，比如WebView中的loadUrl方法，分析并加载这个URL地址。 通过DNS解析获取网站地址对应的IP地址，查">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器.组成与渲染原理">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/06/01/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E5%BD%92%E7%BA%B3/%E6%B5%8F%E8%A7%88%E5%99%A8.%E7%BB%84%E6%88%90%E4%B8%8E%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="（一）浏览器组成结构1. 从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？ 在接收到用户输入的网址后，浏览器会开启一个线程来处理这个请求，对用户输入的URL地址进行分析判断，如果是HTTP协议就按照HTTP方式来处理。 调用浏览器引擎中对应方法，比如WebView中的loadUrl方法，分析并加载这个URL地址。 通过DNS解析获取网站地址对应的IP地址，查">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200820122632698.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200820122854714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200820122855312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-06-01T03:11:45.620Z">
+<meta property="article:modified_time" content="2022-01-22T04:37:50.271Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200820122632698.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  <title>浏览器.组成与渲染原理 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="浏览器.组成与渲染原理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-06-01 11:11" pubdate>
+        2020年6月1日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">浏览器.组成与渲染原理</h1>
+            
+            <div class="markdown-body">
+              <h1 id="（一）浏览器组成结构"><a href="#（一）浏览器组成结构" class="headerlink" title="（一）浏览器组成结构"></a>（一）浏览器组成结构</h1><h3 id="1-从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？"><a href="#1-从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？" class="headerlink" title="1. 从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？"></a>1. 从打开浏览器输入一个网址到页面展示网页内容的这段时间内，浏览器和服务器都发生了什么事情？</h3><ul>
+<li>在接收到用户输入的网址后，浏览器会开启一个线程来处理这个请求，对用户输入的URL地址进行分析判断，如果是HTTP协议就按照HTTP方式来处理。</li>
+<li>调用浏览器引擎中对应方法，比如WebView中的loadUrl方法，分析并加载这个URL地址。</li>
+<li>通过DNS解析获取网站地址对应的IP地址，查询完成后连同浏览器的Cookie、userAgent等信息向网站目的IP发财GET请求。</li>
+<li>进行HTTP协议会话，浏览器客户端向Web服务器发送报文。</li>
+<li>进入网站后台上的Web服务器处理请求，如Apache、Tomcat、Node.js等服务器。</li>
+<li>进入部署好的后端应用，如 PHP、Java、JavaScript、Python等后端程序，找到对应的请求处理逻辑，这期间会读取服务器缓存或查询数据库等。</li>
+<li>服务器处理请求并返回响应报文，此时如果浏览器访问过该页面，缓存上有对应资源，会与服务器最后修改记录对比，一致则返回304，否则返回200和对应的内容。</li>
+<li>浏览器开始下载HTML文档（响应报文状态码为200时）或者从本地缓存读取文件内容（浏览器缓存有效或响应报文状态码为304时）</li>
+<li>浏览器根据下载收到的HTML文件解析结构建立DOM文档树，并根据HTML中的标记请求下载指定的MIME类型文件（如CSS、JavaScript脚本等），同时设置缓存等内容。</li>
+<li>页面开始解析渲染DOM，CSS根据规则解析并结合DOM文档树进行网页内容布局和绘制渲染，JavaScript根据DOM API操作DOM，并读取浏览器缓存，执行事件绑定等，页面整个展示过程完成。</li>
+</ul>
+<p>整个过程中使用到了较多的浏览器功能，如用户地址输入框、网络请求、浏览器文档解析、渲染引擎、JavaScript执行引擎、客户端存储等。</p>
+<h3 id="2-浏览器主要结构："><a href="#2-浏览器主要结构：" class="headerlink" title="2. 浏览器主要结构："></a><strong>2. 浏览器主要结构</strong>：</h3><ul>
+<li><p><strong>用户界面</strong></p>
+<p>用户界面包括浏览器中可见的地址输入框、浏览器前进返回按钮、打开书签、打开历史记录等用户可操作的功能选项。</p>
+</li>
+<li><p><strong>浏览器引擎</strong></p>
+<p>浏览器引擎可以在用户界面和渲染引擎之间传递指令和在客户端本地缓存中读写数据等，是浏览器中各个部分之间互相通信的核心。</p>
+</li>
+<li><p><strong>渲染引擎</strong></p>
+<p>浏览器渲染引擎的功能是解析DOM文档和CSS规则并将内容排版到浏览器中显示有样式的界面。浏览器内核主要指 渲染引擎。</p>
+</li>
+<li><p><strong>网络</strong></p>
+<p>网络功能模块是浏览器开启网络线程发送请求或下载资源文件的模块，例如DOM树解析过程中请求静态资源首先是通过浏览器中网络模块发起的。</p>
+</li>
+<li><p><strong>JavaScript引擎</strong></p>
+<p>JavaScript解析器则是浏览器解释和执行JavaScript脚本的部分，例如V8引擎。</p>
+</li>
+<li><p><strong>UI后端</strong></p>
+<p>UI后端用于绘制基本的浏览器窗口内控件，比如组合选择框、按钮、输入框等。</p>
+</li>
+<li><p><strong>数据持久化存储</strong></p>
+<p>浏览器数据持久化存储涉及cookie、localStorage等一些客户端存储技术，可以通过浏览器提供的API进行调用。</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200820122632698.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="（二）浏览器渲染引擎简介"><a href="#（二）浏览器渲染引擎简介" class="headerlink" title="（二）浏览器渲染引擎简介"></a>（二）浏览器渲染引擎简介</h1><h3 id="1-渲染引擎的主要工作流程"><a href="#1-渲染引擎的主要工作流程" class="headerlink" title="1. 渲染引擎的主要工作流程"></a>1. 渲染引擎的主要工作流程</h3><p>渲染引擎在浏览器中主要用于解析HTML文档和CSS文档，然后将CSS规则应用到HTML标签元素上，并将HTML渲染到浏览器窗口中一显示具体的DOM内容。</p>
+<p><strong>推荐文章</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/farsight1/article/details/79758347">十分钟读懂浏览器渲染流程</a></p>
+<p><strong>推荐视频</strong>：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av73509607">浏览器渲染机制</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20200820122854714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200820122855312.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="2-浏览器兼容性"><a href="#2-浏览器兼容性" class="headerlink" title="2. 浏览器兼容性"></a>2. 浏览器兼容性</h3><p>现在的市场上有很多种类的浏览器，不同种类的浏览器的内核也不尽相同，所以不同浏览器对代码的解析会存在差异，这就导致对页面渲染效果不统一的问题。</p>
+<p>市场上常见的浏览器内核主要有四种：<strong>Webkit内核、Presto内核、Trident内核、Gecko内核。</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">浏览器</th>
+<th align="center">内核</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Chrome</td>
+<td align="center">Blink（webkit的分支内核）</td>
+</tr>
+<tr>
+<td align="center">Safari</td>
+<td align="center">Webkit</td>
+</tr>
+<tr>
+<td align="center">Firefox</td>
+<td align="center">Gecko</td>
+</tr>
+<tr>
+<td align="center">Opera</td>
+<td align="center">Blink（此前使用Presto内核）</td>
+</tr>
+<tr>
+<td align="center">IE</td>
+<td align="center">Trident（俗称IE内核）</td>
+</tr>
+<tr>
+<td align="center">360浏览器</td>
+<td align="center">IE+Chrome双内核</td>
+</tr>
+<tr>
+<td align="center">QQ浏览器</td>
+<td align="center">Trident（兼容模式）+Webkit（高速模式）</td>
+</tr>
+<tr>
+<td align="center">搜狗浏览器</td>
+<td align="center">Trident（兼容模式）+Webkit（高速模式）</td>
+</tr>
+<tr>
+<td align="center">猎豹浏览器</td>
+<td align="center">Trident（兼容模式）+Webkit（高速模式）</td>
+</tr>
+<tr>
+<td align="center">百度浏览器</td>
+<td align="center">IE内核</td>
+</tr>
+</tbody></table>
+<p><strong>详细见</strong>：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6afd596440bb">前端浏览器兼容性问题总结</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E5%BD%92%E7%BA%B3/">前端技术知识归纳</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/20/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/params%E4%B8%8Equery/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">params与query</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/21/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E4%BA%8B%E4%BB%B6/">
+                        <span class="hidden-mobile">事件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

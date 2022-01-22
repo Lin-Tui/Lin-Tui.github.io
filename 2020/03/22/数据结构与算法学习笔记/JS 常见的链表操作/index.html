@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JS 常见的链表操作目录1. 单链表反转2. 链表中环的检测 相关问题 判断是否有环 找出环的入口点 找出环上结点的个数 求出链表的长度 求出环上距离任意一个结点最远的结点 求出链表的长度 如果相交，求出第一个相交结点。  3. 两个有序的链表合并4. 删除链表倒数第 n 个结点5. 求链表的中间结点1. 单链表反转12345678910111213141516171819202122&#x2F;&#x2F; 判断对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS 常见的链表操作">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JS%20%E5%B8%B8%E8%A7%81%E7%9A%84%E9%93%BE%E8%A1%A8%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="JS 常见的链表操作目录1. 单链表反转2. 链表中环的检测 相关问题 判断是否有环 找出环的入口点 找出环上结点的个数 求出链表的长度 求出环上距离任意一个结点最远的结点 求出链表的长度 如果相交，求出第一个相交结点。  3. 两个有序的链表合并4. 删除链表倒数第 n 个结点5. 求链表的中间结点1. 单链表反转12345678910111213141516171819202122&#x2F;&#x2F; 判断对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200323205459293.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200323205516504.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200323205600806.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200323205617566.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200323205631916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-22T14:34:43.583Z">
+<meta property="article:modified_time" content="2022-01-22T04:39:47.856Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200323205459293.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>JS 常见的链表操作 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JS 常见的链表操作">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-22 22:34" pubdate>
+        2020年3月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      45 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JS 常见的链表操作</h1>
+            
+            <div class="markdown-body">
+              <h1 id="JS-常见的链表操作"><a href="#JS-常见的链表操作" class="headerlink" title="JS 常见的链表操作"></a>JS 常见的链表操作</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h4 id="1-单链表反转"><a href="#1-单链表反转" class="headerlink" title="1. 单链表反转"></a>1.<a href="#jumpa"> <strong>单链表反转</strong></a></h4><h4 id="2-链表中环的检测-相关问题"><a href="#2-链表中环的检测-相关问题" class="headerlink" title="2. 链表中环的检测 相关问题"></a>2.<a href="#jumpb"> <strong>链表中环的检测 相关问题</strong></a></h4><ul>
+<li><a href="#jump1"><strong>判断是否有环</strong></a></li>
+<li><a href="#jump2"><strong>找出环的入口点</strong></a></li>
+<li><a href="#jump3"><strong>找出环上结点的个数</strong></a></li>
+<li><a href="#jump4"><strong>求出链表的长度</strong></a></li>
+<li><a href="#jump5"><strong>求出环上距离任意一个结点最远的结点</strong></a></li>
+<li><a href="#jump6"><strong>求出链表的长度</strong></a></li>
+<li><a href="#jump7"><strong>如果相交，求出第一个相交结点。</strong></a></li>
+</ul>
+<h4 id="3-两个有序的链表合并"><a href="#3-两个有序的链表合并" class="headerlink" title="3. 两个有序的链表合并"></a>3. <a href="#jumpc"><strong>两个有序的链表合并</strong></a></h4><h4 id="4-删除链表倒数第-n-个结点"><a href="#4-删除链表倒数第-n-个结点" class="headerlink" title="4. 删除链表倒数第 n 个结点"></a>4. <a href="#jumpd"><strong>删除链表倒数第 n 个结点</strong></a></h4><h4 id="5-求链表的中间结点"><a href="#5-求链表的中间结点" class="headerlink" title="5. 求链表的中间结点"></a>5.<a href="#jumpe"> <strong>求链表的中间结点</strong></a></h4><h2 id="1-单链表反转-1"><a href="#1-单链表反转-1" class="headerlink" title="1. 单链表反转"></a><span id="jumpa">1. 单链表反转</span></h2><figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 判断对象是否为空</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isEmptyObject</span>(<span class="hljs-params">obj</span>) </span>&#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> obj) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125; <br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ReverseList</span>(<span class="hljs-params">pHead</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (isEmptyObject(pHead)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">var</span> pre = pHead;<br>    <span class="hljs-keyword">var</span> PreNext = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">while</span> (pre.next != <span class="hljs-literal">null</span>) &#123;<br>        preNext = pre.next;<br>        pre.next = preNext.next;<br>        preNext.next = pHead;<br>        pHead = preNext;<br>    &#125;<br>    <span class="hljs-keyword">return</span> pHead;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>反转链表的思路：1-2-3-4-5，先将2换到第一个，变为：2-1-3-4-5。然后将3换到第一个，3-2-1-4-5。<br>以此类推。其中，pre始终指向1，preNext指向pre的下一个，即本轮需要换到第一个的数。<br>如此列表：<br>1-2-3-4-5<br>2-1-3-4-5<br>3-2-1-4-5<br>4-3-2-1-5<br>5-4-3-2-1</p>
+<h2 id="2-链表中环的检测-相关问题-1"><a href="#2-链表中环的检测-相关问题-1" class="headerlink" title="2. 链表中环的检测 相关问题"></a><span id="jumpb">2. 链表中环的检测 相关问题</span></h2><p>关于链表中环的检测，相关问题一般有如下几种：</p>
+<ul>
+<li>给定一个单链表，判断其中是否有环的存在</li>
+<li>如果存在环，找.出环的入口点</li>
+<li>如果存在环，找出环上结点的个数</li>
+<li>如果存在环，求出链表的长度</li>
+<li>如果存在环，求出环上距离任意一个结点最远的结点（环的对面结点问题）</li>
+<li>判断两个无环链表是否相交</li>
+<li>如果相交，求出第一个相交结点</li>
+</ul>
+<p>针对如上七种问题，下面逐一进行分析并写出相应实现代码。</p>
+<h4 id="（1）判断是否有环"><a href="#（1）判断是否有环" class="headerlink" title="（1）判断是否有环"></a><span id="jump1">（1）判断是否有环</span></h4><p><strong>问题分析：</strong></p>
+<p>对于这个问题，有一种非常巧妙的“快慢指针”的方法，就是定义两个指针：fast和slow，最初的时候fast和slow都指向链表的初始结点head，然后每一次操作，fast向前走两步，slow向前走一步。<br>因为fast比slow移动快，如果有环，那么fast一定会先进入环，而slow后进入环。当两个指针都进入环后，经过一定次数的操作，fast和slow最终会在环上相遇，并且一定是在slow绕环走完一圈之前相遇。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323205459293.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-tFNpgL9b-1584968051925)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584887806278.png)]"></p>
+<p>如图所示，slow进入环时，fast可能处于图示状态，然后每次操作，slow会向前走一步，而fast会向前追两步。因此每次操作完fast到slow的距离都会缩短一步，5、4、3、2、1…直到相遇。<br>又因为同一个环中，slow和fast的距离不可能大于环的总长度，所以fast和slow一定会在slow走完一圈之前相遇。<br>特殊情况：开始时，slow和fast就在环的入口处，这样相遇时，slow刚好走完一圈。</p>
+<p><strong>实现代码：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isExitLoop</span>(<span class="hljs-params">head</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (head === <span class="hljs-literal">null</span> || head.next === <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> slow = head;<br>    <span class="hljs-keyword">let</span> fast = head;<br>    <span class="hljs-keyword">while</span> (slow !== <span class="hljs-literal">null</span> &amp;&amp; fast !== <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) &#123;<br>        slow = slow.next;<br>        fast = fast.next.next;<br>        <span class="hljs-keyword">if</span> (slow == fast) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（2）找出环的入口点"><a href="#（2）找出环的入口点" class="headerlink" title="（2）找出环的入口点"></a><span id="jump2">（2）找出环的入口点</span></h4><p><img src="https://img-blog.csdnimg.cn/20200323205516504.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-aejQ4UX5-1584968051935)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584888602980.png)]"></p>
+<p><strong>问题分析：</strong></p>
+<p>如果链表有环，则在slow绕环走完一圈之前，一定会和fast相遇。<br>我们假设相遇时slow走了s个结点，则fast走了2s个结点。<br>设环的长度为r，相遇时fast已绕环走了 n 圈(n&gt;=1)，可得等式：<br>2s = s + n <em>r 简化得 =&gt; s = n</em> r<br>又设head与环的入口点距离为 a ，入口点与相遇点的距离为 x ，根据slow的总路径为s可得：<br>s = a + x<br>结合上式：a + x = n <em>r 变形 =&gt; a + x = ( n - 1 )</em> r + r<br>设链表总长度为L，则：r = L - a ，带入上式，得：a = ( n - 1 ) * r + ( L - a - x )<br>好了，注意看图，L - a - x 的长度就是从相遇点到环入口点的长度，也就是说，如果我们放置两个指针p1和p2，分别从起始点和相遇点出发，那么在p2绕环 ( n - 1 ) 圈后，最终一定会在环的入口点和p1相遇。<br>这样，我们就得到了环的入口点。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findLoopPort</span>(<span class="hljs-params">head</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (head === <span class="hljs-literal">null</span> || head.next === <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> show = head;<br>    <span class="hljs-keyword">let</span> fast = head;<br>    <span class="hljs-comment">//找到相遇点</span><br>    <span class="hljs-keyword">while</span> (slow !== <span class="hljs-literal">null</span> &amp;&amp; fast !== <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) &#123;<br>        slow = slow.next;<br>        fast = fast.next.next;<br>        <span class="hljs-keyword">if</span> (slow == fast) <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(fast == <span class="hljs-literal">null</span> || fast.next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    slow = head;<span class="hljs-comment">//slow指向开头，fast指在相遇点</span><br>    <span class="hljs-keyword">while</span> (slow != fast) &#123;<br>        slow = slow.next;<br>        fast = fast.next.next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> slow;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（3）找出环上结点的个数"><a href="#（3）找出环上结点的个数" class="headerlink" title="（3）找出环上结点的个数"></a><span id="jump3">（3）找出环上结点的个数</span></h4><p><strong>问题分析：</strong></p>
+<p>对于这个问题，有两种常见的解决方法：</p>
+<ul>
+<li>在slow和fast相遇后，让其中一个继续向前走，下次相遇时，所经过的结点，就是环上的结点个数。</li>
+<li>在slow和fast相遇后，让slow和fast同时继续向前走，下次相遇时，所经过的结点，就是环上的结点个数。</li>
+</ul>
+<p>稍微解释一下第二种方法，因为slow和fast的速度不同，同时出发后，两指针最大距离为环的总长度r，然后每次操作距离都会缩短一位，最终一定会再次相遇。再次相遇时，正好操作r次，也正好经过r个结点。</p>
+<p><strong>方法1实现代码：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findLoopPort</span>(<span class="hljs-params">head</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (head === <span class="hljs-literal">null</span> || head.next === <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> show = head;<br>    <span class="hljs-keyword">let</span> fast = head;<br>    <span class="hljs-comment">//找到相遇点</span><br>    <span class="hljs-keyword">while</span> (slow !== <span class="hljs-literal">null</span> &amp;&amp; fast !== <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) &#123;<br>        slow = slow.next;<br>        fast = fast.next.next;<br>        <span class="hljs-keyword">if</span> (slow == fast) <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(fast == <span class="hljs-literal">null</span> || fast.next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span>(slow != fast) &#123;<br>        count ++;<br>        slow = slow.next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> count;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（4）求出链表的长度"><a href="#（4）求出链表的长度" class="headerlink" title="（4）求出链表的长度"></a><span id="jump4">（4）求出链表的长度</span></h4><p><strong>问题分析：</strong></p>
+<p>链表长度L = 起点到入口点的距离 + 环的长度r ;<br>在前面的基础上，我们可以很轻松的得到这个题目的解。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findLoopPort</span>(<span class="hljs-params">head</span>) </span>&#123;<br>	<span class="hljs-keyword">if</span> (head === <span class="hljs-literal">null</span> || head.next === <span class="hljs-literal">null</span>) &#123;<br>		<span class="hljs-keyword">return</span> fasle;<br>	&#125;<br>	<span class="hljs-keyword">let</span> slow = head;<br>	<span class="hljs-keyword">let</span> fast = head;<br>	<span class="hljs-keyword">while</span> (fast !== <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) &#123;<br>		slow = slow.next;<br>		fast = fast.next.next;<br>		<span class="hljs-keyword">if</span> (slow == fast) <span class="hljs-keyword">break</span>;<br>	&#125;<br>	<span class="hljs-keyword">if</span>(fast == <span class="hljs-literal">null</span> || fast.next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>	<span class="hljs-keyword">let</span> len = <span class="hljs-number">1</span>; <span class="hljs-comment">//放环的长度</span><br>	<span class="hljs-keyword">let</span> temp = fast;<span class="hljs-comment">//暂时存放相遇点</span><br><span class="hljs-comment">//下面先求出起点到入口点的距离</span><br>	slow = head; <br>	<span class="hljs-keyword">while</span>(slow != fast) &#123;<br>		len ++;<br>		slow = slow.next;<br>		fast = fast.next.next;<br>	&#125;<br><span class="hljs-comment">//下面在求完起点到入口点的距离的基础上，加上环的长度，等于链表长度</span><br>	slow = temp;<br>	fast = temp;<br>	<span class="hljs-keyword">while</span>(slow != fast) &#123;<br>		len ++;<br>		slow = slow.next;<br>	&#125;<br>	<span class="hljs-keyword">return</span> len;<br>	<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（5）求出环上距离任意一个结点最远的结点（环的对面结点问题）"><a href="#（5）求出环上距离任意一个结点最远的结点（环的对面结点问题）" class="headerlink" title="（5）求出环上距离任意一个结点最远的结点（环的对面结点问题）"></a><span id="jump5">（5）求出环上距离任意一个结点最远的结点（环的对面结点问题）</span></h4><p><strong>问题分析：</strong></p>
+<p>如图所示，结点1和结点4，结点2和结点5，结点3和结点6分别互为“对面结点”，也就是环上距离最远的结点。<br>我们依然可以使用“快慢指针”的思想来解决这道题，定义一个每次移动两个结点的指针fast和每次移动一个结点的指针slow，两指针同时在问题结点出发，当fast或者fast-&gt;next再次回到问题结点时，slow所指向的结点就是问题结点的“对面结点”。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323205600806.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-LTN90Rzb-1584968051941)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584889823245.png)]"></p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findFacePort</span>(<span class="hljs-params">prt</span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> slow = prt;<br>    <span class="hljs-keyword">let</span> fast = prt;<br>    <span class="hljs-keyword">do</span> &#123;<br>        slow = slow.next;<br>        fast = fast.next.next;<br>    &#125; <span class="hljs-keyword">while</span>(fast != prt &amp;&amp; fast != prt.next);<br>    <span class="hljs-keyword">return</span> slow;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="（6）判断两个无环链表是否相交"><a href="#（6）判断两个无环链表是否相交" class="headerlink" title="（6）判断两个无环链表是否相交"></a><span id="jump6">（6）判断两个无环链表是否相交</span></h4><p><strong>问题分析：</strong></p>
+<p>对于判断两个无环链表是否相交类的问题，看起来无从下手，但其实只需要转换一下思路就豁然开朗了。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323205617566.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-JzxKm1cP-1584968051947)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584889861120.png)]"></p>
+<p>如图所示，存在ListA和ListB两个无环相交链表，我们只需要将ListA的首尾相连，这样就变成我们熟悉的判断是否有环的问题了。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323205631916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-45puncNi-1584968051954)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584889876496.png)]"></p>
+<h4 id="7-如果相交，求出第一个相交结点。"><a href="#7-如果相交，求出第一个相交结点。" class="headerlink" title="(7)如果相交，求出第一个相交结点。"></a><span id="jump7">(7)如果相交，求出第一个相交结点。</span></h4><p>同理，可转化为求环的相交点的问题。</p>
+<p><strong>学习参考于：</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.chinacion.cn/article/4598.html">链表专项练习题二 | 链表中环的检测 相关问题总结</a></p>
+<h2 id="3-两个有序的链表合并-1"><a href="#3-两个有序的链表合并-1" class="headerlink" title="3. 两个有序的链表合并"></a><span id="jumpc">3. 两个有序的链表合并</span></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListNode</span>() </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">val</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.val = val;<br>        <span class="hljs-built_in">this</span>.next = <span class="hljs-literal">null</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">var</span> mergeLists = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list1, list2</span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> list3 = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">var</span> c = list3;<br>    <span class="hljs-keyword">while</span>(list1 !== <span class="hljs-literal">null</span> &amp;&amp; list2 !== <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">if</span> (list1.val &lt;= list2.val) &#123;<br>            c.next = list1;<br>            list1 = list1.next;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            c.next= list2;<br>            list2 = list2.next;<br>        &#125;<br>        c = c.next;<br>    &#125;<br>    c.next = (list1 == <span class="hljs-literal">null</span>) ? list2 : list1;<br>    <span class="hljs-keyword">return</span> list3.next<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-删除链表倒数第-n-个结点-1"><a href="#4-删除链表倒数第-n-个结点-1" class="headerlink" title="4. 删除链表倒数第 n 个结点"></a><span id="jump4">4. 删除链表倒数第 n 个结点</span></h2><p>这道题要用双指针来实现。先用first指针前进n，然后让second从head开始和first一起前进，直到first到了末尾，此时second的下一个节点就是要删除的节点。（另外，若first一开始前进n就已经不在链表中了，说明要删除的节点正是head节点，那么直接返回head的下一个节点接口。）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeNode</span>(<span class="hljs-params">head, n</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (!head || k &lt;=<span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> first = head;<br>    <span class="hljs-keyword">let</span> second = head;<br>    <span class="hljs-keyword">while</span>(--k) &#123;<br>        <span class="hljs-keyword">if</span>(first.next != <span class="hljs-literal">null</span>) first = first.next;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-keyword">while</span>(first.next != <span class="hljs-literal">null</span>)&#123;<br>        first = first.next;<br>        second = second.next;<br>    &#125;<br>    second.next = second.next.next;<br>    <span class="hljs-keyword">return</span> head;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-求链表的中间结点-1"><a href="#5-求链表的中间结点-1" class="headerlink" title="5. 求链表的中间结点"></a><span id="jump5">5. 求链表的中间结点</span></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> middleNode = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">head</span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> fast = head,<br>        slow = head;<br>    <span class="hljs-keyword">while</span>(fast &amp;&amp; fast.next) &#123;<br>        fast = fast.next.next;<br>        slow = slow.next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> slow;<br>&#125;;<br></code></pre></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据结构与算法学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/23/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E9%A6%96%E9%A1%B5%E5%AE%9E%E7%8E%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">首页实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/22/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                        <span class="hidden-mobile">《数据结构与算法之美》学习笔记(3) 数据结构</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

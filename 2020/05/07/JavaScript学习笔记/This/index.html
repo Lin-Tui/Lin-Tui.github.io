@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="this 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用。 this 在任何情况下都不指向函数的词法作用域。 this 是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调 用时的各种条件。this 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。 当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="This">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/05/07/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/This/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="this 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用。 this 在任何情况下都不指向函数的词法作用域。 this 是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调 用时的各种条件。this 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。 当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-07T11:03:45.676Z">
+<meta property="article:modified_time" content="2022-01-22T04:47:31.630Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>This - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="This">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-07 19:03" pubdate>
+        2020年5月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      44 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">This</h1>
+            
+            <div class="markdown-body">
+              <p>this 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计<br>得更加简洁并且易于复用。</p>
+<p>this 在任何情况下都不指向函数的词法作用域。</p>
+<p>this 是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调</p>
+<p>用时的各种条件。this 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。</p>
+<p>当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会包</p>
+<p>含函数在哪里被调用（调用栈）、函数的调用方法、传入的参数等信息。this 就是记录的</p>
+<p>其中一个属性，会在函数执行的过程中用到。</p>
+<h1 id="绑定规则"><a href="#绑定规则" class="headerlink" title="绑定规则"></a><strong>绑定规则</strong></h1><p>来看看在函数的执行过程中调用位置如何决定 this 的绑定对象。</p>
+<p>你必须找到调用位置，然后判断需要应用下面四条规则中的哪一条。我们首先会分别解释</p>
+<p>这四条规则，然后解释多条规则都可用时它们的优先级如何排列。</p>
+<h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a><strong>默认绑定</strong></h3><p>最常用的函数调用类型：独立函数调用。可以把这条规则看作是无法应用<br>其他规则时的默认规则。</p>
+<p>首先要介绍的是最常用的函数调用类型：独立函数调用。可以把这条规则看作是无法应用<br>其他规则时的默认规则。<br>例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br><span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;<br>foo(); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p>当调用 foo() 时，this.a 被解析成了全局变量 a。为什么？因为在本例中，函数调用时应用了 this 的默认绑定，因此 this 指向全局对象。<br>那么怎么知道这里应用了默认绑定呢？</p>
+<p>可以通过分析调用位置来看看 foo() 是如何调用的。在代码中，foo() 是直接使用不带任何修饰的函数引用进行调用的，因此只能使用默认绑定，无法应用其他规则。<br>如果使用严格模式（strict mode），那么全局对象将无法使用默认绑定，因此 this 会绑定<br>到 undefined：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;<br>foo(); <span class="hljs-comment">// TypeError: this is undefined</span><br></code></pre></td></tr></table></figure>
+
+<p>这里有一个微妙但是非常重要的细节，虽然 this 的绑定规则完全取决于调用位置，但是只<br>有 foo() 运行在非 strict mode 下时，默认绑定才能绑定到全局对象；严格模式下与 foo()<br>的调用位置无关：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br><span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;<br>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br><span class="hljs-meta">&quot;use strict&quot;</span>;<br>foo(); <span class="hljs-comment">// 2</span><br>&#125;)();<br></code></pre></td></tr></table></figure>
+
+<p>通常来说你不应该在代码中混合使用 strict mode 和 non-strict mode。整个程序要么严格要么非严格。然而，有时候你可能会用到第三方库，其严格程度和你的代码有所不同，因此一定要注意这类兼容性细节。</p>
+<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3><p>另一条需要考虑的规则是调用位置是否有上下文对象，或者说是否被某个对象拥有或者包含，不过这种说法可能会造成一些误导。</p>
+<p>例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">foo</span>: foo<br>&#125;;<br>obj.foo(); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p>需要注意的是 foo() 的声明方式，及其之后是如何被当作引用属性添加到 obj 中的。但是无论是直接在 obj 中定义还是先定义再添加为引用属性，这个函数严格来说都不属于<br>obj 对象。<br>然而，调用位置会使用 obj 上下文来引用函数，因此你可以说函数被调用时 obj 对象“拥有”或者“包含”它。<br>无论你如何称呼这个模式，当 foo() 被调用时，它的落脚点确实指向 obj 对象。当函数引<br>用有上下文对象时，隐式绑定规则会把函数调用中的 this 绑定到这个上下文对象。因为调<br>用 foo() 时 this 被绑定到 obj，因此 this.a 和 obj.a 是一样的。</p>
+<p>对象属性引用链中只有最顶层或者说最后一层会影响调用位置。举例来说：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj2 = &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">42</span>,<br>    <span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> obj1 = &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">obj2</span>: obj2<br>&#125;;<br>obj1.obj2.foo(); <span class="hljs-comment">// 42</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>隐式丢失</strong>：</p>
+<p>一个最常见的 this 绑定问题就是被隐式绑定的函数会丢失绑定对象，也就是说它会应用默认绑定，从而把 this 绑定到全局对象或者 undefined 上，取决于是否是严格模式。<br>思考下面的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> bar = obj.foo; <span class="hljs-comment">// 函数别名！</span><br><span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span><br>bar(); <span class="hljs-comment">// &quot;oops, global&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身，因此此时的<br>bar() 其实是一个不带任何修饰的函数调用，因此应用了默认绑定。<br>一种更微妙、更常见并且更出乎意料的情况发生在传入回调函数时：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doFoo</span>(<span class="hljs-params">fn</span>) </span>&#123;<br>	<span class="hljs-comment">// fn 其实引用的是 foo</span><br>	fn(); <span class="hljs-comment">// &lt;-- 调用位置！</span><br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>	<span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br>	<span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span><br>doFoo( obj.foo ); <span class="hljs-comment">// &quot;oops, global&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>参数传递其实就是一种隐式赋值，因此我们传入函数时也会被隐式赋值，所以结果和上一个例子一样。<br>如果把函数传入语言内置的函数而不是传入你自己声明的函数，会发生什么呢？结果是一样的，没有区别：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>	<span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br>	<span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span><br><span class="hljs-built_in">setTimeout</span>( obj.foo, <span class="hljs-number">100</span> ); <span class="hljs-comment">// &quot;oops, global&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>JavaScript 环境中内置的 setTimeout() 函数实现和下面的伪代码类似：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTimeout</span>(<span class="hljs-params">fn,delay</span>) </span>&#123;<br>	<span class="hljs-comment">// 等待 delay 毫秒</span><br>	fn(); <span class="hljs-comment">// &lt;-- 调用位置！</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>就像我们看到的那样，回调函数丢失 this 绑定是非常常见的。除此之外，还有一种情况 this 的行为会出乎我们意料：调用回调函数的函数可能会修改 this。在一些流行的JavaScript 库中事件处理器常会把回调函数的 this 强制绑定到触发事件的 DOM 元素上。这在一些情况下可能很有用，但是有时它可能会让你感到非常郁闷。遗憾的是，这些工具通常无法选择是否启用这个行为。</p>
+<h3 id="显式绑定"><a href="#显式绑定" class="headerlink" title="显式绑定"></a>显式绑定</h3><p>如果不想在对象内部包含函数引用，而想在某个对象上强制调用函数，都可以使用 call(..) 和 apply(..) 方法。</p>
+<p>思考下面的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br><span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br><span class="hljs-attr">a</span>:<span class="hljs-number">2</span><br>&#125;;<br>foo.call( obj ); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p>通过 foo.call(..)，我们可以在调用 foo 时强制把它的 this 绑定到 obj 上。<br>如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 this 的绑定对象，这个原始值会被转换成它的对象形式（也就是 new String(..)、new Boolean(..) 或者new Number(..)）。这通常被称为“装箱”。</p>
+<p>可惜，显式绑定仍然无法解决我们之前提出的丢失绑定问题，是显式绑定的一个变种可以解决这个问题：</p>
+<p><strong>硬绑定</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>	<span class="hljs-attr">a</span>:<span class="hljs-number">2</span><br>&#125;;<br><span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>	foo.call( obj );<br>&#125;;<br>bar(); <span class="hljs-comment">// 2</span><br><span class="hljs-built_in">setTimeout</span>( bar, <span class="hljs-number">100</span> ); <span class="hljs-comment">// 2</span><br><span class="hljs-comment">// 硬绑定的 bar 不可能再修改它的 this</span><br>bar.call( <span class="hljs-built_in">window</span> ); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码创建了函数 bar()，并在它的内部手动调用<br>了 foo.call(obj)，因此强制把 foo 的 this 绑定到了 obj。无论之后如何调用函数 bar，它<br>总会手动在 obj 上调用 foo。这种绑定是一种显式的强制绑定，因此我们称之为硬绑定。</p>
+<p>硬绑定的典型应用场景就是创建一个包裹函数，传入所有的参数并返回接收到的所有值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">something</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a, something);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.a + something;<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">2</span><br>&#125;;<br><br><span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> foo.apply(obj, <span class="hljs-built_in">arguments</span>);<br>&#125;<br><br><span class="hljs-keyword">var</span> b = bar(<span class="hljs-number">3</span>); <span class="hljs-comment">// 2  3</span><br><span class="hljs-built_in">console</span>.log(b); <span class="hljs-comment">// 5</span><br></code></pre></td></tr></table></figure>
+
+<p>另一种使用方法是创建一个 i 可以重复使用的辅助函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">something</span>) </span>&#123;<br>	<span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a, something );<br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.a + something;<br>&#125;<br><span class="hljs-comment">// 简单的辅助绑定函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bind</span>(<span class="hljs-params">fn, obj</span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> fn.apply( obj, <span class="hljs-built_in">arguments</span> );<br>&#125;;<br>&#125;<br><span class="hljs-keyword">var</span> obj = &#123;<br>	<span class="hljs-attr">a</span>:<span class="hljs-number">2</span><br>&#125;;<br><span class="hljs-keyword">var</span> bar = bind( foo, obj );<br><span class="hljs-keyword">var</span> b = bar( <span class="hljs-number">3</span> ); <span class="hljs-comment">// 2 3</span><br><span class="hljs-built_in">console</span>.log( b ); <span class="hljs-comment">// 5</span><br></code></pre></td></tr></table></figure>
+
+<p>由于硬绑定是一种非常常用的模式，所以在 ES5 中提供了内置的方法 Function.prototype.<br>bind。</p>
+<h3 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h3><p>“构造函数”是类中的一些特殊方法，使用 new 初始化类时会调用类中的构造函数。</p>
+<p>首先我们重新定义一下 JavaScript 中的“构造函数”。在 JavaScript 中，构造函数只是一些使用 new 操作符时被调用的函数。它们并不会属于某个类，也不会实例化一个类。实际上，它们甚至都不能说是一种特殊的函数类型，它们只是被 new 操作符调用的普通函数而已。</p>
+<h1 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h1><p>如果某个调用位置可以应用多条规则该怎么办？为了解决这个问题就必须给这些规则设定优先级。</p>
+<p><strong>默认绑定的优先级是四条规则中最低的</strong>，所以我们可以先不考虑它。</p>
+<p>隐式绑定和显式绑定哪个优先级更高？我们来测试一下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-built_in">console</span>.log( <span class="hljs-built_in">this</span>.a );<br>&#125;<br><span class="hljs-keyword">var</span> obj1 = &#123;<br>	<span class="hljs-attr">a</span>: <span class="hljs-number">2</span>,<br><span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> obj2 = &#123;<br>	<span class="hljs-attr">a</span>: <span class="hljs-number">3</span>,<br>	<span class="hljs-attr">foo</span>: foo<br>&#125;;<br>obj1.foo(); <span class="hljs-comment">// 2</span><br>obj2.foo(); <span class="hljs-comment">// 3</span><br>obj1.foo.call( obj2 ); <span class="hljs-comment">// 3</span><br>obj2.foo.call( obj1 ); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>显式绑定优先级比隐式绑定更高</strong>，也就是说在判断时应当先考虑是否可以应用显式绑定。</p>
+<p>现在我们需要搞清楚 new 绑定和隐式绑定的优先级谁高谁低：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">something</span>) </span>&#123;<br><span class="hljs-built_in">this</span>.a = something;<br>&#125;<br><span class="hljs-keyword">var</span> obj1 = &#123;<br><span class="hljs-attr">foo</span>: foo<br>&#125;;<br><span class="hljs-keyword">var</span> obj2 = &#123;&#125;;<br>obj1.foo( <span class="hljs-number">2</span> );<br><span class="hljs-built_in">console</span>.log( obj1.a ); <span class="hljs-comment">// 2</span><br>obj1.foo.call( obj2, <span class="hljs-number">3</span> );<br><span class="hljs-built_in">console</span>.log( obj2.a ); <span class="hljs-comment">// 3</span><br><span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">new</span> obj1.foo( <span class="hljs-number">4</span> );<br><span class="hljs-built_in">console</span>.log( obj1.a ); <span class="hljs-comment">// 2</span><br><span class="hljs-built_in">console</span>.log( bar.a ); <span class="hljs-comment">// 4</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到 <strong>new 绑定比隐式绑定优先级高</strong>。但是 new 绑定和显式绑定谁的优先级更高呢？</p>
+<p>（1）默认绑定</p>
+<p>首先要介绍的是最常用的函数调用类型：独立函数调用。可以把这条规则看作是无法应用</p>
+<p>其他规则时的默认规则。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/13/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/js%E4%B8%AD%E7%9A%84%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">js中的隐式转换</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/05/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9Athis%E6%8C%87%E5%90%91%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">事件绑定this指向问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HTML 元信息类标签所谓元信息，是指描述自身的信息，元信息类标签，就是 HTML 用于描述文档自身的一类标签，它们通常出现在 head标签中，一般都不会在页面被显示出来（与此相对，其它标签，如语义类标签，描述的是业务） 元信息多数情况下是给浏览器、搜索引擎等机器阅读的，有时候这些信息会在页面之外显示给用户，有时候则不会。 元信息类标签数量不多，逐一为你介绍一下。 head 标签head 标签本身">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《重学前端》学习笔记(10)">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/02/08/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(10)/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="HTML 元信息类标签所谓元信息，是指描述自身的信息，元信息类标签，就是 HTML 用于描述文档自身的一类标签，它们通常出现在 head标签中，一般都不会在页面被显示出来（与此相对，其它标签，如语义类标签，描述的是业务） 元信息多数情况下是给浏览器、搜索引擎等机器阅读的，有时候这些信息会在页面之外显示给用户，有时候则不会。 元信息类标签数量不多，逐一为你介绍一下。 head 标签head 标签本身">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208132044472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200208132054577.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-02-08T03:05:13.378Z">
+<meta property="article:modified_time" content="2022-01-22T04:33:55.772Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200208132044472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>《重学前端》学习笔记(10) - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《重学前端》学习笔记(10)">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-08 11:05" pubdate>
+        2020年2月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      58 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《重学前端》学习笔记(10)</h1>
+            
+            <div class="markdown-body">
+              <h1 id="HTML-元信息类标签"><a href="#HTML-元信息类标签" class="headerlink" title="HTML 元信息类标签"></a>HTML 元信息类标签</h1><p>所谓元信息，是指描述自身的信息，元信息类标签，就是 HTML 用于描述文档自身的一类标签，它们通常出现在 head标签中，一般都不会在页面被显示出来（与此相对，其它标签，如语义类标签，描述的是业务）</p>
+<p>元信息多数情况下是给浏览器、搜索引擎等机器阅读的，有时候这些信息会在页面之外显示给用户，有时候则不会。</p>
+<p>元信息类标签数量不多，逐一为你介绍一下。</p>
+<h4 id="head-标签"><a href="#head-标签" class="headerlink" title="head 标签"></a>head 标签</h4><p><code>head</code> 标签本身并不携带任何信息，它主要是作为盛放其它语义类标签的容器使用。</p>
+<p><code>head</code> 标签规定了自身必须是<code>html</code>标签中的第一个标签，它的内容必须包含一个<code> title</code>，并且最多只能包含一个<code> base</code>。如果文档作为<code> iframe</code>，或者有其他方式指定了文档标题时，可以允许不包含<code> title</code> 标签。</p>
+<h4 id="title-标签"><a href="#title-标签" class="headerlink" title="title 标签"></a>title 标签</h4><p><code>title</code> 标签表示文档的标题</p>
+<p>考虑到 <code>title</code> 作为元信息，可能会被用在浏览器收藏夹、微信推送卡片、微博等各种场景，这时侯往往是上下文缺失的，所以title 应该是完整地概括整个网页内容的。<br>而 <code>h1</code>-<code>h6 </code>则仅仅用于页面展示，它可以默认具有上下文，并且有链接辅助，所以可以简写，即便无法概括全文，也不会有很大的影响。</p>
+<h4 id="base标签"><a href="#base标签" class="headerlink" title="base标签"></a>base标签</h4><p><code>base </code>标签实际上是个历史遗留标签。它的作用是给页面上所有的 URL 相对地址提供一个基础。<br><code>base</code> 标签最多只有一个，它改变全局的链接地址，它是一个非常危险的标签，容易造成跟 JavaScript 的配合问题，所以在实际开发中，我比较建议你使用JavaScript 来代替 base 标签。</p>
+<h4 id="meta-标签"><a href="#meta-标签" class="headerlink" title="meta 标签"></a>meta 标签</h4><p><code>meta</code> 标签是一组键值对，它是一种通用的元信息表示标签。</p>
+<p>在<code>head</code>中可以出现任意多个<code>meta </code>标签。一般的<code> meta</code> 标签由 <code>name </code>和 <code>content </code>两个属性来定义。<code>name</code> 表示元信息的名，<code>content </code>则用于表示元信息的值。</p>
+<p><code>meta</code> 标签还有一些变体，主要用于简化书写方式或者声明自动化行为。下面挑几种重点的内容来分别讲解一下。</p>
+<h4 id="具有-charset-属性的-meta"><a href="#具有-charset-属性的-meta" class="headerlink" title="具有 charset 属性的 meta"></a>具有 charset 属性的 meta</h4><p>从 HTML5 开始，为了简化写法，<code>meta </code>标签新增了<code> charset</code> 属性。添加了<code> charset</code> 属性的 <code>meta</code> 标签无需再有<code> name</code> 和<code> content</code>。</p>
+<p><code>charset</code> 型<code> meta</code> 标签非常关键，它描述了 HTML 文档自身的编码形式。因此，我建议这个标签放在 <code>head </code>的第一个。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> &gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这样，浏览器读到这个标签之前，处理的所有字符都是 ASCII 字符，众所周知，ASCII 字符是 UTF-8 和绝大多数字符编码的子集，所以，在读到<code> meta</code> 之前，浏览器把文档理解多数编码格式都不会出错，这样可以最大限度地保证不出现乱码。<br>一般情况下，http 服务端会通过 http 头来指定正确的编码方式，但是有些特殊的情况如使用 file 协议打开一个 HTML 文件，则没有 http 头，这种时候，charset meta 就非常重要了。</p>
+<h4 id="具有-http-equiv-属性的-meta"><a href="#具有-http-equiv-属性的-meta" class="headerlink" title="具有 http-equiv 属性的 meta"></a>具有 http-equiv 属性的 meta</h4><p>具有 <code>http-equiv </code>属性的<code>meta</code>标签，表示执行一个命令，这样的<code>meta</code>标签可以不需要 <code>name</code> 属性了。</p>
+<p>例如，下面一段代码，相当于添加了 <code>content-type</code> 这个<code> http</code> 头，并且指定了 <code>http </code>编码方式。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;meta <span class="hljs-attribute">http-equiv</span>=<span class="hljs-string">&quot;content-type&quot;</span> <span class="hljs-attribute">content</span>=<span class="hljs-string">&quot;text/html; charset=UTF-8&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>除了<code> content-type</code>，还有以下几种命令：</p>
+<ul>
+<li><code>content-language</code> 指定内容的语言；</li>
+<li><code>default-style</code> 指定默认样式表；</li>
+<li><code>refresh</code> 刷新；</li>
+<li><code>set-cookie</code> 模拟 http 头 set-cookie，设置 cookie；</li>
+<li><code>x-ua-compatible</code> 模拟 http 头 x-ua-compatible，声明 ua 兼容性；</li>
+<li><code>content-security-policy</code>模拟 http 头 content-security-policy，声明内容安全策略。</li>
+</ul>
+<h4 id="name-为-viewport-的-meta"><a href="#name-为-viewport-的-meta" class="headerlink" title="name 为 viewport 的 meta"></a>name 为 viewport 的 meta</h4><p>实际上，<code>meta</code> 标签可以被自由定义，只要写入和读取的双方约定好 <code>name </code>和<code>content</code>的格式就可以了</p>
+<p> <code>name </code>为 <code>viewport</code> 的 <code>meta</code>，它没有在 HTML 标准中定义，却是移动端开发的事实标准。</p>
+<p>这类<code> meta</code> 的 <code>name</code> 属性为 <code>viewport</code>，它的 <code>content</code> 是一个复杂结构，是用逗号分隔的键值对，键值对的格式是 <code>key=value</code>。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;meta <span class="hljs-attribute">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attribute">content</span>=<span class="hljs-string">&quot;width=500, initial-scale=1&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这里只指定了两个属性，宽度和缩放，实际上 <code>viewport</code> 能控制的更多，它能表示的全部属性如下：</p>
+<ul>
+<li><code>width</code>：页面宽度，可以取值具体的数字，也可以是 device-width，表示跟设备宽度相等。</li>
+<li><code>height</code>：页面高度，可以取值具体的数字，也可以是 device-height，表示跟设备高度相等。</li>
+<li><code>initial-scale</code>：初始缩放比例。</li>
+<li><code>minimum-scale</code>：最小缩放比例。</li>
+<li><code>maximum-scale</code>：最大缩放比例。</li>
+<li><code>user-scalable</code>：是否允许用户缩放。</li>
+</ul>
+<h4 id="其它预定义的-meta"><a href="#其它预定义的-meta" class="headerlink" title="其它预定义的 meta"></a>其它预定义的 meta</h4><p><code>application-name</code>：如果页面是 Web application，用这个标签表示应用名称。</p>
+<ul>
+<li><code>author:</code> 页面作者。</li>
+<li><code>description</code>：页面描述，这个属性可能被用于搜索引擎或者其它场合。</li>
+<li><code>generator</code>: 生成页面所使用的工具，主要用于可视化编辑器，如果是手写 HTML 的网页，不需要加这个 meta。</li>
+<li><code>keywords</code>: 页面关键字，对于 SEO 场景非常关键。</li>
+<li><code>referrer</code>: 跳转策略，是一种安全考量。</li>
+<li><code>theme-color</code>: 页面风格颜色，实际并不会影响页面，但是浏览器可能据此调整页面之外的 UI（如窗口边框或者 tab 的颜色）。</li>
+</ul>
+<h1 id="HTML-链接"><a href="#HTML-链接" class="headerlink" title="HTML 链接"></a>HTML 链接</h1><p>链接是 HTML 中的一种机制，它是 HTML 文档和其它文档或者资源的连接关系，在 HTML 中，链接有两种类型。一种是超链接型标签，一种是外部资源链接。<br>链接的家族中有 a 标签、area 标签和 link 标签。<br><img src="https://img-blog.csdnimg.cn/20200208132044472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200208132054577.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="link-标签"><a href="#link-标签" class="headerlink" title="link 标签"></a>link 标签</h2><p>有些<code>link</code>标签也是元信息类标签的一种。在很多时候，它也是不会对浏览器产生任何效果的。</p>
+<p><code>link </code>标签会生成一个链接，它可能生成超链接，也可能生成外部资源链接。</p>
+<p>这意味着多数浏览器中，这些 <code>link </code>标签不产生任何作用。但是，这些<code> link</code> 标签能够被搜索引擎和一些浏览器插件识别，从而产生关键性作用。另外一些<code> link</code> 标签则会把外部的资源链接到文档中，也就是说，会实际下载这些资源，并且做出一些处理，比如我们常见的用<code> link</code> 标签引入样式表。</p>
+<h4 id="超链接类-link-标签"><a href="#超链接类-link-标签" class="headerlink" title="超链接类 link 标签"></a>超链接类 link 标签</h4><p>超链接型<code>link</code>标签是一种被动型链接，在用户不操作的情况下，它们不会被主动下载。</p>
+<p><code>link </code>标签具有特定的<code>rel</code>属性，会成为特定类型的<code> link</code> 标签。产生超链接的<code> link</code> 标签包括：具有<code>rel=“canonical”</code>的 <code>link</code>、具有 <code>rel=&quot;alternate&quot;</code>的 <code>link</code>、具有<code>rel=“prev” rel=&quot;next&quot;</code>的 <code>link</code> 等等。</p>
+<ul>
+<li><h5 id="canonical-型-link"><a href="#canonical-型-link" class="headerlink" title="canonical 型 link"></a>canonical 型 link</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;canonical&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;...&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个标签提示页面它的主 URL，在网站中常常有多个 URL 指向同一页面的情况，搜索引擎访问这类页面时会去掉重复的页面，这个<code> link</code> 会提示搜索引擎保留哪一个URL</p>
+</li>
+<li><h5 id="alternate-型-link"><a href="#alternate-型-link" class="headerlink" title="alternate 型 link"></a>alternate 型 link</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;alternate&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;...&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个标签提示页面它的变形形式，这个所谓的变形可能是当前页面内容的不同格式、不同语言或者为不同的设备设计的版本，这种<code> link</code> 通常也是提供给搜索引擎来使用的。</p>
+</li>
+<li><p>其它超链接类的<code> link</code></p>
+<p>其它超链接类<code> link</code> 标签都表示一个跟当前文档相关联的信息，可以把这样的 <code>link</code> 标签视为一种带链接功能的<code>meta</code>标签</p>
+<ul>
+<li><code>rel=“author” </code>链接到本页面的作者，一般是 mailto: 协议</li>
+<li><code>rel=“help” </code>链接到本页面的帮助页</li>
+<li><code>rel=“license” </code>链接到本页面的版权信息页</li>
+<li><code>rel=“search”</code> 链接到本页面的搜索页面（一般是站内提供搜索时使用）</li>
+</ul>
+</li>
+</ul>
+<h4 id="外部资源类-link-标签"><a href="#外部资源类-link-标签" class="headerlink" title="外部资源类 link 标签"></a>外部资源类 link 标签</h4><p>外部资源型 <code>link </code>标签会被主动下载，并且根据 <code>rel </code>类型做不同的处理。外部资源型的标签包括：具有<code> icon</code> 型的 <code>link</code>、预处理类 <code>link</code>、<code>modulepreload </code>型的 <code>link</code>、<code>stylesheet</code>、<code>pingback</code>。</p>
+<h4 id="icon-型-link"><a href="#icon-型-link" class="headerlink" title="icon 型 link"></a>icon 型 link</h4><p>这类链接表示页面的<code> icon</code>。多数浏览器会读取 <code>icon</code> 型 <code>link</code>，并且把页面的<code>icon</code>展示出来。<br><code>icon </code>型 <code>link </code>是唯一一个外部资源类的元信息 <code>link</code>，其它元信息类 link 都是超链接，这意味着，<code>icon</code> 型<code> link</code> 中的图标地址默认会被浏览器下载和使用。<br>如果没有指定这样的<code> link</code>，多数浏览器会使用域名根目录下的 favicon.ico，即使它并不存在，所以从性能的角度考虑，建议一定要保证页面中有 <code>icon </code>型的<code> link</code>。<br>只有<code>icon</code>型<code> link</code> 有有效的<code>sizes</code>属性，HTML 标准允许一个页面出现多个<code> icon</code> 型 <code>link</code>，并且用<code>sizes</code>指定它适合的 <code>icon</code> 尺寸。</p>
+<h4 id="预处理类-link"><a href="#预处理类-link" class="headerlink" title="预处理类 link"></a>预处理类 link</h4><p>导航到一个网站需要经过 `dns ``查询域名、建立连接、传输数据、加载进内存和渲染等一系列的步骤。</p>
+<p>预处理类 <code>link</code> 标签就是允许我们控制浏览器，提前针对一些资源去做这些操作，以提高性能（当然如果你乱用的话，性能反而更差）。</p>
+<p>下面我来列一下这些<code>link</code>类型：</p>
+<ul>
+<li><code>dns-prefetch</code> 型 link 提前对一个域名做 dns 查询，这样的 link 里面的 href 实际上只有域名有意义。</li>
+<li><code>preconnect </code>型 link 提前对一个服务器建立 tcp 连接。</li>
+<li><code>prefetch </code>型 link 提前取 href 指定的 url 的内容。</li>
+<li><code>preload </code>型 link 提前加载 href 指定的 url。</li>
+<li><code>prerender</code> 型 link 提前渲染 href 指定的 url。</li>
+</ul>
+<h4 id="modulepreload-型的-link"><a href="#modulepreload-型的-link" class="headerlink" title="modulepreload 型的 link"></a>modulepreload 型的 link</h4><p><code>modulepreload</code> 型<code> link</code> 的作用是预先加载一个 JavaScript 的模块。这可以保证 JS 模块不必等到执行时才加载。<br>这里的所谓加载，是指完成下载并放入内存，并不会执行对应的 JavaScript。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;modulepreload&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;app.js&quot;</span>&gt;<br>&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;modulepreload&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;helpers.js&quot;</span>&gt;<br>&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;modulepreload&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;irc.js&quot;</span>&gt;<br>&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;modulepreload&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;fog-machine.js&quot;</span>&gt;<br>&lt;script <span class="hljs-attribute">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attribute">src</span>=<span class="hljs-string">&quot;app.js&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个例子来自 HTML 标准，我们假设 app.js 中有<code> import “irc”</code> 和 <code>import “fog-machine”</code>, 而 irc.js 中有<code> import “helpers”</code>。这段代码使用 moduleload 型<br><code>link </code>来预加载了四个 js 模块。<br>尽管，单独使用<code>script </code>标签引用 app.js 也可以正常工作，但是我们通过加入对四个 JS 文件的 <code>link</code> 标签，使得四个 JS 文件有机会被并行地下载，这样提高了性能。</p>
+<h4 id="stylesheet-型-link"><a href="#stylesheet-型-link" class="headerlink" title="stylesheet 型 link"></a>stylesheet 型 link</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">&quot;xxx.css&quot;</span> <span class="hljs-attribute">type</span>=<span class="hljs-string">&quot;text/css&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>基本用法是从一个 CSS 文件创建一个样式表。这里 <code>type</code> 属性可以没有，如果有，必须是”<code>text/css</code>“才会生效。</p>
+<h4 id="pingback-型-link"><a href="#pingback-型-link" class="headerlink" title="pingback 型 link"></a>pingback 型 link</h4><p>这样的<code> link</code> 表示本网页被引用时，应该使用的 pingback 地址，这个机制是一份独立的标准，遵守 pingback 协议的网站在引用本页面时，会向这个 pingback url发送一个消息。</p>
+<h2 id="a-标签"><a href="#a-标签" class="headerlink" title="a 标签"></a>a 标签</h2><p><code>a </code>标签“anchor”的缩写，它是锚点的意思，所谓锚点，实际上也是一种比喻的用法，古代船舶用锚来固定自己的位置，避免停泊时被海浪冲走，所以<code>anchor</code>标签的意思也是标识文档中的特定位置。</p>
+<p><code>a</code> 标签其实同时充当了链接和目标点的角色，当 <code>a</code> 标签有<code> href</code> 属性时，它是链接，当它有 <code>name</code> 时，它是链接的目标。</p>
+<p>具有<code>href</code>的 <code>a </code>标签跟一些 <code>link</code> 一样，会产生超链接，也就是在用户不操作的情况下，它们不会被主动下载的被动型链接。</p>
+<p>重点的内容是，<code>a</code> 标签也可以有<code>rel</code>属性，我们来简单了解一下，首先是跟 <code>link </code>相同的一些 <code>rel</code>，包括下面的几种：</p>
+<ul>
+<li><code>alternate</code></li>
+<li><code>author</code></li>
+<li><code>help</code></li>
+<li><code>license</code></li>
+<li><code>next</code></li>
+<li><code>prev</code></li>
+<li><code>search</code></li>
+</ul>
+<p>这些跟<code>link</code>语义完全一致，不同的是，<code>a </code>标签产生的链接是会实际显示在网页中的，而 <code>link</code> 标签仅仅是元信息。</p>
+<p><code>a </code>标签独有的 <code>rel </code>类型：</p>
+<ul>
+<li><code>tag </code>表示本网页所属的标签；</li>
+<li><code>bookmark </code>到上级章节的链接。</li>
+</ul>
+<p><code>a </code>标签还有一些辅助的<code>rel</code>类型，用于提示浏览器或者搜索引擎做一些处理：</p>
+<ul>
+<li><code>nofollow</code> 此链接不会被搜索引擎索引；</li>
+<li><code>noopener</code> 此链接打开的网页无法使用 opener 来获得当前页面的窗口；</li>
+<li><code>noreferrer</code> 此链接打开的网页无法使用referrer 来获得当前页面的 url；</li>
+<li><code>opener</code> 打开的网页可以使用 window.opener 来访问当前页面的 window 对象，这是 a`标签的默认行为。</li>
+</ul>
+<p><code>a </code>标签基本解决了在页面中插入文字型和整张图片超链接的需要，但是如果我们想要在图片的某个区域产生超链接，那么就要用到另一种标签了——<code>area </code>标签。</p>
+<h2 id="area-标签"><a href="#area-标签" class="headerlink" title="area 标签"></a>area 标签</h2><p><code>area</code> 标签与<code> a</code>标签非常相似，不同的是，它不是文本型的链接，而是区域型的链接。<br><code>area </code>标签支持的<code>rel</code>与<code> a</code>完全一样</p>
+<p><code>area</code> 是整个<code>html</code>规则中唯一支持非矩形热区的标签，它的 <code>shape</code> 属性支持三种类型。</p>
+<ul>
+<li>圆形：<code>circle</code> 或者 <code>circ</code>，<code>coords</code> 支持三个值，分别表示中心点的 x,y 坐标和圆形半径 r。</li>
+<li>矩形：<code>rect</code> 或者 <code>rectangle</code>，<code>coords </code>支持两个值，分别表示两个对角顶点 x1，y1 和 x2，y2。</li>
+<li>多边形：<code>poly </code>或者<code> polygon</code>，<code>coords</code> 至少包括 6 个值，表示多边形的各个顶点。</li>
+</ul>
+<p>因为<code> area</code> 设计的时间较早，所以不支持含有各种曲线的路径，但是它也是唯一一个支持了非矩形触发区域的元素，所以，对于一些效果而言，<code>area </code>是必不可少的。<code>area </code>必须跟<code>img</code>和 <code>map </code>标签配合使用。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br> Please select a shape:<br> <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;shapes.png&quot;</span> <span class="hljs-attr">usemap</span>=<span class="hljs-string">&quot;#shapes&quot;</span></span><br><span class="hljs-tag"> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Four shapes are available: a red hollow box, a green circle, a blue triangle, and a yellow four-pointed star.&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">map</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;shapes&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">area</span> <span class="hljs-attr">shape</span>=<span class="hljs-string">rect</span> <span class="hljs-attr">coords</span>=<span class="hljs-string">&quot;50,50,100,100&quot;</span>&gt;</span> <span class="hljs-comment">&lt;!-- the hole in the red box --&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">area</span> <span class="hljs-attr">shape</span>=<span class="hljs-string">rect</span> <span class="hljs-attr">coords</span>=<span class="hljs-string">&quot;25,25,125,125&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;red.html&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Red box.&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">area</span> <span class="hljs-attr">shape</span>=<span class="hljs-string">circle</span> <span class="hljs-attr">coords</span>=<span class="hljs-string">&quot;200,75,50&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;green.html&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Green circle.&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">area</span> <span class="hljs-attr">shape</span>=<span class="hljs-string">poly</span> <span class="hljs-attr">coords</span>=<span class="hljs-string">&quot;325,25,262,125,388,125&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;blue.html&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Blue triangle.&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">area</span> <span class="hljs-attr">shape</span>=<span class="hljs-string">poly</span> <span class="hljs-attr">coords</span>=<span class="hljs-string">&quot;450,25,435,60,400,75,435,90,450,125,465,90,500,75,465,60&quot;</span></span><br><span class="hljs-tag"> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;yellow.html&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Yellow star.&quot;</span>&gt;</span><br> <span class="hljs-tag">&lt;/<span class="hljs-name">map</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《重学前端》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/08/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(11)/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《重学前端》学习笔记(11)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/07/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(9)/">
+                        <span class="hidden-mobile">《重学前端》学习笔记(9)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录1. 类的创建 工厂模式 构造函数模式 原型模式 组合模式  2. 类的继承 原型链继承 构造继承 实例继承 拷贝继承 组合继承 寄生组合继承  3. new 的原理实现  学习和参考于： JS定义类的六种方式详解 JS实现继承的几种方式 JavaScript深入之创建对象的多种方式以及优缺点 js new一个对象的过程，实现一个简单的new方法   （一）类的创建1. 工厂模式1234567">
+<meta property="og:type" content="article">
+<meta property="og:title" content="类的创建继承 与 new原理实现">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E7%BB%A7%E6%89%BF%20%E4%B8%8E%20new%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="目录1. 类的创建 工厂模式 构造函数模式 原型模式 组合模式  2. 类的继承 原型链继承 构造继承 实例继承 拷贝继承 组合继承 寄生组合继承  3. new 的原理实现  学习和参考于： JS定义类的六种方式详解 JS实现继承的几种方式 JavaScript深入之创建对象的多种方式以及优缺点 js new一个对象的过程，实现一个简单的new方法   （一）类的创建1. 工厂模式1234567">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-03T03:17:18.980Z">
+<meta property="article:modified_time" content="2022-01-22T04:45:30.197Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>类的创建继承 与 new原理实现 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="类的创建继承 与 new原理实现">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-03 11:17" pubdate>
+        2020年5月3日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      62 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">类的创建继承 与 new原理实现</h1>
+            
+            <div class="markdown-body">
+              <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a><strong>目录</strong></h2><h4 id="1-类的创建"><a href="#1-类的创建" class="headerlink" title="1. 类的创建"></a><a href="#jumpa"><strong>1. 类的创建</strong></a></h4><ul>
+<li><a href="#jump1"><strong>工厂模式</strong></a></li>
+<li><a href="#jump2"><strong>构造函数模式</strong></a></li>
+<li><a href="#jump3"><strong>原型模式</strong></a></li>
+<li><a href="#jump4"><strong>组合模式</strong></a></li>
+</ul>
+<h4 id="2-类的继承"><a href="#2-类的继承" class="headerlink" title="2. 类的继承"></a><a href="#jumpb"><strong>2. 类的继承</strong></a></h4><ul>
+<li><a href="#jump5"><strong>原型链继承</strong></a></li>
+<li><a href="#jump6"><strong>构造继承</strong></a></li>
+<li><a href="#jump7"><strong>实例继承</strong></a></li>
+<li><a href="#jump8"><strong>拷贝继承</strong></a></li>
+<li><a href="#jump9"><strong>组合继承</strong></a></li>
+<li><a href="#jump10"><strong>寄生组合继承</strong></a></li>
+</ul>
+<h4 id="3-new-的原理实现"><a href="#3-new-的原理实现" class="headerlink" title="3. new 的原理实现"></a><a href="#jumpc"><strong>3. new 的原理实现</strong></a></h4><br/>
+
+<p><strong>学习和参考于</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/84089.htm"><strong>JS定义类的六种方式详解</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/humin/p/4556820.html"><strong>JS实现继承的几种方式</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/59128676128fe100586779cc"><strong>JavaScript深入之创建对象的多种方式以及优缺点</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/echolun/p/10903290.html"><strong>js new一个对象的过程，实现一个简单的new方法</strong></a></p>
+</br>
+
+<h1 id="（一）类的创建"><a href="#（一）类的创建" class="headerlink" title="（一）类的创建"></a><span id="jumpa"><strong>（一）类的创建</strong></span></h1><h3 id="1-工厂模式"><a href="#1-工厂模式" class="headerlink" title="1. 工厂模式"></a><span id="jump1"><strong>1. 工厂模式</strong></span></h3><figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPerson</span>(<span class="hljs-params">name</span>)</span>&#123;<br>    <span class="hljs-comment">//原料:</span><br>    <span class="hljs-keyword">var</span> obj=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Object</span>();<br>    <span class="hljs-comment">//加工:</span><br>    obj.name=name;<br>    obj.showName=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>    alert(<span class="hljs-built_in">this</span>.name);<br>    &#125;<br>    <span class="hljs-comment">//出场:</span><br>    <span class="hljs-keyword">return</span> obj;<br>&#125;<br><br><span class="hljs-keyword">var</span> p1=createPerson(<span class="hljs-string">&#x27;小米&#x27;</span>);<br>p1.showName();<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> arr=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>();<span class="hljs-comment">//生成一个系统数组对象</span><br></code></pre></td></tr></table></figure>
+
+<p>与系统对象的区别：</p>
+<ul>
+<li><p>系统对象是直接用<strong>new</strong>在外面生成，而工厂定义的是在函数内部生成</p>
+</li>
+<li><p>工厂定义的函数名称第一个是小写开头，而系统定义的是大写开头</p>
+</li>
+</ul>
+<p><strong>工厂模式的优缺点</strong>：</p>
+<ul>
+<li><p><strong>优点</strong>：实例可以识别为一个特定的类型</p>
+</li>
+<li><p><strong>缺点</strong>：每次创建实例时，每个方法都要被创建一次</p>
+</li>
+</ul>
+<h3 id="2-构造函数方式"><a href="#2-构造函数方式" class="headerlink" title="2. 构造函数方式"></a><span id="jump2"><strong>2. 构造函数方式</strong></span></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params">color,door</span>)</span>&#123;<br>    <span class="hljs-built_in">this</span>.color = color;<br>    <span class="hljs-built_in">this</span>.doors = door;<br>    <span class="hljs-built_in">this</span>.showColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>    alert(<span class="hljs-built_in">this</span>.color)<br>    &#125;;<br>&#125;<br><span class="hljs-keyword">var</span> car1 = <span class="hljs-keyword">new</span> Car(“red”,<span class="hljs-number">4</span>);<br><span class="hljs-keyword">var</span> car2 = <span class="hljs-keyword">new</span> Car(“blue”,<span class="hljs-number">4</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>构造函数模式的优缺点：</strong></p>
+<ul>
+<li><p><strong>优点</strong>：实例可以识别为一个特定的类型</p>
+</li>
+<li><p><strong>缺点</strong>：每次创建实例时，每个方法都要被创建一次</p>
+</li>
+</ul>
+<p><strong>构造函数模式优化</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name</span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.name = name;<br>    <span class="hljs-built_in">this</span>.getName = getName;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getName</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name);<br>&#125;<br><br><span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">&#x27;kevin&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>优点</strong>：解决了每个方法都要被重新创建的问题</p>
+<h3 id="3-原型方式"><a href="#3-原型方式" class="headerlink" title="3. 原型方式"></a><span id="jump3"><strong>3. 原型方式</strong></span></h3><p>该方式利用了对象的prototype属性。首先用空函数创建类名，然后所有的属性和方法都被赋予prototype属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params"></span>)</span>&#123;<br>&#125;<br>Car.prototype.color = “red”;<br>Car.prototype.doors = <span class="hljs-number">4</span>;<br>Car.prototype.showColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>alert(<span class="hljs-built_in">this</span>.color);<br>&#125;<br><span class="hljs-keyword">var</span> car1 = <span class="hljs-keyword">new</span> Car();<br><span class="hljs-keyword">var</span> car2 = <span class="hljs-keyword">new</span> Car();<br></code></pre></td></tr></table></figure>
+
+<p>在这段代码中，首先定义了一个空函数，然后通过prototype属性来定义对象的属性。调用该函数时，原型的所有属性都会立即赋予要创建的对象，所有该函数的对象存放的都是指向showColor()的指针，语法上看起来都属于同一个对象。但是这个函数没有参数，不能通过传递参数来初始化属性，必须要在对象创建后才能改变属性的默认值。</p>
+<p><strong>原型模式的优缺点：</strong></p>
+<ul>
+<li><p><strong>优点</strong>：方法不会重新创建</p>
+</li>
+<li><p><strong>缺点</strong>：所有的属性和方法都共享 、不能初始化参数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//属性指向的是对象时，如数组：下面代码由于数组的引用值，Car的两个对象指向的都是同一个数组，所以当在car1添加值后，在car2中也可以看到。</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params"></span>)</span>&#123;<br>&#125;<br>Car.prototype.color = “red”;<br>Car.prototype.doors = <span class="hljs-number">4</span>;<br>Car.prototype.arr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(“a”,”b”);<br>Car.prototype.showColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>alert(<span class="hljs-built_in">this</span>.color);<br>&#125;<br><span class="hljs-keyword">var</span> car1 = <span class="hljs-keyword">new</span> Car();<br><span class="hljs-keyword">var</span> car2 = <span class="hljs-keyword">new</span> Car();<br>car1.arr.push(“cc”);<br>alert(car1.arr); <span class="hljs-comment">//output:aa,bb,cc</span><br>alert(car2.arr); <span class="hljs-comment">//output:aa,bb,cc</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-组合模型"><a href="#4-组合模型" class="headerlink" title="4. 组合模型"></a><span id="jump4"><strong>4. 组合模型</strong></span></h3><p>构造函数模式用于定义实例属性，原型模式则用于定义方法和共享的属性。这种混合模式不仅支持向构造函数传入参数，还最大限度地节约了内存，可谓是集两模式之长。推荐使用这种方式创建类（同类对象）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params">color,door</span>)</span>&#123;<br>    <span class="hljs-built_in">this</span>.color = color;<br>    <span class="hljs-built_in">this</span>.doors = door;<br>    <span class="hljs-built_in">this</span>.arr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(“aa”,”bb”);<br>&#125;<br>Car.prototype.showColor()&#123;<br>    alert(<span class="hljs-built_in">this</span>.color);<br>&#125;<br><span class="hljs-keyword">var</span> car1 = <span class="hljs-keyword">new</span> Car(“red”,<span class="hljs-number">4</span>);<br><span class="hljs-keyword">var</span> car2 = <span class="hljs-keyword">new</span> Car(“blue”,<span class="hljs-number">4</span>);<br>car1.arr.push(“cc”);<br>alert(car1.arr); <span class="hljs-comment">//output:aa,bb,cc</span><br>alert(car2.arr); <span class="hljs-comment">//output:aa,bb</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>优点</strong>：该共享的共享，该私有的私有，使用最广泛的方式</p>
+<p><strong>缺点</strong>：有的人就是希望全部都写在一起，即更好的封装性</p>
+<h5 id="还有几种创建方式，推荐查看："><a href="#还有几种创建方式，推荐查看：" class="headerlink" title="还有几种创建方式，推荐查看："></a><strong>还有几种创建方式，推荐查看</strong>：</h5><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/84089.htm"><strong>JavaScript深入之创建对象的多种方式以及优缺点</strong></a></p>
+<h1 id="（二）类的继承"><a href="#（二）类的继承" class="headerlink" title="（二）类的继承"></a><span id="jumpb"><strong>（二）类的继承</strong></span></h1><p><strong>这部分学习并摘自</strong>：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/humin/p/4556820.html"><strong>JS实现继承的几种方式</strong></a>（建议直接阅读原文）</p>
+<p>既然要实现继承，那么首先我们得有一个父类，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 定义一个动物类</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Animal</span> (<span class="hljs-params">name</span>) </span>&#123;<br>  <span class="hljs-comment">// 属性</span><br>  <span class="hljs-built_in">this</span>.name = name || <span class="hljs-string">&#x27;Animal&#x27;</span>;<br>  <span class="hljs-comment">// 实例方法</span><br>  <span class="hljs-built_in">this</span>.sleep = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;正在睡觉！&#x27;</span>);<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 原型方法</span><br>Animal.prototype.eat = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">food</span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;正在吃：&#x27;</span> + food);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-原型链继承"><a href="#1-原型链继承" class="headerlink" title="1. 原型链继承"></a><span id="jump5"><strong>1. 原型链继承</strong></span></h3><p><strong>核心：</strong> 将父类的实例作为子类的原型</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params"></span>) </span>&#123;<br><br>&#125;<br>Cat.prototype = <span class="hljs-keyword">new</span> Animal();<br>Cat.prototype.name = <span class="hljs-string">&#x27;cat&#x27;</span>;<br><br><span class="hljs-keyword">var</span> cat = <span class="hljs-keyword">new</span> Cat;<br><span class="hljs-built_in">console</span>.log(cat.name);<br><span class="hljs-built_in">console</span>.log(cat.eat(<span class="hljs-string">&#x27;fish&#x27;</span>));<br><span class="hljs-built_in">console</span>.log(cat.sleep());<br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">//true</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">//true</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li><p>非常纯粹的继承关系，实例是子类的实例，也是父类的实例</p>
+</li>
+<li><p>父类新增原型方法/原型属性，子类都能访问到</p>
+</li>
+<li><p>简单，易于实现</p>
+</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><p>要想为子类新增属性和方法，必须要在<code>new Animal()</code>这样的语句之后执行，不能放到构造器中</p>
+</li>
+<li><p>无法实现多继承</p>
+</li>
+<li><p>来自原型对象的所有属性被所有实例共享（来自原型对象的引用属性是所有实例共享的）（详细请看附录代码： 示例1）</p>
+</li>
+<li><p>创建子类实例时，无法向父类构造函数传参</p>
+</li>
+</ul>
+<p>推荐指数：★★（后两个缺点是两大致命缺陷）</p>
+<h3 id="2-构造继承"><a href="#2-构造继承" class="headerlink" title="2. 构造继承"></a><span id="jump6"><strong>2. 构造继承</strong></span></h3><p><strong>核心：</strong>使用父类的构造函数来增强子类实例，等于是复制父类的实例属性给子类（没用到原型）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>)</span>&#123;<br>  Animal.call(<span class="hljs-built_in">this</span>);<br>  <span class="hljs-built_in">this</span>.name = name || <span class="hljs-string">&#x27;Tom&#x27;</span>;<br>&#125;<br><br><span class="hljs-comment">// Test Code</span><br><span class="hljs-keyword">var</span> cat = <span class="hljs-keyword">new</span> Cat();<br><span class="hljs-built_in">console</span>.log(cat.name);<br><span class="hljs-built_in">console</span>.log(cat.sleep());<br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">// false</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">// true</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li><p>解决了1中，子类实例共享父类引用属性的问题</p>
+</li>
+<li><p>创建子类实例时，可以向父类传递参数</p>
+</li>
+<li><p>可以实现多继承（call多个父类对象）</p>
+</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><p>实例并不是父类的实例，只是子类的实例</p>
+</li>
+<li><p>只能继承父类的实例属性和方法，不能继承原型属性/方法</p>
+</li>
+<li><p>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</p>
+</li>
+</ul>
+<p>推荐指数：★★（缺点3）</p>
+<h3 id="3-实例继承"><a href="#3-实例继承" class="headerlink" title="3. 实例继承"></a><span id="jump7"><strong>3. 实例继承</strong></span></h3><p><strong>核心：</strong>为父类实例添加新特性，作为子类实例返回</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>)</span>&#123;<br>  <span class="hljs-keyword">var</span> instance = <span class="hljs-keyword">new</span> Animal();<br>  instance.name = name || <span class="hljs-string">&#x27;Tom&#x27;</span>;<br>  <span class="hljs-keyword">return</span> instance;<br>&#125;<br><br><span class="hljs-comment">// Test Code</span><br><span class="hljs-keyword">var</span> cat = <span class="hljs-keyword">new</span> Cat();<br><span class="hljs-built_in">console</span>.log(cat.name);<br><span class="hljs-built_in">console</span>.log(cat.sleep());<br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">// true</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">// false</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>不限制调用方式，不管是<code>new 子类()</code>还是<code>子类()</code>,返回的对象具有相同的效果</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><p>实例是父类的实例，不是子类的实例</p>
+</li>
+<li><p>不支持多继承</p>
+</li>
+</ul>
+<p>推荐指数：★★</p>
+<h3 id="4-拷贝继承"><a href="#4-拷贝继承" class="headerlink" title="4. 拷贝继承"></a><span id="jump8"><strong>4. 拷贝继承</strong></span></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>)</span>&#123;<br>  <span class="hljs-keyword">var</span> animal = <span class="hljs-keyword">new</span> Animal();<br>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> animal)&#123;<br>    Cat.prototype[p] = animal[p];<br>  &#125;<br>  Cat.prototype.name = name || <span class="hljs-string">&#x27;Tom&#x27;</span>;<br>&#125;<br><br><span class="hljs-comment">// Test Code</span><br><span class="hljs-keyword">var</span> cat = <span class="hljs-keyword">new</span> Cat();<br><span class="hljs-built_in">console</span>.log(cat.name);<br><span class="hljs-built_in">console</span>.log(cat.sleep());<br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">// false</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">// true</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>支持多继承</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><p>效率较低，内存占用高（因为要拷贝父类的属性）</p>
+</li>
+<li><p>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</p>
+</li>
+</ul>
+<p>推荐指数：★（缺点1）</p>
+<h3 id="5-组合继承"><a href="#5-组合继承" class="headerlink" title="5. 组合继承"></a><span id="jump9"><strong>5. 组合继承</strong></span></h3><p><strong>核心：</strong>通过调用父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>)</span>&#123;<br>  Animal.call(<span class="hljs-built_in">this</span>);<br>  <span class="hljs-built_in">this</span>.name = name || <span class="hljs-string">&#x27;Tom&#x27;</span>;<br>&#125;<br>Cat.prototype = <span class="hljs-keyword">new</span> Animal();<br><br>Cat.prototype.constructor = Cat;<br><br><span class="hljs-comment">// Test Code</span><br><span class="hljs-keyword">var</span> cat = <span class="hljs-keyword">new</span> Cat();<br><span class="hljs-built_in">console</span>.log(cat.name);<br><span class="hljs-built_in">console</span>.log(cat.sleep());<br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">// true</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">// true</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li><p>弥补了方式2的缺陷，可以继承实例属性/方法，也可以继承原型属性/方法</p>
+</li>
+<li><p>既是子类的实例，也是父类的实例</p>
+</li>
+<li><p>不存在引用属性共享问题</p>
+</li>
+<li><p>可传参</p>
+</li>
+<li><p>函数可复用</p>
+</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>调用了两次父类构造函数，生成了两份实例（子类实例将子类原型上的那份屏蔽了）</li>
+</ul>
+<p>推荐指数：★★★★（仅仅多消耗了一点内存）</p>
+<h3 id="6-寄生组合继承"><a href="#6-寄生组合继承" class="headerlink" title="6. 寄生组合继承"></a><span id="jump10"><strong>6. 寄生组合继承</strong></span></h3><p><strong>核心：</strong>通过寄生方式，砍掉父类的实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免的组合继承的缺点</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>) </span>&#123;<br>	Animal.call(<span class="hljs-built_in">this</span>);<br>	<span class="hljs-built_in">this</span>.name = name || <span class="hljs-string">&#x27;Tom&#x27;</span>;<br>&#125;<br>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">var</span> Super = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;&#125;;<br>	Super.prototype = Animal.prototype;<br>	Cat.prototype = <span class="hljs-keyword">new</span> Super()<br>&#125;)()<br><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Animal); <span class="hljs-comment">// true</span><br><span class="hljs-built_in">console</span>.log(cat <span class="hljs-keyword">instanceof</span> Cat); <span class="hljs-comment">//true</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>堪称完美</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>实现较为复杂</li>
+</ul>
+<p>推荐指数：★★★★（实现复杂，扣掉一颗星）</p>
+<h3 id="7-附录代码："><a href="#7-附录代码：" class="headerlink" title="7. 附录代码："></a>7. 附录代码：</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Animal</span> (<span class="hljs-params">name</span>) </span>&#123;<br>  <span class="hljs-comment">// 属性</span><br>  <span class="hljs-built_in">this</span>.name = name || <span class="hljs-string">&#x27;Animal&#x27;</span>;<br>  <span class="hljs-comment">// 实例方法</span><br>  <span class="hljs-built_in">this</span>.sleep = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;正在睡觉！&#x27;</span>);<br>  &#125;<br>  <span class="hljs-comment">//实例引用属性</span><br>  <span class="hljs-built_in">this</span>.features = [];<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name</span>)</span>&#123;<br>&#125;<br>Cat.prototype = <span class="hljs-keyword">new</span> Animal();<br><br><span class="hljs-keyword">var</span> tom = <span class="hljs-keyword">new</span> Cat(<span class="hljs-string">&#x27;Tom&#x27;</span>);<br><span class="hljs-keyword">var</span> kissy = <span class="hljs-keyword">new</span> Cat(<span class="hljs-string">&#x27;Kissy&#x27;</span>);<br><br><span class="hljs-built_in">console</span>.log(tom.name); <span class="hljs-comment">// &quot;Animal&quot;</span><br><span class="hljs-built_in">console</span>.log(kissy.name); <span class="hljs-comment">// &quot;Animal&quot;</span><br><span class="hljs-built_in">console</span>.log(tom.features); <span class="hljs-comment">// []</span><br><span class="hljs-built_in">console</span>.log(kissy.features); <span class="hljs-comment">// []</span><br><br>tom.name = <span class="hljs-string">&#x27;Tom-New Name&#x27;</span>;<br>tom.features.push(<span class="hljs-string">&#x27;eat&#x27;</span>);<br><br><span class="hljs-comment">//针对父类实例值类型成员的更改，不影响</span><br><span class="hljs-built_in">console</span>.log(tom.name); <span class="hljs-comment">// &quot;Tom-New Name&quot;</span><br><span class="hljs-built_in">console</span>.log(kissy.name); <span class="hljs-comment">// &quot;Animal&quot;</span><br><span class="hljs-comment">//针对父类实例引用类型成员的更改，会通过影响其他子类实例</span><br><span class="hljs-built_in">console</span>.log(tom.features); <span class="hljs-comment">// [&#x27;eat&#x27;]</span><br><span class="hljs-built_in">console</span>.log(kissy.features); <span class="hljs-comment">// [&#x27;eat&#x27;]</span><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">原因分析：</span><br><span class="hljs-comment">关键点：属性查找过程</span><br><span class="hljs-comment">执行tom.features.push，首先找tom对象的实例属性（找不到），</span><br><span class="hljs-comment">那么去原型对象中找，也就是Animal的实例。发现有，那么就直接在这个对象的</span><br><span class="hljs-comment">features属性中插入值。</span><br><span class="hljs-comment">在console.log(kissy.features); 的时候。同上，kissy实例上没有，那么去原型上找。</span><br><span class="hljs-comment">刚好原型上有，就直接返回，但是注意，这个原型对象中features属性值已经变化了。</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="（三）new-原理实现"><a href="#（三）new-原理实现" class="headerlink" title="（三）new 原理实现"></a><span id="jumpc"><strong>（三）new 原理实现</strong></span></h1><p>new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象类型之一</p>
+<h3 id="1-new一个对象中间做了什么操作"><a href="#1-new一个对象中间做了什么操作" class="headerlink" title="1. new一个对象中间做了什么操作"></a>1. new一个对象中间做了什么操作</h3><ul>
+<li>以构造器的prototype属性为原型，创建新对象；</li>
+<li>将this(也就是上一句中的新对象)和调用参数传给构造器，执行；</li>
+<li>如果构造器没有手动返回对象，则返回第一步创建的新对象，如果有，则舍弃掉第一步创建的新对象，返回手动return的对象。</li>
+</ul>
+<p>new过程中会<strong>新建对象</strong>，此对象会继承<strong>构造器的原型与原型上的属性</strong>，最后它会被<strong>作为实例返回</strong>这样一个过程。</p>
+<h3 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">newMethod</span>(<span class="hljs-params"></span>)</span>&#123;<br>  <span class="hljs-comment">//拿到传入的参数中的第一个参数，即构造函数名Func</span><br>  <span class="hljs-keyword">let</span> constr = [].shift.call(<span class="hljs-built_in">arguments</span>);<br>  <span class="hljs-comment">// 1.以构造器的prototype属性为原型，创建新对象：             </span><br>  <span class="hljs-keyword">let</span> obj = <span class="hljs-built_in">Object</span>.create(constr.prototype);<br> <span class="hljs-comment">// 2.将this和调用参数传给构造器执行 (使用apply，将构造函数中的this指向新对象，这样新对象就可以访问构造函数中的属性和方法)：</span><br>  <span class="hljs-keyword">let</span> result = constr.apply(obj, <span class="hljs-built_in">arguments</span>);<br>  <span class="hljs-comment">// 3.如果构造器没有手动返回对象，则返回第一步的对象(构造函数的一个实例对象)</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> result === <span class="hljs-string">&quot;object&quot;</span> ? result : obj;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>测试</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 构造器函数</span><br><span class="hljs-keyword">let</span> Parent = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, age</span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.name = name;<br>    <span class="hljs-built_in">this</span>.age = age;<br>&#125;;<br>Parent.prototype.sayName = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name);<br>&#125;;<br><br><span class="hljs-comment">//创建实例，将构造函数Parent与形参作为参数传入</span><br><span class="hljs-keyword">const</span> child = newMethod(Parent, <span class="hljs-string">&#x27;echo&#x27;</span>, <span class="hljs-number">26</span>);<br>child.sayName() <span class="hljs-comment">//&#x27;echo&#x27;;</span><br><br><span class="hljs-comment">//最后检验，与使用new的效果相同</span><br>child <span class="hljs-keyword">instanceof</span> Parent<span class="hljs-comment">//true</span><br>child.hasOwnProperty(<span class="hljs-string">&#x27;name&#x27;</span>)<span class="hljs-comment">//true</span><br>child.hasOwnProperty(<span class="hljs-string">&#x27;age&#x27;</span>)<span class="hljs-comment">//true</span><br>child.hasOwnProperty(<span class="hljs-string">&#x27;sayName&#x27;</span>)<span class="hljs-comment">//false</span><br></code></pre></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%98%B2%E6%8A%96%20%E8%8A%82%E6%B5%81%20%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%20%E6%87%92%E5%8A%A0%E8%BD%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">防抖 节流 和预加载 懒加载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/03/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/call%20%20apply%20%20bind%20%E5%8E%9F%E7%90%86%E5%AE%9E%E7%8E%B0/">
+                        <span class="hidden-mobile">call  apply  bind 原理实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Vue Router 学习笔记1. &lt;router-view&gt;&lt;&#x2F;router-view&gt;:Vue Router提供&lt;router-view&gt;&lt;&#x2F;router-view&gt;来做 路由出口，渲染路径匹配到的视图组件。 &lt;router-view&gt; 渲染的组件还可以内嵌自己的 &lt;router-view&gt;，根据嵌套路径，渲染嵌套组件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue Router学习笔记">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/01/30/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%20Router%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="Vue Router 学习笔记1. &lt;router-view&gt;&lt;&#x2F;router-view&gt;:Vue Router提供&lt;router-view&gt;&lt;&#x2F;router-view&gt;来做 路由出口，渲染路径匹配到的视图组件。 &lt;router-view&gt; 渲染的组件还可以内嵌自己的 &lt;router-view&gt;，根据嵌套路径，渲染嵌套组件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-30T03:21:56.450Z">
+<meta property="article:modified_time" content="2022-01-22T04:49:31.714Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Vue Router学习笔记 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Vue Router学习笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-01-30 11:21" pubdate>
+        2020年1月30日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      58 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Vue Router学习笔记</h1>
+            
+            <div class="markdown-body">
+              <h2 id="Vue-Router-学习笔记"><a href="#Vue-Router-学习笔记" class="headerlink" title="Vue Router 学习笔记"></a>Vue Router 学习笔记</h2><h3 id="1-lt-router-view-gt-lt-router-view-gt"><a href="#1-lt-router-view-gt-lt-router-view-gt" class="headerlink" title="1. &lt;router-view&gt;&lt;/router-view&gt;:"></a>1. <strong><code>&lt;router-view&gt;&lt;/router-view&gt;</code></strong>:</h3><p>Vue Router提供<code>&lt;router-view&gt;&lt;/router-view&gt;</code>来做 路由出口，渲染路径匹配到的视图组件。</p>
+<p><code>&lt;router-view&gt;</code> 渲染的组件还可以内嵌自己的 <code>&lt;router-view&gt;</code>，根据嵌套路径，渲染嵌套组件。</p>
+<p>App.vue中：</p>
+<p><code> &lt;router-view/&gt;</code></p>
+<p>路由文件中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123;<br>    <span class="hljs-attr">path</span>:<span class="hljs-string">&#x27;/movieDetail&#x27;</span>,<br>    <span class="hljs-attr">component</span>:MovieDetail<br>  &#125;,<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-命名视图"><a href="#2-命名视图" class="headerlink" title="2. 命名视图"></a>2. 命名视图</h3><p>有时候想同时 (同级) 展示多个视图，而不是嵌套展示，例如创建一个布局，有 <code>sidebar</code> (侧导航) 和 <code>main</code> (主内容) 两个视图，这个时候命名视图就派上用场了。你可以在界面中拥有多个单独命名的视图，而不是只有一个单独的出口。如果 <code>router-view</code> 没有设置名字，那么默认为 <code>default</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">router-view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;view one&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;view two&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;a&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;view three&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;b&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>一个视图使用一个组件渲染，因此对于同个路由，多个视图就需要多个组件。确保正确使用 <code>components</code> 配置 (带上 s)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/&#x27;</span>,<br>      <span class="hljs-attr">components</span>: &#123;<br>        <span class="hljs-attr">default</span>: Foo,<br>        <span class="hljs-attr">a</span>: Bar,<br>        <span class="hljs-attr">b</span>: Baz<br>      &#125;<br>    &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>​    <strong>嵌套命名视图</strong>：</p>
+<p>​    我们也有可能使用命名视图创建嵌套视图的复杂布局。这时你也需要命名用到的嵌套 <code>router-view</code> 组件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- UserSettings.vue --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>User Settings<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">NavBar</span>/&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>/&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;helper&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/settings&#x27;</span>,<br>  <span class="hljs-comment">// 你也可以在顶级路由就配置命名视图</span><br>  <span class="hljs-attr">component</span>: UserSettings,<br>  <span class="hljs-attr">children</span>: [&#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;emails&#x27;</span>,<br>    <span class="hljs-attr">component</span>: UserEmailsSubscriptions<br>  &#125;, &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;profile&#x27;</span>,<br>    <span class="hljs-attr">components</span>: &#123;<br>      <span class="hljs-attr">default</span>: UserProfile,<br>      <span class="hljs-attr">helper</span>: UserProfilePreview<br>    &#125;<br>  &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-this-router"><a href="#3-this-router" class="headerlink" title="3. this.$router :"></a>3. <strong><code>this.$router</code></strong> :</h3><p>通过<code>this,$router</code>访问路由器，或访问当前路由。</p>
+<ul>
+<li><p><code>$route.path</code></p>
+<ul>
+<li><p>类型: <code>string</code></p>
+<p>字符串，对应当前路由的路径，总是解析为绝对路径，如 <code>&quot;/foo/bar&quot;</code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>$route.params</code></p>
+<ul>
+<li><p>类型: <code>Object</code></p>
+<p>一个 key/value 对象，包含了动态片段和全匹配片段，如果没有路由参数，就是一个空对象。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配路径</th>
+<th>$route.params</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/user/:username</td>
+<td>/user/evan</td>
+<td><code>&#123; username: &#39;evan&#39; &#125;</code></td>
+</tr>
+<tr>
+<td>/user/:username/post/:post_id</td>
+<td>/user/evan/post/123</td>
+<td><code>&#123; username: &#39;evan&#39;, post_id: &#39;123&#39; &#125;</code></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><code>$route.query</code></p>
+<ul>
+<li><p>类型: <code>Object</code></p>
+<p>一个 key/value 对象，表示 URL 查询参数。例如，对于路径 <code>/foo?user=1</code>，则有 <code>$route.query.user == 1</code>，如果没有查询参数，则是个空对象。</p>
+</li>
+</ul>
+</li>
+<li><p><code>$route.hash</code></p>
+<ul>
+<li><p>类型: <code>string</code></p>
+<p>当前路由的 hash 值 (带 <code>#</code>) ，如果没有 hash 值，则为空字符串。</p>
+</li>
+</ul>
+</li>
+<li><p><code>$route.name</code></p>
+<p>当前路由的名称，如果有的话。</p>
+</li>
+</ul>
+<h3 id="4-命名路由："><a href="#4-命名路由：" class="headerlink" title="4.命名路由："></a>4.命名路由：</h3><p>有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 <code>routes</code> 配置中给某个路由设置名称。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:userId&#x27;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>,<br>      <span class="hljs-attr">component</span>: User<br>    &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>要链接到一个命名路由，可以给 <code>router-link</code> 的 <code>to</code> 属性传一个对象：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#123; name: &#x27;user&#x27;, params: &#123; userId: 123 &#125;&#125;&quot;</span>&gt;</span>User<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这跟代码调用 <code>router.push()</code> 是一回事：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">router.push(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: &#123; <span class="hljs-attr">userId</span>: <span class="hljs-number">123</span> &#125;&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>这两种方式都会把路由导航到 <code>/user/123</code> 路径。</p>
+<h3 id="5-lt-router-link-gt-lt-router-link-gt"><a href="#5-lt-router-link-gt-lt-router-link-gt" class="headerlink" title="5. &lt;router-link&gt;&lt;/router-link&gt;:"></a>5. <code>&lt;router-link&gt;&lt;/router-link&gt;</code>:</h3><p>Vue Router提供<code>&lt;router-link&gt;&lt;/router-link&gt;</code>来导航。</p>
+<p>该组件通过传入 ‘ to ’ 属性指定目标地址，该组件默认会被渲染成一个<code>&lt;a&gt;</code>标签。</p>
+<p>其中：</p>
+<ul>
+<li><p><code>to</code>属性：其值表示目标路由的链接。当被点击后，内部会立刻把 <code>to</code> 的值传到 <code>router.push()</code>，所以这个值可以是一个字符串或者是描述目标位置的对象。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 字符串 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 渲染结果 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 使用 v-bind 的 JS 表达式 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">v-bind:to</span>=<span class="hljs-string">&quot;&#x27;home&#x27;&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 不写 v-bind 也可以，就像绑定别的属性一样 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#x27;home&#x27;&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 同上 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#123; path: &#x27;home&#x27; &#125;&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 命名的路由 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#123; name: &#x27;user&#x27;, params: &#123; userId: 123 &#125;&#125;&quot;</span>&gt;</span>User<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 带查询参数，下面的结果为 /register?plan=private --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#123; path: &#x27;register&#x27;, query: &#123; plan: &#x27;private&#x27; &#125;&#125;&quot;</span></span><br><span class="hljs-tag">  &gt;</span>Register&lt;/router-link<br>&gt;<br></code></pre></td></tr></table></figure></li>
+<li><p><code>replace</code>：</p>
+<p>设置 <code>replace</code> 属性的话，当点击时，会调用 <code>router.replace()</code> 而不是 <code>router.push()</code>，于是导航后不会留下 history 记录。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">router-link</span> <span class="hljs-attr">:to</span>=<span class="hljs-string">&quot;&#123; path: &#x27;/abc&#x27;&#125;&quot;</span> <span class="hljs-attr">replace</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="6-嵌套路由："><a href="#6-嵌套路由：" class="headerlink" title="6.嵌套路由："></a>6.<strong>嵌套路由：</strong></h3><p>实际生活中的应用界面，通常由多层嵌套的组件组合而成。</p>
+<p>App.vue:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这里的 <code>&lt;router-view&gt;</code> 是最顶层的出口，渲染最高级路由匹配到的组件。</p>
+<p>同样地，一个被渲染组件同样可以包含自己的嵌套 <code>&lt;router-view&gt;</code>。例如，在 <code>User</code> 组件的模板添加一个 <code>&lt;router-view&gt;</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> User = &#123;<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    &lt;div class=&quot;user&quot;&gt;</span><br><span class="hljs-string">      &lt;h2&gt;User &#123;&#123; $route.params.id &#125;&#125;&lt;/h2&gt;</span><br><span class="hljs-string">      &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="hljs-string">    &lt;/div&gt;</span><br><span class="hljs-string">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>要在嵌套的出口中渲染组件，需要在 <code>VueRouter</code> 的参数中使用 <code>children</code> 配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:id&#x27;</span>, <span class="hljs-attr">component</span>: User,<br>      <span class="hljs-attr">children</span>: [<br>        &#123;<br>          <span class="hljs-comment">// 当 /user/:id/profile 匹配成功，</span><br>          <span class="hljs-comment">// UserProfile 会被渲染在 User 的 &lt;router-view&gt; 中</span><br>          <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;profile&#x27;</span>,<br>          <span class="hljs-attr">component</span>: UserProfile<br>        &#125;,<br>        &#123;<br>          <span class="hljs-comment">// 当 /user/:id/posts 匹配成功</span><br>          <span class="hljs-comment">// UserPosts 会被渲染在 User 的 &lt;router-view&gt; 中</span><br>          <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;posts&#x27;</span>,<br>          <span class="hljs-attr">component</span>: UserPosts<br>        &#125;<br>      ]<br>    &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>要注意，以 / 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径。</strong></p>
+<h3 id="7-路由组件传参"><a href="#7-路由组件传参" class="headerlink" title="7. 路由组件传参"></a>7. 路由组件传参</h3><p>在组件中使用 <code>$route</code> 会使之与其对应路由形成高度耦合，从而使组件只能在某些特定的 URL 上使用，限制了其灵活性。</p>
+<p>使用 <code>props</code> 将组件和路由解耦：</p>
+<p><strong>取代与 $route 的耦合</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> User = &#123;<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">&#x27;&lt;div&gt;User &#123;&#123; $route.params.id &#125;&#125;&lt;/div&gt;&#x27;</span><br>&#125;<br><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:id&#x27;</span>, <span class="hljs-attr">component</span>: User &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>通过 props 解耦</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> User = &#123;<br>  <span class="hljs-attr">props</span>: [<span class="hljs-string">&#x27;id&#x27;</span>],<br>  <span class="hljs-attr">template</span>: <span class="hljs-string">&#x27;&lt;div&gt;User &#123;&#123; id &#125;&#125;&lt;/div&gt;&#x27;</span><br>&#125;<br><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:id&#x27;</span>, <span class="hljs-attr">component</span>: User, <span class="hljs-attr">props</span>: <span class="hljs-literal">true</span> &#125;,<br><br>    <span class="hljs-comment">// 对于包含命名视图的路由，你必须分别为每个命名视图添加 `props` 选项：</span><br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:id&#x27;</span>,<br>      <span class="hljs-attr">components</span>: &#123; <span class="hljs-attr">default</span>: User, <span class="hljs-attr">sidebar</span>: Sidebar &#125;,<br>      <span class="hljs-attr">props</span>: &#123; <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">sidebar</span>: <span class="hljs-literal">false</span> &#125;<br>    &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-编程式路由："><a href="#8-编程式路由：" class="headerlink" title="8. 编程式路由："></a>8. 编程式路由：</h3><p>除了使用 <code>&lt;router-link&gt;</code> 创建 a 标签来定义导航链接，我们还可以借助 router 的实例方法，通过编写代码来实现。</p>
+<ul>
+<li><p><strong><code>router.push(location, onComplete?, onAbort?)</code></strong></p>
+<p>在 Vue 实例内部，你可以通过 $router 访问路由实例。因此你可以调用 this.$router.push。</p>
+<p>想要导航到不同的 URL，则使用 <code>router.push</code> 方法。这个方法会向 history 栈添加一个新的记录，所以，当用户点击浏览器后退按钮时，则回到之前的 URL。</p>
+<p>当你点击 <code>&lt;router-link&gt;</code> 时，这个方法会在内部调用，所以说，点击 <code>&lt;router-link :to=&quot;...&quot;&gt;</code> 等同于调用 <code>router.push(...)</code>。</p>
+<table>
+<thead>
+<tr>
+<th>声明式</th>
+<th>编程式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;router-link :to=&quot;...&quot;&gt;</code></td>
+<td><code>router.push(...)</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 字符串</span><br>router.push(<span class="hljs-string">&#x27;home&#x27;</span>)<br><br><span class="hljs-comment">// 对象</span><br>router.push(&#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;home&#x27;</span> &#125;)<br><br><span class="hljs-comment">// 命名的路由</span><br>router.push(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: &#123; <span class="hljs-attr">userId</span>: <span class="hljs-string">&#x27;123&#x27;</span> &#125;&#125;)<br><br><span class="hljs-comment">// 带查询参数，变成 /register?plan=private</span><br>router.push(&#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;register&#x27;</span>, <span class="hljs-attr">query</span>: &#123; <span class="hljs-attr">plan</span>: <span class="hljs-string">&#x27;private&#x27;</span> &#125;&#125;)<br></code></pre></td></tr></table></figure>
+
+<p><strong>如果提供了 path，params 会被忽略，上述例子中的 query 并不属于这种情况。取而代之的是下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> userId = <span class="hljs-string">&#x27;123&#x27;</span><br>router.push(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: &#123; userId &#125;&#125;) <span class="hljs-comment">// -&gt; /user/123</span><br>router.push(&#123; <span class="hljs-attr">path</span>: <span class="hljs-string">`/user/<span class="hljs-subst">$&#123;userId&#125;</span>`</span> &#125;) <span class="hljs-comment">// -&gt; /user/123</span><br><span class="hljs-comment">// 这里的 params 不生效</span><br>router.push(&#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user&#x27;</span>, <span class="hljs-attr">params</span>: &#123; userId &#125;&#125;) <span class="hljs-comment">// -&gt; /user</span><br></code></pre></td></tr></table></figure>
+
+<p>同样的规则也适用于 <code>router-link</code> 组件的 <code>to</code> 属性。</p>
+</li>
+<li><p><strong><code>router.replace(location, onComplete?, onAbort?)</code></strong></p>
+<p>跟 <code>router.push</code> 很像，唯一的不同就是，它不会向 history 添加新记录，而是跟它的方法名一样 —— 替换掉当前的 history 记录。</p>
+<table>
+<thead>
+<tr>
+<th>声明式</th>
+<th>编程式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;router-link :to=&quot;...&quot; replace&gt;</code></td>
+<td><code>router.replace(...)</code></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong><code>router.go(n) </code></strong>:</p>
+<p>这个方法的参数是一个整数，意思是在 history 记录中向前或者后退多少步</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 在浏览器记录中前进一步，等同于 history.forward()</span><br>router.go(<span class="hljs-number">1</span>)<br><br><span class="hljs-comment">// 后退一步记录，等同于 history.back()</span><br>router.go(-<span class="hljs-number">1</span>)<br><br><span class="hljs-comment">// 前进 3 步记录</span><br>router.go(<span class="hljs-number">3</span>)<br><br><span class="hljs-comment">// 如果 history 记录不够用，那就默默地失败呗</span><br>router.go(-<span class="hljs-number">100</span>)<br>router.go(<span class="hljs-number">100</span>)<br></code></pre></td></tr></table></figure></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Vue学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/31/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git%20Github%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E5%BF%AB%E6%9F%A5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Git Github远程仓库的基础使用快查</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/17/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E5%BD%92%E7%BA%B3/%E9%9B%B6%E7%A2%8E%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/">
+                        <span class="hidden-mobile">零碎前端基础知识笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

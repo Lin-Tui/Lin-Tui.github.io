@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一. React v16.3前的生命周期 1. 组件初始化initialization阶段123constructor()：初始化stategetDefaultProps():设置默认的props，也可以用defaultProps设置组件的默认属性getInitialState():初始化state，可以直接在constructor中定义this.state  2. 组件挂载Mounting阶段1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React 生命周期">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/React%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="一. React v16.3前的生命周期 1. 组件初始化initialization阶段123constructor()：初始化stategetDefaultProps():设置默认的props，也可以用defaultProps设置组件的默认属性getInitialState():初始化state，可以直接在constructor中定义this.state  2. 组件挂载Mounting阶段1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200819161542855.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200819161606424.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020081916162119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-08-20T02:48:53.599Z">
+<meta property="article:modified_time" content="2022-01-22T04:47:58.383Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200819161542855.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  <title>React 生命周期 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="React 生命周期">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-20 10:48" pubdate>
+        2020年8月20日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">React 生命周期</h1>
+            
+            <div class="markdown-body">
+              <h2 id="一-React-v16-3前的生命周期"><a href="#一-React-v16-3前的生命周期" class="headerlink" title="一. React v16.3前的生命周期"></a>一. React v16.3前的生命周期</h2><p><img src="https://img-blog.csdnimg.cn/20200819161542855.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="1-组件初始化initialization阶段"><a href="#1-组件初始化initialization阶段" class="headerlink" title="1. 组件初始化initialization阶段"></a>1. 组件初始化initialization阶段</h3><figure class="highlight delphi"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs delphi"><span class="hljs-function"><span class="hljs-keyword">constructor</span><span class="hljs-params">()</span>：初始化<span class="hljs-title">state</span></span><br><span class="hljs-function"><span class="hljs-title">getDefaultProps</span><span class="hljs-params">()</span>:</span>设置默认的props，也可以用defaultProps设置组件的默认属性<br>getInitialState():初始化state，可以直接在<span class="hljs-function"><span class="hljs-keyword">constructor</span>中定义<span class="hljs-title">this</span>.<span class="hljs-title">state</span></span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-组件挂载Mounting阶段"><a href="#2-组件挂载Mounting阶段" class="headerlink" title="2. 组件挂载Mounting阶段"></a>2. 组件挂载Mounting阶段</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">componentWillMount</span><span class="hljs-params">()</span></span>：在组件挂载到DOM前调用，整个生命周期只会被调用一次，以后组件更新不会调用，此时可以修改state<br><span class="hljs-function"><span class="hljs-title">render</span><span class="hljs-params">()</span></span>：创建虚拟dom，进行diff算法，更新dom树都在此进行。<br><span class="hljs-function"><span class="hljs-title">componentDidsMount</span><span class="hljs-params">()</span></span>：组件挂载到DOM后调用，只会被调用一次。<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-组件更新Updation阶段"><a href="#3-组件更新Updation阶段" class="headerlink" title="3. 组件更新Updation阶段"></a>3. 组件更新Updation阶段</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">componentWillReceiveProps</span><span class="hljs-params">(nextProps)</span></span>：组件挂载时不调用，组件接受新的props时调用<br><span class="hljs-function"><span class="hljs-title">shouldComponentUpdate</span><span class="hljs-params">(nextProps, nextState)</span></span>：组件接收到新的props或者state时调用，return true就会更新dom(使用diff算法更新)，return false能阻止更新(不调用render)。<br><span class="hljs-function"><span class="hljs-title">componentWillUpdate</span><span class="hljs-params">(nextProps, nextState)</span></span>：在组件更新前调用，此时可以修改state<br><span class="hljs-function"><span class="hljs-title">render</span><span class="hljs-params">()</span></span>：创建虚拟dom，进行diff算法，更新dom树都在此进行。<br><span class="hljs-function"><span class="hljs-title">componentDidUpdate</span><span class="hljs-params">()</span></span>:组件更新完成后调用<br></code></pre></td></tr></table></figure>
+
+<p><strong>造成组件更新的两类（三种）情况：</strong></p>
+<h4 id="（1）父组件重新render"><a href="#（1）父组件重新render" class="headerlink" title="（1）父组件重新render"></a><strong>（1）父组件重新render</strong></h4><p>父组件重新render引起子组件重新render的情况有两种：</p>
+<ul>
+<li><p>子组件直接使用父组件传过来的props, 每当父组件重新render导致的重传props，子组件将直接跟着重新渲染，无论props是否有变化。可通过shouldComponentUpdate方法优化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>   <span class="hljs-function"><span class="hljs-title">shouldComponentUpdate</span>(<span class="hljs-params">nextProps</span>)</span>&#123; <span class="hljs-comment">// 应该使用这个方法，否则无论props是否有变化都将会导致组件跟着重新渲染</span><br>        <span class="hljs-keyword">if</span>(nextProps.someThings === <span class="hljs-built_in">this</span>.props.someThings)&#123;<br>          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>&#123;this.props.someThings&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>子组件在componentWillReceiveProps方法中，将props转换成自己的state。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;<br>        <span class="hljs-built_in">super</span>(props);<br>        <span class="hljs-built_in">this</span>.state = &#123;<br>            <span class="hljs-attr">someThings</span>: props.someThings<br>        &#125;;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">componentWillReceiveProps</span>(<span class="hljs-params">nextProps</span>)</span> &#123; <span class="hljs-comment">// 父组件重传props时就会调用这个方法</span><br>        <span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">someThings</span>: nextProps.someThings&#125;);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>&#123;this.state.someThings&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里有个问题，每次组件接收到新的props或者使用setState更新state时，子组件都会重新渲染，除非用shouldComponentUpdate做了处理来阻止。那上面代码中根据新的props更新state，子组件是不是要进行两次渲染？回答否！</p>
+<p>在该函数(componentWillReceiveProps)中调用 this.setState() 将不会引起第二次渲染。</p>
+<p>是因为componentWillReceiveProps中判断props是否变化了，若变化了，this.setState将引起state变化，从而引起render，此时就没必要再做第二次因重传props引起的render了，不然重复做一样的渲染了。</p>
+</li>
+</ul>
+<h4 id="（2）组件本身调用setState"><a href="#（2）组件本身调用setState" class="headerlink" title="（2）组件本身调用setState"></a>（2）组件本身调用setState</h4><p>没有导致state的值发生变化的setState也会导致重渲染。可通过shouldComponentUpdate方法优化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>   <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;<br>        <span class="hljs-built_in">super</span>(props);<br>        <span class="hljs-built_in">this</span>.state = &#123;<br>          <span class="hljs-attr">someThings</span>:<span class="hljs-number">1</span><br>        &#125;<br>   &#125;<br>   <span class="hljs-function"><span class="hljs-title">shouldComponentUpdate</span>(<span class="hljs-params">nextStates</span>)</span>&#123; <span class="hljs-comment">// 应该使用这个方法，否则无论state是否有变化都将会导致组件重新渲染</span><br>        <span class="hljs-keyword">if</span>(nextStates.someThings === <span class="hljs-built_in">this</span>.state.someThings)&#123;<br>          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        &#125;<br>    &#125;<br><br>   handleClick = <span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">// 虽然调用了setState ，但state并无变化</span><br>        <span class="hljs-keyword">const</span> preSomeThings = <span class="hljs-built_in">this</span>.state.someThings<br>         <span class="hljs-built_in">this</span>.setState(&#123;<br>            <span class="hljs-attr">someThings</span>: preSomeThings<br>         &#125;)<br>   &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">onClick</span> = <span class="hljs-string">&#123;this.handleClick&#125;</span>&gt;</span>&#123;this.state.someThings&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/penghuwan/p/6707254.html">【react】利用shouldComponentUpdate钩子函数优化react性能以及引入immutable库的必要性</a></p>
+<h3 id="4-组件卸载Unmounting阶段"><a href="#4-组件卸载Unmounting阶段" class="headerlink" title="4. 组件卸载Unmounting阶段"></a>4. 组件卸载Unmounting阶段</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">componentWillUnmount</span><span class="hljs-params">()</span></span>：组件卸载前调用，只调用一次<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-错误处理"><a href="#5-错误处理" class="headerlink" title="5. 错误处理"></a>5. 错误处理</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">component<span class="hljs-constructor">DidCatch(<span class="hljs-params">error</span>, <span class="hljs-params">info</span>)</span>：任何一处的javascript报错会触发<br></code></pre></td></tr></table></figure>
+
+<h2 id="二-React-v16-3"><a href="#二-React-v16-3" class="headerlink" title="二. React v16.3"></a>二. React v16.3</h2><p><img src="https://img-blog.csdnimg.cn/20200819161606424.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ul>
+<li><p>React16 新的生命周期弃用了componentWillMount、componentWillReceiveProps、componentWillUpdate</p>
+</li>
+<li><p>新增了getDerivedStateFromProps、getSnapshotBeforeUpdate代替弃用的三个钩子函数</p>
+</li>
+<li><p>React16并没有删除那三个钩子函数，但是不能和新增两个钩子函数混用</p>
+</li>
+</ul>
+<h2 id="三-React-v16-4"><a href="#三-React-v16-4" class="headerlink" title="三. React v16.4+"></a>三. React v16.4+</h2><p><img src="https://img-blog.csdnimg.cn/2020081916162119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">getDerivedStateFromProps</span>(<span class="hljs-params">props, state</span>)</span> &#123;<br> <span class="hljs-comment">// ...</span><br> <span class="hljs-keyword">return</span> newState;<br>&#125;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment">注意是静态函数，实例无关。用来更新state，return null表示不需要更新，调用时机有2个：</span><br><span class="hljs-comment">(1)组件实例化完成之后</span><br><span class="hljs-comment">(2)re-render之前（类似于componentWillReceiveProps的时机）</span><br><span class="hljs-comment">配合componentDidUpdate使用，用来解决之前需要在componentWillReceiveProps里setState的场景，比如state依赖更新前后的props的场景</span><br><span class="hljs-comment">**/</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">getSnapshotBeforeUpdate</span>(<span class="hljs-params">prevProps, prevState</span>)</span> &#123;<br> <span class="hljs-comment">// ...</span><br> <span class="hljs-keyword">return</span> snapshot;<br>&#125;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment">这个不是静态函数，调用时机是应用DOM更新之前，返回值会作为第3个参数传递给componentDidUpdate():</span><br><span class="hljs-comment">componentDidUpdate(prevProps, prevState, snapshot)</span><br><span class="hljs-comment">用来解决需要在DOM更新之前保留当前状态的场景，比如滚动条位置。类似的需求之前会通过`componentWillUpdate`来实现，现在通过`getSnapshotBeforeUpdate + componentDidUpdate`实现</span><br><span class="hljs-comment">**/</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>学习于</strong>:</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016617400">React-新的生命周期（React16版本）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/514fe21b9914">详解React生命周期(包括react16最新版)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.debug8.com/javascript/t_27291.html">react-v16.3新生命周期总结</a></p>
+<p><a target="_blank" rel="noopener" href="https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/">React 生命周期</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">React学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/React/">React</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/React%20%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">React 组件通信方式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/react%20%E8%B7%AF%E7%94%B1/">
+                        <span class="hidden-mobile">react 路由</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

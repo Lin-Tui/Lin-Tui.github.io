@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Vue实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模板、挂载Dom、渲染→更新→渲染、销毁等一系列过程，我们称这是Vue的生命周期。通俗说就是Vue实例从创建到销毁的过程，就是生命周期。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。 （一）生命周期钩子  按顺序依次为：1. beforeCreate()在实例初始化事件和生命周期之后、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue：生命周期">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/04/19/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%EF%BC%9A%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="Vue实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模板、挂载Dom、渲染→更新→渲染、销毁等一系列过程，我们称这是Vue的生命周期。通俗说就是Vue实例从创建到销毁的过程，就是生命周期。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。 （一）生命周期钩子  按顺序依次为：1. beforeCreate()在实例初始化事件和生命周期之后、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/Desktop/4.png">
+<meta property="og:image" content="c:/Users/lin/Desktop/5.png">
+<meta property="og:image" content="c:/Users/lin/Desktop/6.png">
+<meta property="og:image" content="c:/Users/lin/Desktop/7.png">
+<meta property="og:image" content="c:/Users/lin/Desktop/lifecycle.png">
+<meta property="article:published_time" content="2020-04-19T09:15:34.478Z">
+<meta property="article:modified_time" content="2022-01-22T04:49:40.453Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/Desktop/4.png">
+  
+  
+  <title>Vue：生命周期 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Vue：生命周期">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-19 17:15" pubdate>
+        2020年4月19日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Vue：生命周期</h1>
+            
+            <div class="markdown-body">
+              <p>Vue实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模板、挂载Dom、渲染→更新→渲染、销毁等一系列过程，我们称这是Vue的生命周期。通俗说就是Vue实例从创建到销毁的过程，就是生命周期。同时在这个过程中也会运行一些叫做<strong>生命周期钩子</strong>的函数，这给了用户在不同阶段添加自己的代码的机会。</p>
+<h2 id="（一）生命周期钩子-按顺序依次为："><a href="#（一）生命周期钩子-按顺序依次为：" class="headerlink" title="（一）生命周期钩子  按顺序依次为："></a>（一）生命周期钩子  按顺序依次为：</h2><h4 id="1-beforeCreate"><a href="#1-beforeCreate" class="headerlink" title="1. beforeCreate()"></a>1. <code>beforeCreate()</code></h4><p>在实例初始化事件和生命周期之后、数据观测和事件配置之前被调用。</p>
+<p>此时，组件的选项对象还未创建，date、method和el均没有初始化，因此无法访问到数据data， methods、computed等上的方法和数据以及真实的DOM。一般不做挂载数据，绑定事件等操作。</p>
+<h4 id="2-created"><a href="#2-created" class="headerlink" title="2. created()"></a>2. <code>created()</code></h4><p>在实例已经创建完成之后被调用。</p>
+<p>此时，实例已完成以下配置：数据观测、属性和方法的运算，watch/event事件回调，完成了data 数据的初始化。 然而，el没有还未初始化，挂载阶段还没有开始, $el属性目前不可见。</p>
+<p>这是一个常用的生命周期，可以调用methods中的方法，改变data中的数据，并且修改可以通过vue的响应式绑定体现在页面上，获取computed中的计算属性等等。</p>
+<h4 id="3-beforeMount"><a href="#3-beforeMount" class="headerlink" title="3. beforeMount()"></a>3. <code>beforeMount()</code></h4><p>在挂载开始之前被调用，相关的render函数首次被调用（虚拟DOM）。</p>
+<p>此时，实例已完成以下的配置： 编译模板，把data里面的数据和模板生成html，完成了el和data 初始化，然而，还没有挂载html到页面上。</p>
+<p>该钩子在服务端渲染期间不被调用。 </p>
+<h4 id="4-mounted"><a href="#4-mounted" class="headerlink" title="4. mounted()"></a>4. <code>mounted()</code></h4><p>挂载完成，也就是模板中的HTML渲染到HTML页面中，此时一般可以做一些ajax操作。</p>
+<p>该钩子在服务端渲染期间不被调用。 </p>
+<h4 id="5-beforeUpdate"><a href="#5-beforeUpdate" class="headerlink" title="5. beforeUpdate()"></a>5. <code>beforeUpdate()</code></h4><p>在数据更新之前被调用，发生在虚拟DOM重新渲染和打补丁之前，可以在该钩子中进一步地更改状态，不会触发附加地重渲染过程。</p>
+<p>该钩子在服务端渲染期间不被调用。 </p>
+<h4 id="6-updated"><a href="#6-updated" class="headerlink" title="6. updated()"></a>6. <code>updated()</code></h4><p>在由于数据更改导致地虚拟DOM重新渲染和打补丁之后调用，调用时，组件DOM已经更新，所以可以执行依赖于DOM的操作，然后在大多是情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。</p>
+<p>该钩子在服务器端渲染期间不被调用</p>
+<h4 id="7-beforeDestroy"><a href="#7-beforeDestroy" class="headerlink" title="7. beforeDestroy()"></a>7. <code>beforeDestroy()</code></h4><p>在实例销毁之前调用，实例仍然完全可用。</p>
+<p>此时，还可以用this来获取实例，一般在这一步做一些重置的操作，比如清除掉组件中的定时器 和 监听的dom事件。</p>
+<p>该钩子在服务端渲染期间不被调用。 </p>
+<h4 id="8-destroy"><a href="#8-destroy" class="headerlink" title="8. destroy()"></a>8. <code>destroy()</code></h4><p>在实例销毁之后调用，调用后，所以的事件监听器会被移出，所有的子实例也会被销毁，该钩子在服务器端渲染期间不被调用。</p>
+<h4 id="用更直观的图说明："><a href="#用更直观的图说明：" class="headerlink" title="用更直观的图说明："></a>用更直观的图说明：</h4><ul>
+<li><p><strong>生命周期</strong>：</p>
+<p><img src="C:\Users\lin\Desktop\4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+</li>
+<li><p><strong>创建阶段</strong>：</p>
+<p><img src="C:\Users\lin\Desktop\5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+</li>
+<li><p><strong>更新阶段</strong>：</p>
+<p><img src="C:\Users\lin\Desktop\6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+</li>
+<li><p><strong>销毁阶段</strong>：</p>
+<p><img src="C:\Users\lin\Desktop\7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
+</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>不要在选项属性或回调上使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions">箭头函数</a>，比如 <code>created: () =&gt; console.log(this.a)</code> 或 <code>vm.$watch(&#39;a&#39;, newValue =&gt; this.myMethod())</code>。因为箭头函数并没有 <code>this</code>，<code>this</code> 会作为变量一直向上级词法作用域查找，直至找到为止，经常导致错误。</li>
+<li>如果不指定 el 选项，就只会执行  beforeCreate() 、created()。</li>
+<li>做一些和DOM有关的操作时，一般放在mounted()</li>
+<li>和数据有关的操作一般放在created()或mounted()</li>
+<li>beforeCreate()、created()、beforeMount()、mounted()在组件生命周期中只执行一次。</li>
+</ul>
+<h4 id="10-Vue实例和子组件之间的生命周期"><a href="#10-Vue实例和子组件之间的生命周期" class="headerlink" title="10. Vue实例和子组件之间的生命周期"></a>10. Vue实例和子组件之间的生命周期</h4><p>在Vue中，由于父元素的template模板嵌套了子元素，因此在编译模板时，会先进入到父元素的template，然后层层递归进行子元素的模板编译。</p>
+<ul>
+<li>在创建时，父子组件的生命周期是：<br>父组件beforeCreated -&gt; 父组件created -&gt; 父组件beforeMounted -&gt; <strong>子组件beforeCreated -&gt; 子组件created -&gt; 子组件beforeMounted -&gt; 子组件mounted</strong> -&gt; 父组件mounted。</li>
+<li>在销毁时，父子组件的生命周期是：<br>父组件beforeDestory -&gt; <strong>子组件beforeDestoryed -&gt; 子组件destoryed</strong> -&gt; 父组件destoryed</li>
+</ul>
+<p>总之记住，父子组件的生命周期遵循：<strong>由外到内，再由内到外</strong></p>
+<h2 id="（二）官方的生命周期图示"><a href="#（二）官方的生命周期图示" class="headerlink" title="（二）官方的生命周期图示"></a>（二）官方的生命周期图示</h2><p><img src="C:\Users\lin\Desktop\lifecycle.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>参考链接：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014816685">Vue的生命周期详解</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Vue学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/19/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue2%20%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86%EF%BC%88%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vue2 双向绑定原理（数据响应式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/19/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACvue-cli%E5%8C%BA%E5%88%AB%E8%AF%A6%E8%A7%A3/">
+                        <span class="hidden-mobile">不同版本vue-cli区别详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

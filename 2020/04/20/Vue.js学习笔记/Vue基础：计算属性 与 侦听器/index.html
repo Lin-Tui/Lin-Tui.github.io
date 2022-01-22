@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="（一）计算属性computed对于任何复杂逻辑，你都应当使用计算属性。 1. 基本使用计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。这就意味着只要依赖数据没有发生改变，computed将从缓存中获取之前的计算结果，而不必再次执行函数。 例子： 12345678910111213141516171819&lt;div id&#x3D;&quot;example&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue基础：计算属性 与 侦听器">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/04/20/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%E5%9F%BA%E7%A1%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%20%E4%B8%8E%20%E4%BE%A6%E5%90%AC%E5%99%A8/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="（一）计算属性computed对于任何复杂逻辑，你都应当使用计算属性。 1. 基本使用计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。这就意味着只要依赖数据没有发生改变，computed将从缓存中获取之前的计算结果，而不必再次执行函数。 例子： 12345678910111213141516171819&lt;div id&#x3D;&quot;example&amp;quo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-20T12:30:42.045Z">
+<meta property="article:modified_time" content="2022-01-22T04:49:46.586Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Vue基础：计算属性 与 侦听器 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Vue基础：计算属性 与 侦听器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-20 20:30" pubdate>
+        2020年4月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Vue基础：计算属性 与 侦听器</h1>
+            
+            <div class="markdown-body">
+              <h2 id="（一）计算属性computed"><a href="#（一）计算属性computed" class="headerlink" title="（一）计算属性computed"></a>（一）计算属性computed</h2><p>对于任何复杂逻辑，你都应当使用<strong>计算属性</strong>。</p>
+<h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p><strong>计算属性是基于它们的响应式依赖进行缓存的。</strong>只在相关响应式依赖发生改变时它们才会重新求值。这就意味着只要依赖数据没有发生改变，computed将从缓存中获取之前的计算结果，而不必再次执行函数。</p>
+<p>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;example&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Original message: &quot;&#123;&#123; message &#125;&#125;&quot;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Computed reversed message: &quot;&#123;&#123; reversedMessage &#125;&#125;&quot;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">var</span> vm = <span class="hljs-keyword">new</span> Vue(&#123;</span><br><span class="javascript">  <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#example&#x27;</span>,</span><br><span class="javascript">  <span class="hljs-attr">data</span>: &#123;</span><br><span class="javascript">    <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;Hello&#x27;</span></span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">computed</span>: &#123;</span><br><span class="javascript">    <span class="hljs-comment">// 计算属性的 getter</span></span><br><span class="javascript">    <span class="hljs-attr">reversedMessage</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">      <span class="hljs-comment">// `this` 指向 vm 实例</span></span><br><span class="javascript">      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.message.split(<span class="hljs-string">&#x27;&#x27;</span>).reverse().join(<span class="hljs-string">&#x27;&#x27;</span>)</span><br><span class="javascript">    &#125;</span><br><span class="javascript">  &#125;</span><br><span class="javascript">&#125;)</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>上面声明了一个计算属性 <code>reversedMessage</code>。其中我们提供的函数将用作属性 <code>vm.reversedMessage</code> 的 getter 函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-built_in">console</span>.log(vm.reversedMessage) <span class="hljs-comment">// =&gt; &#x27;olleH&#x27;</span><br>vm.message = <span class="hljs-string">&#x27;Goodbye&#x27;</span><br><span class="hljs-built_in">console</span>.log(vm.reversedMessage) <span class="hljs-comment">// =&gt; &#x27;eybdooG&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-计算属性的-setter"><a href="#2-计算属性的-setter" class="headerlink" title="2. 计算属性的 setter"></a>2. 计算属性的 setter</h4><p>计算属性默认只有 getter，不过在需要时也可以提供一个 setter：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// ...</span><br><span class="hljs-attr">computed</span>: &#123;<br>  <span class="hljs-attr">fullName</span>: &#123;<br>    <span class="hljs-comment">// getter</span><br>    <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.firstName + <span class="hljs-string">&#x27; &#x27;</span> + <span class="hljs-built_in">this</span>.lastName<br>    &#125;,<br>    <span class="hljs-comment">// setter</span><br>    <span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newValue</span>) </span>&#123;<br>      <span class="hljs-keyword">var</span> names = newValue.split(<span class="hljs-string">&#x27; &#x27;</span>)<br>      <span class="hljs-built_in">this</span>.firstName = names[<span class="hljs-number">0</span>]<br>      <span class="hljs-built_in">this</span>.lastName = names[names.length - <span class="hljs-number">1</span>]<br>    &#125;<br>  &#125;<br>&#125;<br><span class="hljs-comment">// ...</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="（二）侦听器watch"><a href="#（二）侦听器watch" class="headerlink" title="（二）侦听器watch"></a>（二）侦听器watch</h2><p> watch 对象就是侦听器，只有当侦听的值改变了它才会执行。</p>
+<h4 id="1-基本使用-1"><a href="#1-基本使用-1" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> vm = <span class="hljs-keyword">new</span> Vue(&#123;<br>  <span class="hljs-attr">data</span>: &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>,<br>    <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">c</span>: <span class="hljs-number">3</span>,<br>    <span class="hljs-attr">d</span>: <span class="hljs-number">4</span>,<br>    <span class="hljs-attr">e</span>: &#123;<br>        <span class="hljs-attr">f</span>: &#123;<br>            <span class="hljs-attr">g</span>: <span class="hljs-number">5</span><br>        &#125;<br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">watch</span>: &#123;<br>    <span class="hljs-attr">a</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, oldVal</span>) </span>&#123;<br>      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;new: %s, old: %s&#x27;</span>, val, oldVal)<br>    &#125;,<br>    <span class="hljs-comment">// 方法名</span><br>    <span class="hljs-attr">b</span>: <span class="hljs-string">&#x27;someMethod&#x27;</span>,  <span class="hljs-comment">//在方法里写对应的函数</span><br>    <span class="hljs-comment">// 深度 watcher</span><br>    <span class="hljs-attr">c</span>: &#123;<br>      <span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, oldVal</span>) </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;,<br>      <span class="hljs-attr">deep</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// 更改对象的时候需要用深度监听</span><br>    &#125;,<br>    <span class="hljs-comment">// 该回调将会在侦听开始之后被立即调用</span><br>    <span class="hljs-attr">d</span>: &#123;<br>      <span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, oldVal</span>) </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;,<br>      <span class="hljs-attr">immediate</span>: <span class="hljs-literal">true</span>  <span class="hljs-comment">//该属性能使函数默认的执行一次</span><br>    &#125;,<br>    <span class="hljs-attr">e</span>: [<br>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle1</span>(<span class="hljs-params">val, oldVal</span>)</span>&#123; <span class="hljs-comment">/* ... */</span> &#125;,<br>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle2</span>(<span class="hljs-params">val, oldVal</span>)</span>&#123; <span class="hljs-comment">/* ... */</span> &#125;,<br>    ],<br>    <span class="hljs-comment">// 监听vm.e.f的值: &#123;g: 5&#125;</span><br>    <span class="hljs-string">&#x27;e,f&#x27;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val, oldVal</span>) </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>  &#125;<br>&#125;)<br>vm.a = <span class="hljs-number">2</span> <span class="hljs-comment">// =&gt; new: 2, old: 1</span><br></code></pre></td></tr></table></figure>
+
+<p>注意，<strong>不应该使用箭头函数来定义 watcher 函数</strong> (例如 <code>searchQuery: newValue =&gt; this.updateAutocomplete(newValue)</code>)。理由是箭头函数绑定了父级作用域的上下文，所以 <code>this</code> 将不会按照期望指向 Vue 实例，<code>this.updateAutocomplete</code> 将是 undefined。</p>
+<h4 id="2-与计算属性computed使用场景的对比"><a href="#2-与计算属性computed使用场景的对比" class="headerlink" title="2. 与计算属性computed使用场景的对比"></a>2. 与计算属性computed使用场景的对比</h4><ul>
+<li><code>watch</code>选项允许我们执行异步操作（访问一个API）或高消耗性能的操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态</li>
+<li><code>computed</code> 是计算一个新的属性，并将该属性挂载到 <code>vm</code>（Vue 实例）上，而 <code>watch</code> 是监听已经存在且已挂载到 <code>vm</code> 上的数据，所以用 <code>watch</code> 同样可以监听 <code>computed</code> 计算属性的变化（其它还有 data、props）</li>
+<li><code>computed</code> 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 <code>computed</code> 属性，才会计算新的值，而 <code>watch</code> 则是当数据发生变化便会调用执行函数</li>
+<li><code>computed</code> 适用一个数据被多个数据影响，而 <code>watch</code> 适用一个数据影响多个数据</li>
+</ul>
+<p><strong>详细见</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/api/#vm-watch">Vue官方文档 - vm.$watch</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Vue学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/20/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%BB%84%E4%BB%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vue：深入理解组件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/20/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%E5%9F%BA%E7%A1%80%EF%BC%9A%E6%8C%87%E4%BB%A4/">
+                        <span class="hidden-mobile">Vue基础：指令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

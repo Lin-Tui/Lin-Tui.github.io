@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第六章 对象对象是一种复合值：它将很多值聚合在一起，可通过名字访问这些值。 JavaScript对象是动态的，可以新增属性也可以删除属性。 对象也可以看做属性的无序集合，每个属性都是一个名&#x2F;值对。属性名是字符串。 属性包括名字和值。属性名可以包括空字符在内的任意字符串，但对象不能存在同名的属性。值可以是任意JavaScript值，或者可以是一个getter或setter函数。 除了名字和值之外。每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《JavaScript权威指南》学习笔记(4) 对象">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/02/13/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(4)%20%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="第六章 对象对象是一种复合值：它将很多值聚合在一起，可通过名字访问这些值。 JavaScript对象是动态的，可以新增属性也可以删除属性。 对象也可以看做属性的无序集合，每个属性都是一个名&#x2F;值对。属性名是字符串。 属性包括名字和值。属性名可以包括空字符在内的任意字符串，但对象不能存在同名的属性。值可以是任意JavaScript值，或者可以是一个getter或setter函数。 除了名字和值之外。每">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210259170.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210316728.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210328298.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210652284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210527535.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210507919.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210455448.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210444408.png">
+<meta property="article:published_time" content="2020-02-13T05:57:21.434Z">
+<meta property="article:modified_time" content="2022-01-22T04:35:35.335Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200213210259170.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>《JavaScript权威指南》学习笔记(4) 对象 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《JavaScript权威指南》学习笔记(4) 对象">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-13 13:57" pubdate>
+        2020年2月13日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      59 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《JavaScript权威指南》学习笔记(4) 对象</h1>
+            
+            <div class="markdown-body">
+              <h1 id="第六章-对象"><a href="#第六章-对象" class="headerlink" title="第六章 对象"></a>第六章 对象</h1><p>对象是一种复合值：它将很多值聚合在一起，可通过名字访问这些值。</p>
+<p>JavaScript对象是动态的，可以新增属性也可以删除属性。</p>
+<p>对象也可以看做属性的无序集合，每个属性都是一个名/值对。属性名是字符串。</p>
+<p>属性包括名字和值。属性名可以包括空字符在内的任意字符串，但对象不能存在同名的属性。值可以是任意JavaScript值，或者可以是一个<code>getter</code>或<code>setter</code>函数。</p>
+<p><strong>除了名字和值之外。每个属性还有一些与之相关的值，称为“属性特性”</strong>：</p>
+<ul>
+<li>可写：表明是否可以设置该属性的值。</li>
+<li>可枚举：表明是否可以通过<code>for/in</code>循环返回该属性。</li>
+<li>可配置：表明是否可以删除或修改该属性。</li>
+</ul>
+<p><strong>除了包括属性之外，每个对象还拥有三个相关的对象特性</strong>：</p>
+<ul>
+<li>对象的原型：指向另外一个对象，本对象的属性继承自它的原型对象。</li>
+<li>对象的类：是一个标识对象类型的字符串。</li>
+<li>对象的扩展：标记指明了是否可以向该对象添加新属性。</li>
+</ul>
+<p><strong>用下面这些术语来对三类JavaScript对象和两类属性作区分</strong>：</p>
+<ul>
+<li>内置对象：是由ECMAScript规范定义的对象或类。例如，数组，函数，日期和正则表达式都是内置对象。</li>
+<li>宿主对象：是由JavaScript解释器所嵌入的宿主环境（比如web浏览器）定义的。客户端JavaScript中表示网页结构的HTMLElement对象均是宿主对象。既然宿主环境定义的方法可以当成普通的JavaScript函数对象，那么宿主对象也可以当成内置对象。</li>
+<li>自定义对象：是由运行中的JavaScript代码创建的对象。</li>
+<li>自有属性是直接在对象中定义的属性。</li>
+<li>继承属性：是在对象的原型对象中定义的属性。</li>
+</ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>可以通过对象直接量，关键字<code>new</code>和<code>Object.create（）</code>函数来创建对象。</p>
+<h4 id="1-对象直接量"><a href="#1-对象直接量" class="headerlink" title="1. 对象直接量"></a>1. 对象直接量</h4><figure class="highlight awk"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><pre><code class="hljs awk">var empty = &#123;&#125;; <span class="hljs-regexp">//</span>没有任何属性的对象<br>var point1 = &#123; x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>&#125;; <span class="hljs-regexp">//</span>两个属性<br>var point2 = &#123; x: point.x, y: point.y + <span class="hljs-number">1</span> &#125;; <span class="hljs-regexp">//</span>更复杂的值<br>var book = &#123;<br>	<span class="hljs-string">&quot;main title&quot;</span>: <span class="hljs-string">&quot;JavaScript&quot;</span>, <span class="hljs-regexp">//</span>属性名字里有空格，必须用字符串表示<br>	<span class="hljs-string">&quot;sub-title&quot;</span>: <span class="hljs-string">&quot;The Definitive Cuide&quot;</span>; <span class="hljs-regexp">//</span>属性名字里有连字符，必须用字符串表示<br>	<span class="hljs-string">&quot;for&quot;</span>: <span class="hljs-string">&quot;all audience&quot;</span>; <span class="hljs-regexp">//</span>“<span class="hljs-keyword">for</span>”是保留字，因此必须用引号<br>	author: &#123; <span class="hljs-regexp">//</span>这个属性的值是一个对象<br>		firstname: <span class="hljs-string">&quot;David&quot;</span>, <span class="hljs-regexp">//</span>注意，这里的属性名都没有引号<br>		surname: <span class="hljs-string">&quot;Flanage&quot;</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对象直接量是一个表达式，这个表达式的每次运算都创建并初始化一个新的对象。每次计算对象直接量的时候，也都会计算它的每个属性的值。也就是说，如果在一个重复调用的函数中的循环体内使用了对象直接量，它将创建很多新对象，并且每次创建的对象的属性值也有可能不同。</p>
+<h4 id="2-通过new创建对象"><a href="#2-通过new创建对象" class="headerlink" title="2. 通过new创建对象"></a>2. 通过new创建对象</h4><p><code>new</code>运算符创建并初始化一个新对象。关键字<code>new</code>后面跟随一个函数调用。</p>
+<p>这里的函数称做构造函数，构造函数用以初始化一个新创建的对象。</p>
+<p>JavaScript语言核心中的原始类型都包含内置构造函数。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">var</span> o = <span class="hljs-keyword">new</span> <span class="hljs-type">Object</span>(); <span class="hljs-comment">//创建一个空对象，和&#123;&#125;一样</span><br><span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> <span class="hljs-type">Array</span>(); <span class="hljs-comment">//创建一个空数组，和[]一样</span><br><span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> <span class="hljs-type">Date</span>(); <span class="hljs-comment">//创建一个表示当前时间的Date对象</span><br><span class="hljs-keyword">var</span> r = <span class="hljs-keyword">new</span> <span class="hljs-type">RegExp</span>(<span class="hljs-string">&quot;js&quot;</span>); <span class="hljs-comment">//创建一个可以进行模式匹配的RegExp</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-原型"><a href="#3-原型" class="headerlink" title="3. 原型"></a>3. 原型</h4><p>每一个JavaScript对象都和另一个对象相关联。“另一个”对象就是我们熟知的原型。每一个对象都从原型继承属性。</p>
+<p>所有通过对象直接量创建的对象都具有同一个原型对象，并可以通过JavaScript代码<code>Object.prototype</code>获得对原型对象的引用。</p>
+<p>通过关键字new和构造函数创建的对象的原型就是构造函数的<code>prototype</code>属性的值。</p>
+<p>因此，同使用{}创建对象一样，通过<code>new Object()</code>创建的对象也继承自<code>Object.prototype</code>。</p>
+<p>通过<code>new Array()</code>创建的对象的原型就是<code>Array.prototype</code>，通过<code>new Date()</code>创建的对象的原型就是<code>Date.prototype</code>。</p>
+<p>没有原型的对象为数不多，<code>Object.prototype</code>就是其中之一。它不继承任何属性。其他原型对象都是普通对象，普通对象都具有原型。</p>
+<p>所有的内置构造函数，都具有一个继承自<code>Object.prototype</code>的原型。例如，<code>Date.prototype</code>的属性继承自<code>Object.protype</code>，因此由new Date()创建的Date对象的属性同时继承自<code>Date.prototype</code>和<code>Object.prototype</code>。这一系列链接的原型对象就是所谓的“原型链”</p>
+<h4 id="4-Object-create"><a href="#4-Object-create" class="headerlink" title="4. Object.create()"></a>4. Object.create()</h4><p>它创建一个新对象，其中第一个参数是这个对象的原型，<code>Object.create()</code>提供第二个可选参数，用以对对象的属性进行进一步描述。</p>
+<p><code>Object.create()</code>是一个静态函数，而不是提供给某个对象调用的方法。使用它的方法很简单，只须传入所需的原型对象即可。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> o<span class="hljs-number">1</span> = Object.create(&#123;x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span>&#125;); //o<span class="hljs-number">1</span>继承了属性x和y<br></code></pre></td></tr></table></figure>
+
+<p>可以通过传入参数<code>null</code>来创建一个没有原型的新对象，但通过这种方式创建的对象不会继承任何东西，甚至不包括基础方法，比如<code>toString()</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">var</span> o2 = <span class="hljs-built_in">Object</span>.create(<span class="hljs-keyword">null</span>); <span class="hljs-comment">//o2不继承任何属性和方法</span><br></code></pre></td></tr></table></figure>
+
+<p>如果想创建一个普通的对象（比如通过<code>&#123;&#125;</code>或<code>new Object()</code>创建的对象），需要传入<code>Object.prototype</code>:</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">var o3 = <span class="hljs-keyword">Object</span>.<span class="hljs-keyword">create</span>(<span class="hljs-keyword">Object</span>.prototype);//o3和&#123;&#125;和<span class="hljs-built_in">new</span> <span class="hljs-keyword">Object</span>()一样<br></code></pre></td></tr></table></figure>
+
+<h2 id="属性的查询和设置"><a href="#属性的查询和设置" class="headerlink" title="属性的查询和设置"></a>属性的查询和设置</h2><p>可以通过点（<code>.</code>）或方括号（<code>[]</code>）运算符来获取属性的值。</p>
+<p>对于点（<code>.</code>）来说，右侧必须是一个以属性名称命名的简单标识符。</p>
+<p>对于方括号(<code>[]</code>)，方括号内必须是一个计算结果为字符串的表达式，这个字符串就是属性的名字：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">var</span> author = book.author; <span class="hljs-comment">//得到book的“author”属性</span><br><span class="hljs-keyword">var</span> name = author.surname <span class="hljs-comment">//得到author的“surname”属性</span><br><span class="hljs-keyword">var</span> title = book[<span class="hljs-string">&quot;main title&quot;</span>] <span class="hljs-comment">//得到book的“main title”</span><br></code></pre></td></tr></table></figure>
+
+<p>和查询属性值的写法一样，通过点和方括号也可以创建属性或给属性赋值。但需要将它们放在赋值表达式的左侧：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">book.edition = <span class="hljs-number">6</span><span class="hljs-comment">;</span><br>book[<span class="hljs-string">&quot;main title&quot;</span>] = <span class="hljs-string">&quot;ECMAScript&quot;</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-作为关联数组的对象"><a href="#1-作为关联数组的对象" class="headerlink" title="1. 作为关联数组的对象"></a>1. 作为关联数组的对象</h4><p>下面两个JavaScript表达式的值相同：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">object</span><span class="hljs-selector-class">.property</span><br><span class="hljs-selector-tag">object</span><span class="hljs-selector-attr">[<span class="hljs-string">&quot;property&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+<p>其中第二种语法使用方括号和一个字符串，看起来更像数组，只是这个数组元素是通过字符串引索而不是数字索引。这种数组就是我们所说的关联数组。</p>
+<p>JavaScript对象都是关联数组。</p>
+<h4 id="2-继承"><a href="#2-继承" class="headerlink" title="2. 继承"></a>2. 继承</h4><p>JavaScript对象具有“自有属性”，也有一些属性是从原型对象继承而来的。</p>
+<p>假设要查询对象o的属性x，如果o中不存在，那么将会继续在o的原型对象中查询属性x。如果原型对象中也没有x，但这个原型对象也有原型，那么继续在这个原型对象的原型对象的原型上执行查询，直到找到x或者查找到一个原型是null的对象为止。</p>
+<p>可以看到，对象的原型属性构成了一个“链”，通过这个“链”可以实现属性的继承。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">var o = &#123;&#125; <span class="hljs-regexp">//</span>o从Object.prototype继承对象的方法<br>o.x = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span>给o定义一个属性x<br>var a = inherit(o); <span class="hljs-regexp">//</span> a继承o和Object.prototype<br>a.y = <span class="hljs-number">2</span>; <span class="hljs-regexp">//</span> 给a定义一个属性y<br>var b = inherit(a); <span class="hljs-regexp">//</span> 给b定义一个属性z<br>b.z = <span class="hljs-number">3</span>; <span class="hljs-regexp">//</span><br>var s = b.toString(); <span class="hljs-regexp">//</span> toString继承自Object.protoype<br>b.x + b.y <span class="hljs-regexp">//</span><span class="hljs-number">3</span> ,x和y分别继承自o和a<br></code></pre></td></tr></table></figure>
+
+<p>假设给对象的属性x赋值，如果o中已经有属性x，那么这个赋值操作只改变这个已有属性x的值。如果o中不存在属性x，那么赋值操作给o添加一个新属性x。如果之前o继承自属性x，那么这个继承的属性就被创建的同名属性覆盖了。</p>
+<p>属性赋值操作首先检查原型链，以此判定是否允许赋值操作。如果o继承自一个只读属性，那么赋值操作是不允许的。如果允许属性赋值操作，它也总是在原始对象上创建属性或对已有属性赋值，而不会去修改原型链。</p>
+<p>在JavaScript中，只有在查询时才会体会到继承的存在，而设置属性则和继承无关，这是JavaScript的一个重要特性，该特性让程序员可以有选择地覆盖继承的属性。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">var unitcircle = &#123;r: <span class="hljs-number">1</span>&#125;; <span class="hljs-regexp">//</span> 一个用来继承的对象<br>var c = inherit(unitcircle); <span class="hljs-regexp">//</span>c继承属性r<br>c.x = <span class="hljs-number">1</span>;c.y = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span>c定义两个属性<br>c.r = <span class="hljs-number">2</span>; <span class="hljs-regexp">//</span>c覆盖继承来的属性<br>unitcircle.r; <span class="hljs-regexp">//</span><span class="hljs-number">1</span> ， 原型对象没有修改<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-属性访问错误"><a href="#3-属性访问错误" class="headerlink" title="3. 属性访问错误"></a>3. 属性访问错误</h4><p>属性访问并不总是返回或设置一个值。</p>
+<p>查询一个不存在的属性并不会报错，如果在对象o自身的属性或继承的属性均未找到属性x，属性访问表达式o.x返回undefined。</p>
+<p>但是，如果对象不存在，那么试图查询这个不存在的对象的属性就会报错。null和undefined值都没有属性，因此查询这些值的属性会报错。给null和undefined设置属性也会报类型错误。</p>
+<p>给其他值设置属性也不总是成功，有一些属性是只读的，不能重新赋值，有一些对象不允许新增属性，但让人颇感意外的是，这些设置属性的失败操作不会报错。<br><img src="https://img-blog.csdnimg.cn/20200213210259170.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="删除属性"><a href="#删除属性" class="headerlink" title="删除属性"></a>删除属性</h2><p><code>delete</code>运算符可以删除对象的属性。它的操作数应当是一个属性访问表达式。</p>
+<p><code>delete</code>只是断开属性和宿主对象的联系，而不会去操作属性中的属性：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-keyword">delete</span> book.author; <span class="hljs-regexp">//</span>book不再有属性author<br><span class="hljs-keyword">delete</span> book[<span class="hljs-string">&quot;main title&quot;</span>]; <span class="hljs-regexp">//</span>book也不再有属性<span class="hljs-string">&quot;main title&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>delete</code>运算符只能删除自有属性，不能删除继承属性（要删除继承属性必须从定义这个属性的原型对象上删除它，而且这会影响所有继承自这个原型的对象。）<br><img src="https://img-blog.csdnimg.cn/20200213210316728.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200213210328298.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="检测属性"><a href="#检测属性" class="headerlink" title="检测属性"></a>检测属性</h2><p>我们经常会检测集合中成员的所属关系—–判断某个属性是否在于某个对象中。可以</p>
+<h4 id="1-in运算符"><a href="#1-in运算符" class="headerlink" title="1. in运算符"></a>1. in运算符</h4><p>通过<code>in</code>运算符，<code>hasOwnPreperty()</code>和<code>propertyIsEnumerable()</code>方法来完成这个工作，甚至仅通过属性查询也可以做到这一点。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">var o = &#123; x: <span class="hljs-number">1</span>&#125;<br><br><span class="hljs-string">&quot;x&quot;</span> <span class="hljs-keyword">in</span> o; <span class="hljs-regexp">//</span>true ， “x”是o的属性<br><span class="hljs-string">&quot;y&quot;</span> <span class="hljs-keyword">in</span> o; <span class="hljs-regexp">//</span>false，“y”不是o的属性<br><span class="hljs-string">&quot;toString&quot;</span> <span class="hljs-keyword">in</span> o; <span class="hljs-regexp">//</span>true，o继承toString属性<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-hasOwnProperty-方法"><a href="#2-hasOwnProperty-方法" class="headerlink" title="2. hasOwnProperty()方法"></a>2. hasOwnProperty()方法</h4><p>用来检测给定的名字是否是对象的自有属性。对于继承属性它将返回false</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">var o = &#123;x: <span class="hljs-number">1</span>&#125;<br>o.hasOwnProperty(<span class="hljs-string">&quot;x&quot;</span>); <span class="hljs-regexp">//</span>true：有一个自有属性x<br>o.hasOwnProperty(<span class="hljs-string">&quot;y&quot;</span>); <span class="hljs-regexp">//</span>false：o中不存在属性y<br>o.hasOwnProperty(<span class="hljs-string">&quot;toString&quot;</span>); <span class="hljs-regexp">//</span> false:toString是继承属性<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-propertyIsEnumerable-方法"><a href="#3-propertyIsEnumerable-方法" class="headerlink" title="3. propertyIsEnumerable()方法"></a>3. propertyIsEnumerable()方法</h4><p>是<code>hasOwnProperty()</code>方法的增强版，只有检测到是自有属性且这个属性的可枚举性为<code>true</code>时，它才返回<code>true</code>。</p>
+<p>某些内置属性是不可枚举的。通常由JavaScript代码创建的属性都是可枚举的，除法在ECMAScript中使用严格特殊的方法来改变属性的可枚举性。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">var o = <span class="hljs-keyword">inherit</span>(&#123;y: <span class="hljs-number">2</span>&#125;);<br>o.x = <span class="hljs-number">1</span>;<br>o.property<span class="hljs-constructor">IsEnumerable(<span class="hljs-string">&quot;x&quot;</span>)</span>; <span class="hljs-comment">//true,o有一个可枚举的自有属性</span><br>o.property<span class="hljs-constructor">IsEnumerable(<span class="hljs-string">&quot;y&quot;</span>)</span>; <span class="hljs-comment">//false，y是继承来的</span><br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Object</span>.</span></span>prototype.property<span class="hljs-constructor">IsEnumerable(<span class="hljs-string">&quot;toString&quot;</span>)</span>; <span class="hljs-comment">//false，不可枚举</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-“！-”"><a href="#4-“！-”" class="headerlink" title="4. “！==”"></a>4. “！==”</h4><p>可以用来判断严格属性是否是<code>undefined</code>：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk">var o = &#123;x:<span class="hljs-number">1</span>&#125;<br>o.x !== undefined; <span class="hljs-regexp">//</span>true<br>o.y !== undefined; <span class="hljs-regexp">//</span>false:o中没有属性y<br>o.toString !== undefined; <span class="hljs-regexp">//</span>true:o继承了toString属性<br><br><span class="hljs-regexp">//</span>注意：<br>var o = &#123; x: undefined &#125; <span class="hljs-regexp">//</span>属性被显式赋值为undefined<br>o.x !== undefined <span class="hljs-regexp">//</span>false，属性存在，但为undefined<br>o.y !== undefined <span class="hljs-regexp">//</span>false，属性不存在<br><span class="hljs-string">&quot;x&quot;</span> <span class="hljs-keyword">in</span> o <span class="hljs-regexp">//</span>true<br><span class="hljs-string">&quot;y&quot;</span> <span class="hljs-keyword">in</span> o <span class="hljs-regexp">//</span>false<br><span class="hljs-keyword">delete</span> o.x; <span class="hljs-regexp">//</span>删除了属性x<br><span class="hljs-string">&quot;x&quot;</span> <span class="hljs-keyword">in</span> o <span class="hljs-regexp">//</span>false<br></code></pre></td></tr></table></figure>
+
+<h2 id="属性getter和setter"><a href="#属性getter和setter" class="headerlink" title="属性getter和setter"></a>属性getter和setter</h2><p>在ECMAScript5中，属性值可以用一个或两个方法替代，这两个方法就是<code>getter</code>和<code>setter</code>。由<code>getter</code>和<code>setter</code>定义的属性称做“存取器属性”，它不同于“数据属性”，数据属性只有一个简单的值。<br><img src="https://img-blog.csdnimg.cn/20200213210652284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200213210527535.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>JavaScript把<code>getter</code>和<code>setter</code>函数当做对象的方法来调用，也就是说，在函数体内的this指向表示这个点的对象。</p>
+<p>和数据属性一样，存取器属性是可以继承的。</p>
+<p>因此可以将上述代码中的对象p当做另一个“点”的原型。可以给新对象定义它的x和y属性，但r和theta属性是继承来的：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">var q = inherit(p); <span class="hljs-regexp">//</span>创建一个继承getter和setter的新对象<br>q.x = <span class="hljs-number">1</span>,q.y = <span class="hljs-number">1</span>; <span class="hljs-regexp">//</span>给q添加两个属性<br>console.log(q.r); <span class="hljs-regexp">//</span>可以使用继承的存取器属性<br>console.log(q.theta);<br></code></pre></td></tr></table></figure>
+
+<h2 id="属性的特性"><a href="#属性的特性" class="headerlink" title="属性的特性"></a>属性的特性</h2><p>除了包含名字和值外，属性还包含一些标识它们可写，可枚举和可配置的特性。</p>
+<p>在ECMAScript3中无法设置这些特性，所有通过ECMASCript3的程序创建的属性都是可写的，可枚举的和可配置的，且无法对这些特性做修改。下面讲述ECMAScript5中查询和设置这些特性的API。</p>
+<p>可以通过这些API给原型对象添加方法，并将它们设置成不可枚举的，让他们看起来更像内置方法。还可以通过这些API给对象定义不能修改或删除的属性，借此“锁定”这个对象。</p>
+<h2 id="对象的三个属性"><a href="#对象的三个属性" class="headerlink" title="对象的三个属性"></a>对象的三个属性</h2><p>每个对象都有与之对应的原型（prototype），类（class）和可拓展性（extensible attribute）。</p>
+<h4 id="1-原型属性"><a href="#1-原型属性" class="headerlink" title="1. 原型属性"></a>1. 原型属性</h4><p>对象的原型属性是用来继承属性的。</p>
+<p>想要检测一个对象是否是另一个对象的原型（或处于原型链中），请使用<code>isPrototypeOf（）</code>方法。</p>
+<p>例如，可以使用<code>p.isPrototypeOf(o)</code>来检测p是否是o的原型：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">var p = &#123;x: <span class="hljs-number">1</span>&#125;; <span class="hljs-comment">//定义一个原型对象</span><br>var o = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Object</span>.</span></span>create(p); <span class="hljs-comment">// 使用这个原型创建一个对象</span><br>p.is<span class="hljs-constructor">PrototypeOf(<span class="hljs-params">o</span>)</span> <span class="hljs-comment">// true：o继承自p</span><br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Object</span>.</span></span>prototype.is<span class="hljs-constructor">PrototypeOf(<span class="hljs-params">o</span>)</span> <span class="hljs-comment">//true：p继承自Object.prototype</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-类属性"><a href="#2-类属性" class="headerlink" title="2. 类属性"></a>2. 类属性</h4><h4 id="3-可扩展性"><a href="#3-可扩展性" class="headerlink" title="3. 可扩展性"></a>3. 可扩展性</h4><h2 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h2><p>所有JavaScript对象都从<code>Object.prototype</code>继承属性（除了那些不通过原型显式创建的对象）。这些继承属性主要是方法。</p>
+<p>下面将对定义在<code>Object.prototype</code>里的对象方法展开讲解，这些方法非常好用而且使用广泛，但一些特定的类会重写这些方法。</p>
+<h4 id="1-toString-方法"><a href="#1-toString-方法" class="headerlink" title="1. toString()方法"></a>1. toString()方法</h4><p><code>toString（）</code>方法没有参数，它将返回一个表示这个方法的对象值的字符串。</p>
+<p>在需要将对象转换为字符串的时候，JavaScript都会调用这个方法。比如，当使用“+”运算符连接一个字符串和一个对象时或者希望使用字符串的方法中使用了对象时都会调用<code>toString（）</code>。</p>
+<p>默认的<code>toString（）</code>方法的返回值带有的信息量很少。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> s = &#123;x: <span class="hljs-number">1</span>,y: <span class="hljs-number">1</span>&#125;.toString();<br></code></pre></td></tr></table></figure>
+
+<p>因此很多类都带有自定义的<code>toString（）</code>。</p>
+<h4 id="2-toLocaleString（）方法"><a href="#2-toLocaleString（）方法" class="headerlink" title="2. toLocaleString（）方法"></a>2. toLocaleString（）方法</h4><p><img src="https://img-blog.csdnimg.cn/20200213210507919.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="3-toJSON（）方法"><a href="#3-toJSON（）方法" class="headerlink" title="3. toJSON（）方法"></a>3. toJSON（）方法</h4><p><img src="https://img-blog.csdnimg.cn/20200213210455448.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="4-valueOf-方法"><a href="#4-valueOf-方法" class="headerlink" title="4. valueOf()方法"></a>4. valueOf()方法</h4><p><img src="https://img-blog.csdnimg.cn/20200213210444408.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《JavaScript权威指南》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/13/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E3%80%8AJavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E3%80%8B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(5)%20%E6%95%B0%E7%BB%84/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《JavaScript权威指南》学习笔记(5) 数组</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/12/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C/">
+                        <span class="hidden-mobile">数据库操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

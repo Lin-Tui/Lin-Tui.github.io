@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="hash模式和history模式 实现原理及区别目前单页应用（SPA）越来越成为前端主流，单页应用一大特点就是使用前端路由，由前端来直接控制路由跳转逻辑，而不再由后端人员控制，这给了前端更多的自由。 目前前端路由主要有两种实现方式：hash 模式和 history模式，下面分别详细说明。 1. hash模式比如在用超链接制作锚点跳转的时候，就会发现，url后面跟了”#id”，hash值就是url中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue路由模式hash和history模式">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/05/14/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/vue%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8Fhash%E5%92%8Chistory%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="hash模式和history模式 实现原理及区别目前单页应用（SPA）越来越成为前端主流，单页应用一大特点就是使用前端路由，由前端来直接控制路由跳转逻辑，而不再由后端人员控制，这给了前端更多的自由。 目前前端路由主要有两种实现方式：hash 模式和 history模式，下面分别详细说明。 1. hash模式比如在用超链接制作锚点跳转的时候，就会发现，url后面跟了”#id”，hash值就是url中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-14T04:46:20.620Z">
+<meta property="article:modified_time" content="2022-01-22T04:49:52.418Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>vue路由模式hash和history模式 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="vue路由模式hash和history模式">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-14 12:46" pubdate>
+        2020年5月14日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      55 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">vue路由模式hash和history模式</h1>
+            
+            <div class="markdown-body">
+              <h1 id="hash模式和history模式-实现原理及区别"><a href="#hash模式和history模式-实现原理及区别" class="headerlink" title="hash模式和history模式 实现原理及区别"></a>hash模式和history模式 实现原理及区别</h1><p>目前单页应用（SPA）越来越成为前端主流，单页应用一大特点就是使用前端路由，由前端来直接控制路由跳转逻辑，而不再由后端人员控制，这给了前端更多的自由。</p>
+<p>目前前端路由主要有两种实现方式：<code>hash</code> 模式和 <code>history</code>模式，下面分别详细说明。</p>
+<h3 id="1-hash模式"><a href="#1-hash模式" class="headerlink" title="1. hash模式"></a>1. hash模式</h3><p>比如在用超链接制作锚点跳转的时候，就会发现，url后面跟了”#id”，hash值就是url中从”#”号开始到结束的部分。</p>
+<p>hash值变化浏览器不会重新发起请求，但是会触发<code>window.hashChange</code>事件，假如我们在hashChange事件中获取当前的hash值，并根据hash值来修改页面内容，则达到了前端路由的目的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- html：菜单中href设置为hash形式，id为app中放置页面内容 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;menu&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#index&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#news&quot;</span>&gt;</span>资讯<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#user&quot;</span>&gt;</span>个人中心<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br> <br><span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><br> <br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//在window.onhashchange中获取hash值，根据不同的值，修改app中不同的内容，起到了路由的效果</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hashChange</span>(<span class="hljs-params">e</span>)</span>&#123;<br>    <span class="hljs-comment">// console.log(location.hash)</span><br>    <span class="hljs-comment">// console.log(location.href)</span><br>    <span class="hljs-comment">// console.log(e.newURL)</span><br>    <span class="hljs-comment">// console.log(e.oldURL)</span><br> <br>    <span class="hljs-keyword">let</span> app = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;app&#x27;</span>)<br>    <span class="hljs-keyword">switch</span> (location.hash) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;#index&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是首页内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;#news&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是新闻内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;#user&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是个人中心内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-attr">default</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;404&lt;/h1&gt;&#x27;</span><br>    &#125;<br>&#125;<br><span class="hljs-built_in">window</span>.onhashchange = hashChange<br>hashChange()<br></code></pre></td></tr></table></figure>
+
+<p><strong>上面这个实现方式比较简陋，我们可以再封装一下:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Router</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-built_in">this</span>.routers = []  <span class="hljs-comment">//存放我们的路由配置</span><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">route,callback</span>)</span>&#123;<br>        <span class="hljs-built_in">this</span>.routers.push(&#123;<br>            <span class="hljs-attr">path</span>:route,<br>            <span class="hljs-attr">render</span>:callback<br>        &#125;)<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">listen</span>(<span class="hljs-params">callback</span>)</span>&#123;<br>        <span class="hljs-built_in">window</span>.onhashchange = <span class="hljs-built_in">this</span>.hashChange(callback)<br>        <span class="hljs-built_in">this</span>.hashChange(callback)()  <span class="hljs-comment">//首次进入页面的时候没有触发hashchange，必须要就单独调用一下</span><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">hashChange</span>(<span class="hljs-params">callback</span>)</span>&#123;<br>        <span class="hljs-keyword">let</span> self = <span class="hljs-built_in">this</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>            <span class="hljs-keyword">let</span> hash = location.hash<br>            <span class="hljs-built_in">console</span>.log(hash)<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>;i&lt;self.routers.length;i++)&#123;<br>                <span class="hljs-keyword">let</span> route = self.routers[i]<br>                <span class="hljs-keyword">if</span>(hash===route.path)&#123;<br>                    callback(route.render())<br>                    <span class="hljs-keyword">return</span><br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br> <br><span class="hljs-keyword">let</span> router = <span class="hljs-keyword">new</span> Router()<br>router.add(<span class="hljs-string">&#x27;#index&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&lt;h1&gt;这是首页内容&lt;/h1&gt;&#x27;</span><br>&#125;) <br>router.add(<span class="hljs-string">&#x27;#news&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;&lt;h1&gt;这是新闻内容&lt;/h1&gt;&#x27;</span><br>&#125;)<br>router.add(<span class="hljs-string">&#x27;#user&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;&lt;h1&gt;这是个人中心内容&lt;/h1&gt;&#x27;</span><br>&#125;)<br>router.listen(<span class="hljs-function">(<span class="hljs-params">renderHtml</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> app = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;app&#x27;</span>)<br>    app.innerHTML = renderHtml<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>实现一个Router类，通过add方法添加路由配置，第一个参数为路由路径，第二个参数为render函数，返回要插入页面的html；通过listen方法，监听hash变化，并将每个路由返回的html，插入到app中。这样我们就实现了一个简单的hash路由。</p>
+<h3 id="2-history模式"><a href="#2-history模式" class="headerlink" title="2. history模式"></a>2. history模式</h3><p>hash模式看起来是比较丑的，都带个”#”号，我们也可以采取history模式，history就是我们平时看到的正常的连接形式。</p>
+<p>history模式基于<code>window.history</code>对象的方法。</p>
+<p>在HTML4中，已经支持<code>window.history</code>对象来控制页面历史记录跳转，常用的方法包括：</p>
+<ul>
+<li><code>history.forward()</code>：在历史记录中前进一步</li>
+<li><code>history.back()</code>：在历史记录中后退一步</li>
+<li><code>history.go(n)</code>：在历史记录中跳转n步骤，n=0为刷新本页,n=-1为后退一页。</li>
+</ul>
+<p>在HTML5中，<code>window.history</code>对象得到了扩展，新增的API包括：</p>
+<ul>
+<li><code>history.pushState(data[,title][,url])</code>：向历史记录中追加一条记录</li>
+<li><code>history.replaceState(data[,title][,url])</code>：替换当前页在历史记录中的信息。</li>
+<li><code>history.state</code>：是一个属性，可以得到当前页的state信息。</li>
+<li><code>window.onpopstate</code>：是一个事件，在点击浏览器后退按钮或js调用<code>forward()</code>、<code>back()</code>、<code>go()</code>时触发。监听函数中可传入一个event对象，<code>event.state</code>即为通过<code>pushState()</code>或<code>replaceState()</code>方法传入的data参数</li>
+</ul>
+<p>history模式原理可以这样理解，首先我们要改造我们的超链接，给每个超链接增加onclick方法，阻止默认的超链接跳转，改用<code>history.pushState</code>或<code>history.replaceState</code>来更改浏览器中的url，并修改页面内容。由于通过history的api调整，并不会向后端发起请求，所以也就达到了前端路由的目的。</p>
+<p>如果用户使用浏览器的前进后退按钮，则会触发<code>window.onpopstate</code>事件，监听页面根据路由地址修改页面内容。</p>
+<p>也不一定非要用超链接，任意元素作为菜单都行，只要在点击事件中通过 history 进行调整即可。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--html:--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;menu&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/index&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/news&quot;</span>&gt;</span>资讯<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/user&quot;</span>&gt;</span>个人中心<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br> <br><span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//js:</span><br><span class="hljs-comment">//改造超链接，阻止默认跳转，默认的跳转是会刷新页面的</span><br><span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;#menu&#x27;</span>).addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span>(e.target.nodeName ===<span class="hljs-string">&#x27;A&#x27;</span>)&#123;<br>        e.preventDefault()<br>        <span class="hljs-keyword">let</span> path = e.target.getAttribute(<span class="hljs-string">&#x27;href&#x27;</span>)  <span class="hljs-comment">//获取超链接的href，改为pushState跳转，不刷新页面</span><br>        <span class="hljs-built_in">window</span>.history.pushState(&#123;&#125;,<span class="hljs-string">&#x27;&#x27;</span>,path)  <span class="hljs-comment">//修改浏览器中显示的url地址</span><br>        render(path)  <span class="hljs-comment">//根据path，更改页面内容</span><br>    &#125;<br>&#125;)<br> <br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params">path</span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> app = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;app&#x27;</span>)<br>    <span class="hljs-keyword">switch</span> (path) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/index&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是首页内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/news&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是新闻内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/user&#x27;</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;这是个人中心内容&lt;/h1&gt;&#x27;</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-attr">default</span>:<br>            app.innerHTML = <span class="hljs-string">&#x27;&lt;h1&gt;404&lt;/h1&gt;&#x27;</span><br>    &#125;<br>&#125;<br><span class="hljs-comment">//监听浏览器前进后退事件，并根据当前路径渲染页面</span><br><span class="hljs-built_in">window</span>.onpopstate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>&#123;<br>    render(location.pathname)<br>&#125;<br><span class="hljs-comment">//第一次进入页面显示首页</span><br>render(<span class="hljs-string">&#x27;/index&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>上面这个写法太low，我们可以用类封装一下，通过 add 方法添加路由，通过 pushState 进行跳转，初始化时更改所以超链接的跳转方式:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Router</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-built_in">this</span>.routers = []<br>        <span class="hljs-built_in">this</span>.renderCallback = <span class="hljs-literal">null</span><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">route,callback</span>)</span>&#123;<br>        <span class="hljs-built_in">this</span>.routers.push(&#123;<br>            <span class="hljs-attr">path</span>:route,<br>            <span class="hljs-attr">render</span>:callback<br>        &#125;)<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">pushState</span>(<span class="hljs-params">path,data=&#123;&#125;</span>)</span>&#123;<br>        <span class="hljs-built_in">window</span>.history.pushState(data,<span class="hljs-string">&#x27;&#x27;</span>,path)<br>        <span class="hljs-built_in">this</span>.renderHtml(path)<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">listen</span>(<span class="hljs-params">callback</span>)</span>&#123;<br>        <span class="hljs-built_in">this</span>.renderCallback = callback<br>        <span class="hljs-built_in">this</span>.changeA()<br>        <span class="hljs-built_in">window</span>.onpopstate = <span class="hljs-function">()=&gt;</span><span class="hljs-built_in">this</span>.renderHtml(<span class="hljs-built_in">this</span>.getCurrentPath())<br>        <span class="hljs-built_in">this</span>.renderHtml(<span class="hljs-built_in">this</span>.getCurrentPath())<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">changeA</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">e</span>)=&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span>(e.target.nodeName===<span class="hljs-string">&#x27;A&#x27;</span>)&#123;<br>                e.preventDefault()<br>                <span class="hljs-keyword">let</span> path = e.target.getAttribute(<span class="hljs-string">&#x27;href&#x27;</span>)<br>                <span class="hljs-built_in">this</span>.pushState(path)<br>            &#125;<br>        &#125;)<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">getCurrentPath</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">return</span> location.pathname<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">renderHtml</span>(<span class="hljs-params">path</span>)</span>&#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-built_in">this</span>.routers.length;i++)&#123;<br>            <span class="hljs-keyword">let</span> route = <span class="hljs-built_in">this</span>.routers[i]<br>            <span class="hljs-keyword">if</span>(path===route.path)&#123;<br>                <span class="hljs-built_in">this</span>.renderCallback(route.render())<br>                <span class="hljs-keyword">return</span><br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br>  <br><span class="hljs-keyword">let</span> router = <span class="hljs-keyword">new</span> Router()<br>router.add(<span class="hljs-string">&#x27;/index&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&lt;h1&gt;这是首页内容&lt;/h1&gt;&#x27;</span><br>&#125;)<br>router.add(<span class="hljs-string">&#x27;/news&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;&lt;h1&gt;这是新闻内容&lt;/h1&gt;&#x27;</span><br>&#125;)<br>router.add(<span class="hljs-string">&#x27;/user&#x27;</span>,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-string">&#x27;&lt;h1&gt;这是个人中心内容&lt;/h1&gt;&#x27;</span><br>&#125;)<br>router.listen(<span class="hljs-function">(<span class="hljs-params">renderHtml</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> app = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;app&#x27;</span>)<br>    app.innerHTML = renderHtml<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>当然，上面这个实现只是一个非常初级的 demo，并不能用于真正的开发场景，只是加深对前端路由的理解。</p>
+<h3 id="3-hash模式和history模式的区别"><a href="#3-hash模式和history模式的区别" class="headerlink" title="3. hash模式和history模式的区别"></a>3. hash模式和history模式的区别</h3><ul>
+<li>hash 模式较丑，history 模式较优雅</li>
+<li>pushState 设置的新 URL 可以是与当前 URL 同源的任意 URL；而 hash 只可修改 # 后面的部分，故只可设置与当前同文档的 URL</li>
+<li>pushState 设置的新 URL 可以与当前 URL 一模一样，这样也会把记录添加到栈中；而 hash 设置的新值必须与原来不一样才会触发记录添加到栈中</li>
+<li>pushState 通过 stateObject 可以添加任意类型的数据到记录中；而 hash 只可添加短字符串</li>
+<li>pushState 可额外设置 title 属性供后续使用</li>
+<li>hash 兼容IE8以上，history 兼容 IE10 以上</li>
+<li>history 模式需要后端配合将所有访问都指向 index.html，否则用户刷新页面，会导致 404 错误</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Vue学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/15/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JS%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E4%BB%A5%E5%8F%8A%E4%BA%8B%E4%BB%B6%E8%BD%AE%E8%AF%A2%E6%9C%BA%E5%88%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JS中的异步以及事件轮询机制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/13/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/js%E4%B8%AD%E7%9A%84%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
+                        <span class="hidden-mobile">js中的隐式转换</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

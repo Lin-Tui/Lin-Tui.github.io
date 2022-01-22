@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="假设存在两张表 c 和 p，这里使用的是MySQL数据库。 数据表 c：    course_id title dept_name credits    BIO-301 Genetics Biology 4   CS-190 Game Design Comp.sci 4   CS-315 Robotics Comp.sci 3   数据表 p：    course_id prereq_id">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库：区分笛卡儿积、自然连接、内连接、等值连接、外连接">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/04/15/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E5%8C%BA%E5%88%86%E7%AC%9B%E5%8D%A1%E5%84%BF%E7%A7%AF%E3%80%81%E8%87%AA%E7%84%B6%E8%BF%9E%E6%8E%A5%E3%80%81%E5%86%85%E8%BF%9E%E6%8E%A5%E3%80%81%E7%AD%89%E5%80%BC%E8%BF%9E%E6%8E%A5%E3%80%81%E5%A4%96%E8%BF%9E%E6%8E%A5/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="假设存在两张表 c 和 p，这里使用的是MySQL数据库。 数据表 c：    course_id title dept_name credits    BIO-301 Genetics Biology 4   CS-190 Game Design Comp.sci 4   CS-315 Robotics Comp.sci 3   数据表 p：    course_id prereq_id">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150246127.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150307148.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150323525.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150340348.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150353730.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150408771.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200415150423247.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020041515043660.png#pic_center">
+<meta property="article:published_time" content="2020-04-15T06:07:10.700Z">
+<meta property="article:modified_time" content="2022-01-22T04:41:33.089Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200415150246127.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  <title>数据库：区分笛卡儿积、自然连接、内连接、等值连接、外连接 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据库：区分笛卡儿积、自然连接、内连接、等值连接、外连接">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-15 14:07" pubdate>
+        2020年4月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据库：区分笛卡儿积、自然连接、内连接、等值连接、外连接</h1>
+            
+            <div class="markdown-body">
+              <p>假设存在两张表 c 和 p，这里使用的是MySQL数据库。</p>
+<p><strong>数据表 c</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">course_id</th>
+<th>title</th>
+<th>dept_name</th>
+<th>credits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">BIO-301</td>
+<td>Genetics</td>
+<td>Biology</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">CS-190</td>
+<td>Game Design</td>
+<td>Comp.sci</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">CS-315</td>
+<td>Robotics</td>
+<td>Comp.sci</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p><strong>数据表 p</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>course_id</th>
+<th>prereq_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BIO-301</td>
+<td>BIO-101</td>
+</tr>
+<tr>
+<td>CS-190</td>
+<td>CS-101</td>
+</tr>
+<tr>
+<td>CS-347</td>
+<td>CS-101</td>
+</tr>
+</tbody></table>
+<h2 id="1-笛卡儿积"><a href="#1-笛卡儿积" class="headerlink" title="1. 笛卡儿积"></a>1. 笛卡儿积</h2><p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c,p;</code></p>
+<p>或</p>
+<p><code>select * from c cross join p;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150246127.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="2-自然连接"><a href="#2-自然连接" class="headerlink" title="2. 自然连接"></a>2. 自然连接</h2><p>”natrual join 自然连接”的处理方式：先进行笛卡儿积操作，然后重复的属性只保留一份。</p>
+<p>自然连接的步骤是将第一张表的第一条记录和第二张表的每一条记录匹配，如果符合条件就组成一条记录，然后第一张表的第二条记录再和第二张表的每一条记录匹配，这步骤一直循环到第一张表的最后一条记录。</p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select c.course_id, c.title, c.dept_name, c.credits, p.prereq_id from c,p where c.course_id = p.course_id;</code></p>
+<p>或</p>
+<p><code>select * from c natural join p;</code></p>
+<p><strong>结果如下：</strong><br><img src="https://img-blog.csdnimg.cn/20200415150307148.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="3-内连接"><a href="#3-内连接" class="headerlink" title="3. 内连接"></a>3. 内连接</h2><p>“inner join 内连接”的处理方式：虽然重复，但两份都保留。</p>
+<p>内连接的结果和自然连接的结果是一样的，只不过是显示的属性不一样而已。内连接会将两张表的重复属性都分别列出来。</p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c,p where c.course_id = p.course_id;</code></p>
+<p>或</p>
+<p><code>select * from c inner join p on c.course_id = p.course_id;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150323525.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="4-等值连接"><a href="#4-等值连接" class="headerlink" title="4. 等值连接"></a>4. 等值连接</h2><p>从集合论角度看：等值连接是内连接的子集。</p>
+<h2 id="5-外连接"><a href="#5-外连接" class="headerlink" title="5. 外连接"></a>5. 外连接</h2><h4 id="（1）左连接"><a href="#（1）左连接" class="headerlink" title="（1）左连接"></a>（1）左连接</h4><p>left join 是left outer join的简写，它的全称是左外连接，是外连接中的一种。左(外)连接，左表的记录将会全部表示出来，而右表只会显示符合搜索条件的记录。右表记录不足的地方均为NULL。其实就是将右边的表的第一项根据条件分别和左边的每一行数据进行对比，如果符合条件，就拼成一条记录。</p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c left join p on c.course_id = p.course_id;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150340348.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c natural left join p;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150353730.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="（2）右连接"><a href="#（2）右连接" class="headerlink" title="（2）右连接"></a>（2）右连接</h4><p>right join是right outer join的简写，它的全称是右外连接，是外连接中的一种。与左(外)连接相反，右(外)连接，左表只会显示符合搜索条件的记录，而右表的记录将会全部表示出来。左表记录不足的地方均为NULL。</p>
+<p>右连接的匹配步骤是先将左边的表的第一项根据条件分别和右边的每一行数据进行对比，如果符合条件，就拼成一条记录。</p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c right join p on c.course_id = p.course_id;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150408771.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>select * from c natural right join p;</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/20200415150423247.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="（3）全连接"><a href="#（3）全连接" class="headerlink" title="（3）全连接"></a>（3）<strong>全连接</strong></h4><p>全连接也是属于外连接的一种。但是MySQL里没有全连接的关键字。但是可以通过union来实现。</p>
+<p>注意：</p>
+<p>UNION 内部的每个 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 SELECT 语句中的列的顺序必须相同。</p>
+<p>默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL。</p>
+<p>UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列名。</p>
+<p><strong>SQL语句如下</strong>：</p>
+<p><code>(select * from c left join p on c.course_id = p.course_id) union (select * from c right join p on c.course_id = p.course_id);</code></p>
+<p><strong>结果如下</strong>：<br><img src="https://img-blog.csdnimg.cn/2020041515043660.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">项目开发常用工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/17/Vue.js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue%EF%BC%9A%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%20Virtual%20DOM/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vue：模板编译 Virtual DOM</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/10/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/%E4%B8%8A%E7%BA%BF%E9%83%A8%E7%BD%B2/">
+                        <span class="hidden-mobile">上线部署</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

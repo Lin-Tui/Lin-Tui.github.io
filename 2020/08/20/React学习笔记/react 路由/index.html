@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1. react-router 与 react-router-dom区别react-router与react-router-dom使用时的区别 2. 示例安装：首先进入项目目录，使用npm安装react-router-dom： 1npm install react-router-dom --save-dev  基础使用： Class1.js： 12345678910111213import Rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react 路由">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/react%20%E8%B7%AF%E7%94%B1/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="1. react-router 与 react-router-dom区别react-router与react-router-dom使用时的区别 2. 示例安装：首先进入项目目录，使用npm安装react-router-dom： 1npm install react-router-dom --save-dev  基础使用： Class1.js： 12345678910111213import Rea">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200819160211480.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-08-20T02:48:53.573Z">
+<meta property="article:modified_time" content="2022-01-22T04:47:53.095Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200819160211480.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  <title>react 路由 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="react 路由">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-20 10:48" pubdate>
+        2020年8月20日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      45 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">react 路由</h1>
+            
+            <div class="markdown-body">
+              <h2 id="1-react-router-与-react-router-dom区别"><a href="#1-react-router-与-react-router-dom区别" class="headerlink" title="1. react-router 与 react-router-dom区别"></a>1. react-router 与 react-router-dom区别</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/menggirl23/p/10288477.html">react-router与react-router-dom使用时的区别</a></p>
+<h2 id="2-示例"><a href="#2-示例" class="headerlink" title="2. 示例"></a>2. 示例</h2><h4 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h4><p>首先进入项目目录，使用npm安装react-router-dom：</p>
+<figure class="highlight q"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs q">npm install react-router-dom --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="基础使用："><a href="#基础使用：" class="headerlink" title="基础使用："></a>基础使用：</h4><p><img src="https://img-blog.csdnimg.cn/20200819160211480.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><strong>Class1.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; Component &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Class1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Class1<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Class1;<br></code></pre></td></tr></table></figure>
+
+<p><strong>Class2.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; Component &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Class2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Class2<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Class2;<br></code></pre></td></tr></table></figure>
+
+<p><strong>App.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;BrowserRouter <span class="hljs-keyword">as</span> Router, Route, Link&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>;<br><span class="hljs-keyword">import</span> Class1 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/Class1&#x27;</span>;<br><span class="hljs-keyword">import</span> Class2 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/Class2&#x27;</span>;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;App&quot;</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class1&quot;</span>&gt;</span>class1<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class2&quot;</span>&gt;</span>class2<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/class1&quot;</span> <span class="hljs-attr">component</span>=<span class="hljs-string">&#123;Class1&#125;</span> /&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;class2&quot;</span> <span class="hljs-attr">component</span>=<span class="hljs-string">&#123;Class2&#125;</span> /&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span></span><br><br>  );<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;<br></code></pre></td></tr></table></figure>
+
+<p><strong>入口文件 index.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom&#x27;</span>;<br><span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App&#x27;</span>;<br><br>ReactDOM.render(<br>    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span></span>,<br>  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;root&#x27;</span>)<br>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-路由基本组件"><a href="#3-路由基本组件" class="headerlink" title="3. 路由基本组件"></a>3. 路由基本组件</h2><ul>
+<li><code>&lt;BrowserRouter&gt;</code>：使用Html5提供的history API来保持UI和URL的同步</li>
+<li><code>&lt;HashRouter&gt;</code>：使用URL和hash来保持UI和URL的同步</li>
+<li><code>&lt;Link&gt;</code>：是react路由中点击切换到哪一个组件的链接</li>
+<li><code>&lt;Route&gt;</code>：代表了你的路由界面，path代表路径，component代表路径对应的界面。</li>
+<li><code>&lt;Switch&gt;</code>：仅渲染与当前位置匹配的第一个子元素。</li>
+<li>exact：路由严格匹配模式，例：‘ink’ 与 ‘/‘正常情况下他们是匹配的，严格模式下他们是不匹配的。</li>
+</ul>
+<h2 id="4-嵌套路由"><a href="#4-嵌套路由" class="headerlink" title="4. 嵌套路由"></a>4. 嵌套路由</h2><p><strong>Class1.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; Component &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;BrowserRouter <span class="hljs-keyword">as</span> Router, Route, Link, Switch&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>;<br><br><span class="hljs-keyword">const</span> Home = <span class="hljs-function">() =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>home<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;<br><span class="hljs-keyword">const</span> About = <span class="hljs-function">() =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>about<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Class1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>&gt;</span></span><br><span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Class1<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class1/&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class1/about&quot;</span>&gt;</span>关于<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">exact</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/class1/&quot;</span> <span class="hljs-attr">component</span> = <span class="hljs-string">&#123;Home&#125;/</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/class1/about&quot;</span> <span class="hljs-attr">component</span> = <span class="hljs-string">&#123;About&#125;</span> /&gt;</span> </span><br><span class="xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Class1;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-路由传参"><a href="#5-路由传参" class="headerlink" title="5. 路由传参"></a>5. 路由传参</h2><p><strong>Class1.js</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; Component &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;BrowserRouter <span class="hljs-keyword">as</span> Router, Route, Link, Switch&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>;<br><br><span class="hljs-keyword">const</span> Home = <span class="hljs-function">() =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>home<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;<br><span class="hljs-comment">// const About = (res) =&gt; &#123;</span><br><span class="hljs-comment">//         console.log(res);</span><br><span class="hljs-comment">//         return &lt;h1&gt;about&lt;/h1&gt;</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-keyword">const</span> About = <span class="hljs-function">(<span class="hljs-params">&#123;location, history,match&#125;</span>) =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(match.params.title);<br>    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>about<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Class1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>&gt;</span></span><br><span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Class1<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class1/&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/class1/about/i-am-title&quot;</span>&gt;</span>关于<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">exact</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/class1/&quot;</span> <span class="hljs-attr">component</span> = <span class="hljs-string">&#123;Home&#125;/</span>&gt;</span></span><br><span class="xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/class1/about/:title&quot;</span> <span class="hljs-attr">component</span> = <span class="hljs-string">&#123;About&#125;</span> /&gt;</span> </span><br><span class="xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Class1;<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-lt-Route-gt-的渲染方式"><a href="#6-lt-Route-gt-的渲染方式" class="headerlink" title="6. &lt;Route&gt;的渲染方式"></a>6. <code>&lt;Route&gt;</code>的渲染方式</h2><ul>
+<li><p><strong>component</strong>：一个React组件。当带有component参数的route匹配成功后，route会返回一个新的元素，其为component参数所对应的React组件。</p>
+</li>
+<li><p><strong>render</strong>：一个返回React element的函数。当匹配成功后调用该函数。该过程与传入component参数类似。</p>
+</li>
+<li><p><strong>children</strong>：一个返回React element的函数。与上述两个参数不同，无论route是否匹配当前location，其都会被渲染。</p>
+</li>
+</ul>
+<p><strong>重定向 Redirect</strong>：</p>
+<p>Redirect重定向是路由的重定向，应该写在组件Route中，一般使用render来实现它。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;<br>    BroserRouter <span class="hljs-keyword">as</span> Router,<br>    Route,<br>    Link,<br>    Redirect<br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>;<br>...<br>&lt;p&gt;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&#x27;/class1/redirect&#x27;</span>&gt;</span>redirect<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>&lt;/p&gt;<br>...<br>&lt;Route path=<span class="hljs-string">&#x27;/class1/redirect&#x27;</span> render=&#123;<span class="hljs-function">() =&gt;</span> (<br>    	<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Redirect</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&#x27;/class/&#x27;</span> /&gt;</span></span><br>    )&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>自定义链接</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> OldSchoolMenuLink = <span class="hljs-function">(<span class="hljs-params">&#123;label, to, activeOnlyWhenExact&#125;</span>) =&gt;</span> (<br>	<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Route</span> </span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">path</span>=<span class="hljs-string">&#123;to&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">children</span> = <span class="hljs-string">&#123;(&#123;match&#125;)</span> =&gt;</span> (</span><br><span class="xml">        	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#123;match</span> ? &quot;<span class="hljs-attr">active</span>&quot; <span class="hljs-attr">:</span> &quot;&quot;&#125; &gt;</span></span><br><span class="xml">            	&#123;match ? &quot;&gt;&quot; :&quot;&quot;&#125;</span><br><span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&#123;to&#125;</span>&gt;</span>&#123;label&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">        )&#125;</span><br><span class="xml">)</span><br><span class="xml">//使用</span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">OldSchoolMenuLink</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;About&quot;</span> /&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="7-编程式导航"><a href="#7-编程式导航" class="headerlink" title="7.  编程式导航"></a>7.  编程式导航</h2><p>react-router提供了一个withRouter组件，withRouter可以包装如何自定义组件，将react-router的history，location，match三个对象传入。无需一级传递react-router的属性，当需要用的router属性的时候，将组件包一层withRouter，就可以拿到需要的路由信息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> RouterChange = withRouther(<span class="hljs-function">(<span class="hljs-params">&#123;history&#125;</span>) =&gt;</span> (<br>	<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    	<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> history.push(&#x27;/class1/&#x27;)&#125;&gt;跳转<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>))<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-阻止跳转"><a href="#8-阻止跳转" class="headerlink" title="8. 阻止跳转"></a>8. 阻止跳转</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;BrowserRouter <span class="hljs-keyword">as</span> Router, Route, Link, Prompt&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>;<br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Prompt</span> </span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">when</span>=<span class="hljs-string">&#123;this.state.isBlocking&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">message</span>=<span class="hljs-string">&#123;location</span> =&gt;</span> `你确定要离开当前页面跳转至$&#123;location.pathname&#125;`&#125;</span><br><span class="xml">/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>使用Prompt组件：when为布尔值是否开启验证</p>
+<p>message: string 当用户离开当前页面时，设置的提示信息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;Prompt message=<span class="hljs-string">&#x27;确定要离开？&#x27;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<p>message:func 当用户离开当前页面时，设置的回调函数</p>
+<h2 id="9-NavLink"><a href="#9-NavLink" class="headerlink" title="9. NavLink"></a>9. NavLink</h2><p><code>&lt;NavLink&gt;</code>是<code>&lt;Link&gt;</code>的一个特定的版本，会在匹配上当前的URL的时候给已经渲染的元素添加上参数。</p>
+<ul>
+<li>activeClassName（string）：设置选中的样式，默认值为active</li>
+<li>activeStyle（object）：当前元素被选中时，为此元素添加样式</li>
+<li>isActive（func）：判断链接是否激活的额外逻辑的功能</li>
+</ul>
+<p><strong>学习于</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YC4y1p7LG?from=search&seid=7930184209219319256">React全家桶之Router学习（一）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1eC4y1p74u?from=search&seid=7930184209219319256">React全家桶之Router学习（二）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MQ4y1P74J?from=search&seid=7930184209219319256">React全家桶之Router学习（三）</a></p>
+<p><strong>文档</strong>：</p>
+<p><a target="_blank" rel="noopener" href="http://react-guide.github.io/react-router-cn/docs/Introduction.html">React Router 中文文档</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">React学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/React/">React</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/React%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">React 生命周期</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/20/React%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/react%20context%E4%BD%BF%E7%94%A8/">
+                        <span class="hidden-mobile">react context使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

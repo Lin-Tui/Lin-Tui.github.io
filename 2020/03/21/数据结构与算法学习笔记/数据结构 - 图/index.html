@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图图是网络结构的抽象模型。图是一组由边连接的节点（或顶点），任何二元关系都可以用图来表示。 一个图G&#x3D;(V, E)由以下兀素组成：  V: 一组顶点 E: 一组边，连接V中的顶点  下图表示一个图:  由一条边连接在一起的顶点称为相邻顶点。比如，A和B是相邻的，A和D是相邻的，A和C 是相邻的，A和E不是相邻的。 一个顶点的度是其相邻顶点的数量。比如，A和其他三个顶点相连接，因此，A的度为3; E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构 - 图">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20-%20%E5%9B%BE/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="图图是网络结构的抽象模型。图是一组由边连接的节点（或顶点），任何二元关系都可以用图来表示。 一个图G&#x3D;(V, E)由以下兀素组成：  V: 一组顶点 E: 一组边，连接V中的顶点  下图表示一个图:  由一条边连接在一起的顶点称为相邻顶点。比如，A和B是相邻的，A和D是相邻的，A和C 是相邻的，A和E不是相邻的。 一个顶点的度是其相邻顶点的数量。比如，A和其他三个顶点相连接，因此，A的度为3; E">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031721005420.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210114487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210138593.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210159132.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210211617.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210226519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210249523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210313263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200317210344242.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-21T15:00:20.343Z">
+<meta property="article:modified_time" content="2022-01-22T04:40:18.078Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020031721005420.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>数据结构 - 图 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据结构 - 图">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-21 23:00" pubdate>
+        2020年3月21日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      66 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构 - 图</h1>
+            
+            <div class="markdown-body">
+              <h1 id="图"><a href="#图" class="headerlink" title="图"></a>图</h1><p>图是网络结构的抽象模型。图是一组由边连接的节点（或顶点），任何二元关系都可以用图来表示。</p>
+<p>一个图<code>G=(V, E)</code>由以下兀素组成：</p>
+<ul>
+<li>V: 一组顶点</li>
+<li>E: 一组边，连接V中的顶点</li>
+</ul>
+<p>下图表示一个图:</p>
+<p><img src="https://img-blog.csdnimg.cn/2020031721005420.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-T6j4akhD-1584450013346)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584445277875.png)]"></p>
+<p>由一条边连接在一起的顶点称为相邻顶点。比如，A和B是相邻的，A和D是相邻的，A和C 是相邻的，A和E不是相邻的。</p>
+<p>一个顶点的度是其相邻顶点的数量。比如，A和其他三个顶点相连接，因此，A的度为3; E 和其他两个顶点相连，因此，E的度为2。</p>
+<p>路径是顶点<code>v1, v2, ...vk</code>的一个连续序列，其中 vi 和 vi+1 是相邻的。以上图为例， 其中包含路径A B E I 和 A C D G。</p>
+<p>简单路径要求不包含重复的顶点。举个例子，ADG是一条简单路径。除去最后一个顶点（因 为它和第一个顶点是同一个顶点），环也是一个简单路径，比如ADC A(最后一个顶点重新回到A )。</p>
+<p>如果图中不存在环，则称该图是无坏的。如果图中每两个顶点间都存在路径，则该图是连通的。</p>
+<h3 id="有向图和无向图"><a href="#有向图和无向图" class="headerlink" title="有向图和无向图"></a>有向图和无向图</h3><p>图可以是无向的（边没有方向）或是有向的（有向图）。如下图所示，有向图的边有一个方向：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210114487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-8QXMce3h-1584450013369)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584445540939.png)]"></p>
+<p>如果图中每两个顶点间在双向上都存在路径，则该图是强连通的。例如，C和D是强连通的， 而A和B不是强连通的。</p>
+<p>图还可以是未加权的（目前为止我们看到的图都是未加权的）或是加权的。如下图所示，加 权图的边被赋予了权值：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210138593.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-WSvmCLtu-1584450013372)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584445721483.png)]"></p>
+<p>我们可以使用图来解决计算机科学世界中的很多问题，比如搜索图中的一个特定顶点或搜索 一条特定边，寻找图中的一条路径（从一个顶点到另一个顶点），寻找两个顶点之间的最短路径， 以及环检测。</p>
+<p>从数据结构的角度来说，我们有多种方式来表示图。在所有的表示法中，不存在绝对正确的 方式。图的正确表示法取决于待解决的问题和图的类型。</p>
+<h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>图最常见的实现是邻接矩阵。每个节点都和一个整数相关联，该整数将作为数组的索引。我 们用一个二维数组来表示顶点之间的连接。如果索引为 i 的节点和索引为 j 的节点相邻，则<code>array[i][j] ===1</code>，否则<code>array[i][j] === 0</code>,如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210159132.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-QqXWCYMf-1584450013376)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584445856364.png)]"></p>
+<p>不是强连通的图（稀疏图）如果用邻接矩阵来表示，则矩阵中将会有很多0,这意味着我们 浪费了计算机存储空间来表示根本不存在的边。例如，找给定顶点的相邻顶点，即使该顶点只有 一个相邻顶点，我们也不得不迭代一整行。邻接矩阵表示法不够好的另一个理由是，图中顶点的 数量可能会改变，而2维数组不太灵活。</p>
+<h3 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h3><p>我们也可以使用一种叫作邻接表的动态数据结构来表示图。邻接表由图中每个顶点的相邻顶 点列表所组成。存在好几种方式来表示这种数据结构。我们可以用列表（数组）、链表，甚至是 散列表或是字典来表示相邻顶点列表。下面的示意图展示了邻接表数据结构。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210211617.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-s1GHZrdI-1584450013383)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584445963798.png)]"></p>
+<p>尽管邻接表可能对大多数问题来说都是更好的选择，但以上两种表示法都很有用，且它们有 着不同的性质（例如，要找出顶点V和W是否相邻，使用邻接矩阵会比较快)。在接下来的示例中， 我们将会使用邻接表表示法。</p>
+<h3 id="关联矩阵"><a href="#关联矩阵" class="headerlink" title="关联矩阵"></a>关联矩阵</h3><p>我们还可以用关联矩阵来表示图。在关联矩阵中，矩阵的行表示顶点，列表示边。如下图所 示，我们使用二维数组来表示两者之间的连通性，如果顶点 v 是边 e 的入射点，则 <code>array[v][e] === 1</code>; 否则，<code>array [v][e] === 0</code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210226519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-togZF3Vl-1584450013387)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584446742425.png)]"></p>
+<p>关联矩阵通常用于边的数量比顶点多的情况下，以节省空间和内存。</p>
+<h3 id="创建图类："><a href="#创建图类：" class="headerlink" title="创建图类："></a>创建图类：</h3><figure class="highlight js"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span>() </span>&#123;<br><br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.vertices = []<br>        <span class="hljs-built_in">this</span>.adjList = <span class="hljs-keyword">new</span> Dictionary()<br>    &#125;<br><br>    <span class="hljs-comment">// 添加顶点</span><br>    <span class="hljs-function"><span class="hljs-title">addVertex</span>(<span class="hljs-params">v</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.vertices.push(v)<br>        <span class="hljs-built_in">this</span>.adjList.set(v, [])<br>    &#125;<br><br>    <span class="hljs-comment">// 添加线</span><br>    <span class="hljs-function"><span class="hljs-title">addEdge</span>(<span class="hljs-params">v, w</span>)</span> &#123;<br>        <span class="hljs-built_in">this</span>.adjList.get(v).push(w)<br>        <span class="hljs-built_in">this</span>.adjList.get(w).push(v)<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-title">toString</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.vertices.reduce(<span class="hljs-function">(<span class="hljs-params">r, v, i</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.adjList.get(v).reduce(<span class="hljs-function">(<span class="hljs-params">r, w, i</span>) =&gt;</span> &#123;<br>                <span class="hljs-keyword">return</span> r + <span class="hljs-string">`<span class="hljs-subst">$&#123;w&#125;</span> `</span><br>            &#125;, <span class="hljs-string">`<span class="hljs-subst">$&#123;r&#125;</span>\n<span class="hljs-subst">$&#123;v&#125;</span> =&gt; `</span>)<br>        &#125;, <span class="hljs-string">&#x27;&#x27;</span>)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>使用图类：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> graph = <span class="hljs-keyword">new</span> Graph()<br><br>;[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>, <span class="hljs-string">&#x27;F&#x27;</span>, <span class="hljs-string">&#x27;G&#x27;</span>, <span class="hljs-string">&#x27;H&#x27;</span>, <span class="hljs-string">&#x27;I&#x27;</span>].forEach(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> graph.addVertex(c))<br><br>graph.addEdge(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;G&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;G&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;H&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;F&#x27;</span>)<br>graph.addEdge(<span class="hljs-string">&#x27;E&#x27;</span>, <span class="hljs-string">&#x27;I&#x27;</span>)<br><br><span class="hljs-built_in">console</span>.log(graph.toString())<br><br><span class="hljs-comment">// 输出</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">A =&gt; B C D </span><br><span class="hljs-comment">B =&gt; A E F </span><br><span class="hljs-comment">C =&gt; A D G </span><br><span class="hljs-comment">D =&gt; A C G H </span><br><span class="hljs-comment">E =&gt; B I </span><br><span class="hljs-comment">F =&gt; B </span><br><span class="hljs-comment">G =&gt; C D </span><br><span class="hljs-comment">H =&gt; D </span><br><span class="hljs-comment">I =&gt; E </span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="图的遍历"><a href="#图的遍历" class="headerlink" title="图的遍历"></a>图的遍历</h3><p>和树数据结构类似，我们可以访问图的所有节点。有两种算法可以对图进行遍历：</p>
+<ul>
+<li><p>广度优先搜索（Breadth-First Search，BFS)</p>
+</li>
+<li><p>深度优先搜索（Depth-First Search，DFS)</p>
+</li>
+</ul>
+<p>图遍历可以用来寻找特定的顶点或寻找两个顶点之间的路径，检查图是否连通，检查图是否含有环等。</p>
+<p>在实现算法之前，让我们来更好地理解一下图遍历的思想方法。</p>
+<p>图遍历算法的思想是必须追踪每个第一次访问的节点，并且追踪有哪些节点还没有被完全探 索。对于两种图遍历算法，都需要明确指出第一个被访问的顶点。</p>
+<p>完全探索一个顶点要求我们查看该顶点的每一条边。对于每一条边所连接的没有被访问过的 顶点，将其标注为被发现的，并将其加进待访问顶点列表中。</p>
+<p>为了保证算法的效率，务必访问每个顶点至多两次。连通图中每条边和顶点都会被访问到。</p>
+<p>广度优先搜索算法和深度优先搜索算法基本上是相同的，只有一点不同，那就是待访问顶点 列表的数据结构。</p>
+<ul>
+<li><p>深度优先搜索：桟，通过将顶点存入桟中，顶点是沿着路径被探索的，存在新的相邻顶点就去访问</p>
+</li>
+<li><p>广度优先搜索 ：队列，通过将顶点存入队列中，最先入队列的顶点先被探索</p>
+</li>
+</ul>
+<p><strong>广度优先搜索</strong></p>
+<p>广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访 问图的一层。简单说，就是先宽后深地访问顶点，如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210249523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Rg8P6a7U-1584450013390)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584447758347.png)]"></p>
+<p>以下是我们的方法实现的。</p>
+<p>维护两个队列，分别用于存储已读和待读顶点，两者具有互斥性，即某顶点在访问时只会属于一种类型，本质是通过不断递归将相邻的顶点进行访问和维度标为已读。</p>
+<p>让我们来实现广度优先搜索算法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// breadth first search</span><br><span class="hljs-function"><span class="hljs-title">bfs</span>(<span class="hljs-params">v, callback</span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> read = []<br>    <span class="hljs-keyword">const</span> adjList = <span class="hljs-built_in">this</span>.adjList<br>    <span class="hljs-keyword">let</span> pending = [v || <span class="hljs-built_in">this</span>.vertices[<span class="hljs-number">0</span>]]<br>    <span class="hljs-keyword">const</span> readVertices = <span class="hljs-function"><span class="hljs-params">vertices</span> =&gt;</span> &#123;<br>        vertices.forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>            read.push(key)<br>            pending.shift()<br>            adjList.get(key).forEach(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>                <span class="hljs-keyword">if</span> (!pending.includes(v) &amp;&amp; !read.includes(v)) &#123;<br>                    pending.push(v)<br>                &#125;<br>            &#125;)<br>            <span class="hljs-keyword">if</span> (callback) callback(key)<br>            <span class="hljs-keyword">if</span> (pending.length) readVertices(pending)<br>        &#125;)<br>    &#125;<br>    readVertices(pending)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>让我们执行下面这段代码来测试一下这个算法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">graph.bfs(graph.vertices[<span class="hljs-number">0</span>], <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Visited vertex: &#x27;</span> + value))<br></code></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js">Visited vertex: A<br>Visited vertex: B<br>Visited vertex: C<br>Visited vertex: D<br>Visited vertex: E<br>Visited vertex: F<br>Visited vertex: G<br>Visited vertex: H<br>Visited vertex: I<br></code></pre></td></tr></table></figure>
+
+<p><strong>使用BFS寻找最短路径</strong></p>
+<p>到目前为止，我们只展示了BFS算法的工作原理。我们可以用该算法做更多事情，而不只是输出被访问顶点的顺序。例如，考虑如何来解决下面这个问题。</p>
+<p>给定一个图G和源顶点v，找出对每个顶点u，u和v之间最短路径的距离（以边的数量计)。</p>
+<p>对于给定顶点V，广度优先算法会访问所有与其距离为1的顶点，接着是距离为2的顶点，以此类推。所以，可以用广度优先算法来解这个问题。我们可以修改bfs方法以返回给我们一些信息：</p>
+<ul>
+<li>从 v 到 u 的距离 d[u]</li>
+<li>前溯点 pred[u]，用来推导出从v到其他每个顶点u的最短路径</li>
+</ul>
+<p>让我们来看看改进过的广度优先方法的实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">bfs</span>(<span class="hljs-params">v, callback</span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> read = []<br>    <span class="hljs-keyword">const</span> distances = []<br>    <span class="hljs-keyword">const</span> predecessors = []<br>    <span class="hljs-keyword">const</span> adjList = <span class="hljs-built_in">this</span>.adjList<br>    <span class="hljs-keyword">const</span> pending = [v || <span class="hljs-built_in">this</span>.vertices[<span class="hljs-number">0</span>]]<br>    <span class="hljs-keyword">const</span> readVertices = <span class="hljs-function"><span class="hljs-params">vertices</span> =&gt;</span> &#123;<br>        vertices.forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>            read.push(key)<br>            pending.shift()<br>            distances[key] = distances[key] || <span class="hljs-number">0</span><br>            predecessors[key] = predecessors[key] || <span class="hljs-literal">null</span><br>            adjList.get(key).forEach(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>                <span class="hljs-keyword">if</span> (!pending.includes(v) &amp;&amp; !read.includes(v)) &#123;<br>                    pending.push(v)<br>                    distances[v] = distances[key] + <span class="hljs-number">1</span><br>                    predecessors[v] = key<br>                &#125;<br>            &#125;)<br>            <span class="hljs-keyword">if</span> (callback) callback(key)<br>            <span class="hljs-keyword">if</span> (pending.length) readVertices(pending)<br>        &#125;)<br>    &#125;<br>    readVertices(pending)<br>    <span class="hljs-keyword">return</span> &#123; distances, predecessors &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js">distances: [A: <span class="hljs-number">0</span>, <span class="hljs-attr">B</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">C</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">D</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">E</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">F</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">G</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">H</span>: <span class="hljs-number">2</span> ,工：<span class="hljs-number">3</span>]<br><span class="hljs-attr">predecessors</span>: [A: <span class="hljs-literal">null</span>, <span class="hljs-attr">B</span>: <span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-attr">C</span>: <span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-attr">D</span>: <span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-attr">E</span>: <span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-attr">F</span>: <span class="hljs-string">&quot; B&quot;</span>, <span class="hljs-attr">G</span>: <span class="hljs-string">&quot; C&quot;</span>, <span class="hljs-attr">H</span>: <span class="hljs-string">&quot;D&quot;</span>, <span class="hljs-attr">I</span>: <span class="hljs-string">&quot;E&quot;</span>]<br></code></pre></td></tr></table></figure>
+
+<p>这意味着顶点A与顶点B、C和D的距离为1；与顶点E、F、G和H的距离为2；与顶点I的距离<br>通过前溯点数组，我们可以用下面这段代码来构建从顶点A到其他顶点的路径:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">distance</span>(<span class="hljs-params">fromVertex</span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> vertices = <span class="hljs-built_in">this</span>.vertices<br>    <span class="hljs-keyword">const</span> &#123; distances, predecessors &#125; = <span class="hljs-built_in">this</span>.bfs(fromVertex)<br>    vertices.forEach(<span class="hljs-function"><span class="hljs-params">toVertex</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (!!distances[toVertex]) &#123;<br>            <span class="hljs-keyword">let</span> preVertex = predecessors[toVertex]<br>            <span class="hljs-keyword">let</span> slug = <span class="hljs-string">&#x27;&#x27;</span><br>            <span class="hljs-keyword">while</span> (fromVertex !== preVertex) &#123;<br>                slug = <span class="hljs-string">`<span class="hljs-subst">$&#123;preVertex&#125;</span> - <span class="hljs-subst">$&#123;slug&#125;</span>`</span><br>                preVertex = predecessors[preVertex]<br>            &#125;<br>            slug = <span class="hljs-string">`<span class="hljs-subst">$&#123;fromVertex&#125;</span> - <span class="hljs-subst">$&#123;slug&#125;</span><span class="hljs-subst">$&#123;toVertex&#125;</span>`</span><br>            <span class="hljs-built_in">console</span>.log(slug)<br>        &#125;<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>执行该代码段，我们会得到如下输出：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js">graph.distance(graph.vertices[<span class="hljs-number">0</span>])<br><span class="hljs-comment">// 输出如下：</span><br><span class="hljs-comment">// A - B</span><br><span class="hljs-comment">// A - C</span><br><span class="hljs-comment">// A - D</span><br><span class="hljs-comment">// A - B - E</span><br><span class="hljs-comment">// A - B - F</span><br><span class="hljs-comment">// A - C - G</span><br><span class="hljs-comment">// A - D - H</span><br><span class="hljs-comment">// A - B - E - I</span><br></code></pre></td></tr></table></figure>
+
+<p>这里，我们得到了从顶点A到图中其他顶点的最短路径（衡量标准是边的数量)。</p>
+<p><strong>深度优先搜索</strong></p>
+<p>深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶 点被访问了，接着原路回退并探索下一条路径。换句话说，它是先深度后广度地访问顶点，如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210313263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-7R454VVM-1584450013395)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584449439749.png)]"></p>
+<p>深度优先搜索算法不需要一个源顶点。在深度优先搜索算法中，若图中顶点V未访问，则访问该顶点V。</p>
+<p>深度优先搜索算法核心是递归，普通的对象递归模型即可满足需求，对比已读顶点是否已完全覆盖即可。</p>
+<p>深度优先算法的实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// depth first search</span><br><span class="hljs-function"><span class="hljs-title">dfs</span>(<span class="hljs-params">callback</span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> read = []<br>    <span class="hljs-keyword">const</span> adjList = <span class="hljs-built_in">this</span>.adjList<br>    <span class="hljs-keyword">const</span> readVertices = <span class="hljs-function"><span class="hljs-params">vertices</span> =&gt;</span> &#123;<br>        vertices.forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span> (read.includes(key)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>            read.push(key)<br>            <span class="hljs-keyword">if</span> (callback) callback(key)<br>            <span class="hljs-keyword">if</span> (read.length !== <span class="hljs-built_in">this</span>.vertices.length) &#123;<br>                readVertices(adjList.get(key))<br>            &#125;<br>        &#125;)<br>    &#125;<br>    readVertices(adjList.keys)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>让我们执行下面的代码段来测试一下df s方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js">graph.dfs(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Visited vertex: &#x27;</span> + value))<br><br><span class="hljs-comment">// 输出如下：</span><br><span class="hljs-comment">// Visited vertex: A </span><br><span class="hljs-comment">// Visited vertex: B </span><br><span class="hljs-comment">// Visited vertex: E </span><br><span class="hljs-comment">// Visited vertex: I</span><br><span class="hljs-comment">// Visited vertex: F </span><br><span class="hljs-comment">// Visited vertex: C </span><br><span class="hljs-comment">// Visited vertex: D </span><br><span class="hljs-comment">// Visited vertex: G </span><br><span class="hljs-comment">// Visited vertex: H</span><br></code></pre></td></tr></table></figure>
+
+<p>下图展示了该算法每一步的执行过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200317210344242.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-a7r3Rli3-1584450013401)(C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584449527034.png)]"></p>
+<p><strong>探索深度优先算法</strong></p>
+<p>到目前为止，我们只是展示了深度优先搜索算法的工作原理。我们可以用该算法做更多的事 情，而不只是输出被访问顶点的顺序。</p>
+<p>对于给定的图G，我们希望深度优先搜索算法遍历图G的所有节点，构建“森林”（有根树的 一个集合）以及一组源顶点（根)，并输出两个数组：发现时间和完成探索时间。我们可以修改 dfs方法来返回给我们一些信息：</p>
+<ul>
+<li>顶点 u 的发现时间 d[u]</li>
+<li>当顶点 u 被标注为已读时，u 的完成探索时间</li>
+<li>顶点 u 的前溯点 p[u]</li>
+</ul>
+<p>让我们来看看改进了的 DFS 方法的实现:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// depth first search</span><br><span class="hljs-function"><span class="hljs-title">dfs</span>(<span class="hljs-params">callback</span>)</span> &#123;<br>    <span class="hljs-keyword">let</span> readTimer = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">const</span> read = []<br>    <span class="hljs-keyword">const</span> readTimes = []<br>    <span class="hljs-keyword">const</span> finishedTimes = []<br>    <span class="hljs-keyword">const</span> predecessors = []<br>    <span class="hljs-keyword">const</span> adjList = <span class="hljs-built_in">this</span>.adjList<br>    <span class="hljs-keyword">const</span> readVertices = <span class="hljs-function">(<span class="hljs-params">vertices, predecessor</span>) =&gt;</span> &#123;<br>        vertices.forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>            readTimer++<br>            <span class="hljs-keyword">if</span> (adjList.get(key).every(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> read.includes(v)) &amp;&amp; !finishedTimes[key]) &#123;<br>                finishedTimes[key] = readTimer<br>            &#125;<br>            <span class="hljs-keyword">if</span> (read.includes(key)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>            readTimes[key] = readTimer<br>            read.push(key)<br>            <span class="hljs-keyword">if</span> (callback) callback(key)<br>            predecessors[key] = predecessors[key] || predecessor || <span class="hljs-literal">null</span><br>            <span class="hljs-keyword">if</span> (read.length !== <span class="hljs-built_in">this</span>.vertices.length) &#123;<br>                readVertices(adjList.get(key), key)<br>            &#125;<br>        &#125;)<br>    &#125;<br>    readVertices(adjList.keys)<br>    <span class="hljs-keyword">return</span> &#123; readTimes, finishedTimes, predecessors &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>深度优先算法背后的思想是什么？边是从最近发现的顶点 u 处被向外探索的。只有连接到未发现的顶点的边才会探索。当 u 所有的边都被探索了，该算法回退到 u 被发现的地方去探索其他的边。这个过程持续到我们发现了所有从原始顶点能够触及的顶点。如果还留有任何其他未被发现的顶点，我们对新源顶点重复这个过程，直到图中所有的顶点都被探索了。</p>
+<p>对于改进过的深度优先搜索，有两点需要我们注意：</p>
+<ul>
+<li>时间（time）变量值的范围只可能在图顶点数量的一倍到两倍之间</li>
+<li>对于所有的顶点 u，d[u] &lt; f[u] 意味着，发现时间的值比完成时间的值小，完成时所有顶点都已经被探索过了</li>
+</ul>
+<p>学习于：<a target="_blank" rel="noopener" href="http://caibaojian.com/learn-javascript.html">JavaScript中的数据结构与算法学习</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据结构与算法学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20-%20%E6%A0%88/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构 - 栈</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95%20-%20%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
+                        <span class="hidden-mobile">算法 - 贪心算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

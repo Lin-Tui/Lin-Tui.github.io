@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JavaScript 的文法：JavaScript语法(2):JavaScript 遵循了一般编程语言的‘语句 - 表达式’结构，多数编程语言都是这样设计的。 脚本，或者模块都是由语句列表构成的，这次，就来一起了解一下语句。在 JavaScript 标准中，把语句分成了两种：声明和语句，不过，这里的区分逻辑比较奇怪，所以，这里winter按照他的思路整理一下：  普通语句： 声明型语句：   普通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《重学前端》学习笔记(9)">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/02/07/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(9)/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="JavaScript 的文法：JavaScript语法(2):JavaScript 遵循了一般编程语言的‘语句 - 表达式’结构，多数编程语言都是这样设计的。 脚本，或者模块都是由语句列表构成的，这次，就来一起了解一下语句。在 JavaScript 标准中，把语句分成了两种：声明和语句，不过，这里的区分逻辑比较奇怪，所以，这里winter按照他的思路整理一下：  普通语句： 声明型语句：   普通">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200207195815375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200207195827323.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200207195843126.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-02-07T08:56:57.203Z">
+<meta property="article:modified_time" content="2022-01-22T04:33:59.072Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200207195815375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70">
+  
+  
+  <title>《重学前端》学习笔记(9) - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="《重学前端》学习笔记(9)">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-07 16:56" pubdate>
+        2020年2月7日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      50 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《重学前端》学习笔记(9)</h1>
+            
+            <div class="markdown-body">
+              <h1 id="JavaScript-的文法：JavaScript语法-2"><a href="#JavaScript-的文法：JavaScript语法-2" class="headerlink" title="JavaScript 的文法：JavaScript语法(2):"></a>JavaScript 的文法：JavaScript语法(2):</h1><p>JavaScript 遵循了一般编程语言的‘语句 - 表达式’结构，多数编程语言都是这样设计的。</p>
+<p>脚本，或者模块都是由语句列表构成的，这次，就来一起了解一下语句。<br>在 JavaScript 标准中，把语句分成了两种：声明和语句，不过，这里的区分逻辑比较奇怪，所以，这里winter按照他的思路整理一下：</p>
+<ul>
+<li><strong>普通语句</strong>：<br><img src="https://img-blog.csdnimg.cn/20200207195815375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200207195827323.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+<li><strong>声明型语句</strong>：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200207195843126.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NjEyNDIxNA==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="普通语句"><a href="#普通语句" class="headerlink" title="普通语句"></a>普通语句</h2><h4 id="语句块"><a href="#语句块" class="headerlink" title="语句块"></a>语句块</h4><p>简单理解，语句块就是一对大括号：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs llvm">&#123;<br> var <span class="hljs-keyword">x</span><span class="hljs-punctuation">,</span> y<span class="hljs-comment">;</span><br> <span class="hljs-keyword">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span><span class="hljs-comment">;</span><br> y <span class="hljs-operator">=</span> <span class="hljs-number">20</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>语句块的意义和好处在于：让我们可以把多行语句视为同一行语句，这样，<code>if</code>、<code>for</code> 等语句定义起来就比较简单了。不过，我们需要注意的是，语句块会产生作用域。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&#123;<br> <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-built_in">console</span>.log(x); <span class="hljs-comment">// 报</span><br></code></pre></td></tr></table></figure>
+
+<p>这里我们的<code>let</code>声明，仅仅对语句块作用域生效，于是我们在语句块外试图访问语句块内的变量 x 就会报错。</p>
+<h4 id="空语句"><a href="#空语句" class="headerlink" title="空语句"></a>空语句</h4><p>空语句就是一个独立的分号，实际上没什么。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">；<br></code></pre></td></tr></table></figure>
+
+<p>空语句的存在仅仅是从语言设计完备性的角度考虑，允许插入多个分号而不抛出错</p>
+<h4 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h4><p><code>if</code> 语句是条件语句。</p>
+<p><code>if </code>语句的作用是，在满足条件时执行它的内容语句，这个语句可以是一个语句块，这样就可以实现有条件地执行多个语句了。<br><code>if </code>语句还有 <code>else </code>结构，用于不满足条件时执行，一种常见的用法是，利用语句的嵌套能力，把 <code>if </code>和<code>else</code>连写成多分支条件判</p>
+<h4 id="for-in-循环"><a href="#for-in-循环" class="headerlink" title="for in 循环"></a>for in 循环</h4><p><code>for in</code> 循环枚举对象的属性，这里体现了属性的 enumerable 特征。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">let</span> o = &#123; a: <span class="hljs-number">10</span>, b: <span class="hljs-number">20</span>&#125;<br><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Object</span>.</span></span>define<span class="hljs-constructor">Property(<span class="hljs-params">o</span>, <span class="hljs-string">&quot;c&quot;</span>, &#123;<span class="hljs-params">enumerable</span>:<span class="hljs-params">false</span>, <span class="hljs-params">value</span>:30&#125;)</span><br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> p <span class="hljs-keyword">in</span> o)<br> console.log(p);<br></code></pre></td></tr></table></figure>
+
+<p>这段代码中，我们定义了一个对象 o，给它添加了不可枚举的属性 c，之后我们用 for in 循环枚举它的属性，我们会发现，输出时得到的只有 a 和 b。<br>如果我们定义 c 这个属性时，enumerable 为 <code>true</code>，则 <code>for in </code>循环中也能枚举到它</p>
+<h4 id="try-语句和-throw-语句"><a href="#try-语句和-throw-语句" class="headerlink" title="try 语句和 throw 语句"></a>try 语句和 throw 语句</h4><p><code>try </code>语句和<code> throw</code> 语句用于处理异常。它们是配合使用的，所以我们就放在一起讲了。在大型应用中，异常机制非常重要。</p>
+<p>一般来说，<code>throw </code>用于抛出异常，但是单纯从语言的角度，我们可以抛出任何值，也不一定是异常逻辑，但是为了保证语义清晰，不建议用 <code>throw </code>表达任何非异常<br>逻辑。<br><code>try</code> 语句用于捕获异常，用<code>throw</code>抛出的异常，可以在<code>try</code>语句的结构中被处理掉：<code>try </code>部分用于标识捕获异常的代码段，<code>catch </code>部分则用于捕获异常后做一些处理，而 <code>finally</code> 则是用于执行后做一些必须执行的清理工作。<br><code>catch </code>结构会创建一个局部的作用域，并且把一个变量写入其中，需要注意，在这个作用域，不能再声明变量 e 了，否则会出错。<br>在<code> catch</code> 中重新抛出错误的情况非常常见，在设计比较底层的函数时，常常会这样做，保证抛出的错误能被理解。<br><code>finally </code>语句一般用于释放资源，它一定会被执行，我们在前面的课程中已经讨论过一些<code>finally</code>的特征，即使在<code>try</code>中出现了 <code>return</code>，<code>finally </code>中的语句也一定要被执行。</p>
+<h4 id="debugger-语句"><a href="#debugger-语句" class="headerlink" title="debugger 语句"></a>debugger 语句</h4><p><code>debugger</code> 语句的作用是：通知调试器在此断点。在没有调试器挂载时，它不产生任何效果。</p>
+<h2 id="声明型语句"><a href="#声明型语句" class="headerlink" title="声明型语句"></a>声明型语句</h2><h4 id="var"><a href="#var" class="headerlink" title="var"></a>var</h4><p>var 声明语句是古典的 JavaScript 中声明变量的方式。而现在，在绝大多数情况下，<code>let </code>和 <code>const</code> 都是更好的选择。</p>
+<p>它是一种预处理机制。</p>
+<p>如果我们仍然想要使用 <code>var</code>，的个人建议是，把它当做一种“保障变量是局部”的逻辑，遵循以下三条规则：</p>
+<ul>
+<li>声明同时必定初始化；</li>
+<li>尽可能在离使用的位置近处声明；</li>
+<li>不要在意重复声明。</li>
+</ul>
+<h4 id="let-和-const"><a href="#let-和-const" class="headerlink" title="let 和 const"></a>let 和 const</h4><p><code>let </code>和 <code>const</code>的作用范围是<code> if、for</code> 等结构型语句。</p>
+<p><code>let</code> 和 <code>const</code> 声明虽然看上去是执行到了才会生效，但是实际上，它们还是会被预处理。如果当前作用域内有声明，就无法访问到外部的变</p>
+<h4 id="class-声明"><a href="#class-声明" class="headerlink" title="class 声明"></a>class 声明</h4><p><code>class </code>最基本的用法只需要 <code>class </code>关键字、名称和一对大括号。它的声明特征跟 <code>const </code>和<code>let</code>类似，都是作用于块级作用域，预处理阶段则会屏蔽外部变量</p>
+<h4 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h4><p>函数声明使用 <code>function </code>关键。</p>
+<h1 id="JavaScript-的文法：JavaScript语法-3"><a href="#JavaScript-的文法：JavaScript语法-3" class="headerlink" title="JavaScript 的文法：JavaScript语法(3):"></a>JavaScript 的文法：JavaScript语法(3):</h1><p>在语句部分，讲到了很多种语句类型，但是，其实最终产生执行效果的语句不多。</p>
+<p>事实上，真正能干活的就只有表达式语句，其它语句的作用都是产生各种结构，来控制表达式语句执行，或者改变表达式语句的意义。</p>
+<h2 id="什么是表达式语句"><a href="#什么是表达式语句" class="headerlink" title="什么是表达式语句"></a>什么是表达式语句</h2><p>表达式语句实际上就是一个表达式，它是由运算符连接变量或者直接量构成的</p>
+<p>一般来说，我们的表达式语句要么是函数调用，要么是赋值，要么是自增、自减，否则表达式计算的结果没有任何意义。</p>
+<p>但是从语法上，并没有这样的限制，任何合法的表达式都可以当做表达式语句使用。比如<code>a + b;</code></p>
+<p>下面来了解下都有哪些表达式，从粒度最小到粒度最大了解一下</p>
+<h2 id="PrimaryExpression-主要表达"><a href="#PrimaryExpression-主要表达" class="headerlink" title="PrimaryExpression 主要表达"></a>PrimaryExpression 主要表达</h2><p>表达式的原子项：<code>Primary Expression</code>。它是表达式的最小单位，它所涉及的语法结构也是优先级最高的。</p>
+<p><code>Primary Expression</code> 包含了各种“直接量”，直接量就是直接用某种语法写出来的具有特定类型的值。</p>
+<ul>
+<li><p>简单回顾直接量。比如，用 <code>null </code>关键字获取 <code>null </code>值，这个用法就是 <code>null </code>直接量。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-string">&quot;abc&quot;</span><span class="hljs-comment">;</span><br><span class="hljs-number">123</span><span class="hljs-comment">;</span><br>null<span class="hljs-comment">;</span><br>true<br>false<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure></li>
+<li><p>除这些之外，JavaScript 还能够直接量的形式定义对象，针对函数、类、数组、正则表达式等特殊对象类型，JavaScript 提供了语法层面的支持。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">(&#123;&#125;);<br>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;&#125;);<br>(<span class="hljs-class"><span class="hljs-keyword">class</span></span>&#123; &#125;);<br>[];<br><span class="hljs-regexp">/abc/g</span><br></code></pre></td></tr></table></figure></li>
+<li><p>需要注意，在语法层面，<code>function</code>、<code>&#123;</code>和 <code>class</code> 开头的表达式语句 与 声明语句有语法冲突，所以，我们要想使用这样的表达式，必须加上括号来回避语法冲突。</p>
+<p>在 JavaScript 标准中，这些结构有的被称作直接量（Literal），有的被称作表达式（**Expression），在我看来，把它们都理解成直接量比较合适。</p>
+</li>
+<li><p><code>Primary Expression</code>还可以是<code> this</code> 或者变量，在语法上，把变量称作“标识符引用”。</p>
+</li>
+<li><p>任何表达式加上圆括号，都被认为是 <code>Primary Expression</code>，这个机制使得圆括号成为改变运算优先顺序的</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">(<span class="hljs-selector-tag">a</span> + <span class="hljs-selector-tag">b</span>) <br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>这就是<code>Primary Expression</code>的几种形式了，接下来，讲讲由 <code>Primary Expression</code> 构成的更复杂的表达式：<code>Member Expression</code>。</p>
+<h2 id="MemberExpression-成员表达式"><a href="#MemberExpression-成员表达式" class="headerlink" title="MemberExpression 成员表达式"></a>MemberExpression 成员表达式</h2><ul>
+<li><p><code>Member Expression </code>通常是用于访问对象成员的。它有几种形式：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">a.b<span class="hljs-comment">;</span><br>a[<span class="hljs-string">&quot;b&quot;</span>]<span class="hljs-comment">;</span><br>new.target<span class="hljs-comment">;</span><br>super.b<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>前面两种用法都很好理解，就是用标识符的属性访问和用字符串的属性访问。而 <code>new.target </code>是个新加入的语法，用于判断函数是否是被 <code>new </code>调用，<code>super</code> 则是构造函数中，用于访问父类的属性的语法。</p>
+</li>
+<li><p>从名字就可以看出，<code>Member Expression </code>最初设计是为了属性访问的，不过从语法结构需要，以下两种在 JavaScript 标准中当做<code> Member Expression</code>:</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">f<span class="hljs-string">`a<span class="hljs-subst">$&#123;b&#125;</span>c`</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这是一个是带函数的模板，这个带函数名的模板表示把模板的各个部分算好后传递给一个</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-keyword">new</span> <span class="hljs-keyword">Cls</span>()<br></code></pre></td></tr></table></figure>
+
+<p>另一个是带参数列表的 <code>new </code>运算，注意，不带参数列表的<code>new</code>运算优先级更低，不属于 <code>Member Expression</code></p>
+</li>
+</ul>
+<p>实际上，这两种被放入 <code>Member Expression</code>，仅仅意味着它们跟属性运算属于同一优先级，没有任何语义上的关联。接下来我们看看 <code>Member Expression </code>能组成什么。</p>
+<h2 id="NewExpression-NEW-表达式"><a href="#NewExpression-NEW-表达式" class="headerlink" title="NewExpression NEW 表达式"></a>NewExpression NEW 表达式</h2><p>这种非常简单，<code>Member Expression </code>加上 <code>new</code> 就是<code> New Expression</code>（当然，不加<code> new</code> 也可以构成 <code>New Expression</code>，JavaScript 中默认独立的高优先级表达式都可以构成低优先级表达式）。</p>
+<p>这里的 <code>New Expression</code> 特指没有参数列表的表达式。我们看个稍微复杂的例子：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-keyword">new</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">Cls</span>(<span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="CallExpression-函数调用表达"><a href="#CallExpression-函数调用表达" class="headerlink" title="CallExpression 函数调用表达"></a>CallExpression 函数调用表达</h2><p>除了 <code>New Expression</code>，<code>Member Expression</code> 还能构成 <code>Call Expression</code>。它的基本形式是 <code>Member Expression </code>后加一个括号里的参数列表，或者我们可以用上<code>super</code> 关键字代替 <code>Member Expression</code>。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.b</span>(c);<br><span class="hljs-selector-tag">super</span>();<br></code></pre></td></tr></table></figure>
+
+<p>这看起来很简单，但是它有一些变体。比如：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.b</span>(c)(d)(e);<br><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.b</span>(c)<span class="hljs-selector-attr">[3]</span>;<br><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.b</span>(c)<span class="hljs-selector-class">.d</span>;<br><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.b</span>(c)`<span class="hljs-selector-tag">xyz</span>`;<br></code></pre></td></tr></table></figure>
+
+<p>这些变体的形态，跟 <code>Member Expression </code>几乎是一一对应的。实际上，我们可以理解为，<code>Member Expression</code> 中的某一子结构具有函数调用，那么整个表达式就成为了一个<code> Call Expression。</code><br>而 <code>Call Expression</code> 就失去了比<code>New Expression</code>优先级高的特性，这是一个主要的区分。</p>
+<h2 id="LeftHandSideExpression-左值表达式"><a href="#LeftHandSideExpression-左值表达式" class="headerlink" title="LeftHandSideExpression 左值表达式"></a>LeftHandSideExpression 左值表达式</h2><p><code>New Expression </code>和 <code>Call Expression </code>统称 <code>LeftHandSideExpression</code>，左值表达式</p>
+<p>们直观地讲，左值表达式就是可以放到等号左边的表达式。JavaScript 语法则是下面这样。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">a() = b<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>左值表达式最经典的用法是用于构成赋值表。</p>
+<h2 id="AssignmentExpression-赋值表达式"><a href="#AssignmentExpression-赋值表达式" class="headerlink" title="AssignmentExpression 赋值表达式"></a>AssignmentExpression 赋值表达式</h2><p>AssignmentExpression 赋值表达式也有多种形态，最基本的当然是使用等号赋值：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">a</span> = b<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个等号是可以嵌套的：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">a</span> = <span class="hljs-attr">b</span> = <span class="hljs-attr">c</span> = d<br></code></pre></td></tr></table></figure>
+
+<p>这样的连续赋值，是右结合的，它等价于下面这种：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">a</span> = (<span class="hljs-attr">b</span> = (<span class="hljs-attr">c</span> = d)<br></code></pre></td></tr></table></figure>
+
+<p>当然，这并非一个很好的代码风格，我们讲解语法是为了让你理解这样的用法，而不是推荐你这样写代码。</p>
+<p>赋值表达式的使用，还可以结合一些运算符，例如：</p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fix"><span class="hljs-attr">a +</span>=<span class="hljs-string"> b;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="JavaScript-的文法：JavaScript语法-4"><a href="#JavaScript-的文法：JavaScript语法-4" class="headerlink" title="JavaScript 的文法：JavaScript语法(4):"></a>JavaScript 的文法：JavaScript语法(4):</h1><p>其中关于赋值表达式，讲完了它的左边部分，而留下了它右边部分，那么，来详细讲解。</p>
+<p>在一些通用的计算机语言设计理论中，能够出现在赋值表达式右边的叫做：右值表达式（RightHandSideExpression），而在 JavaScript 标准中，规定了在等号右边表达式叫做条件表达式（ConditionalExpression），不过，在 JavaScript 标准中，从未出现过右值表达式字样。</p>
+<p>JavaScript 标准也规定了左值表达式同时都是条件表达式（也就是右值表达式），此外，左值表达式也可以通过跟一定的运算符组合，逐级构成更复杂的结构，直到成为右值表达式。</p>
+<h2 id="更新表达式-UpdateExpression"><a href="#更新表达式-UpdateExpression" class="headerlink" title="更新表达式 UpdateExpression"></a>更新表达式 UpdateExpression</h2><p>左值表达式搭配 ++ – 运算符，可以形成更新表达式。</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-comment">-- a</span><br>++ <span class="hljs-keyword">a</span><br><span class="hljs-keyword">a</span> <span class="hljs-comment">--</span><br><span class="hljs-keyword">a</span> ++<br></code></pre></td></tr></table></figure>
+
+<p>更新表达式会改变一个左值表达式的值。分为前后自增，前后自减一共四种。</p>
+<h2 id="一元运算表达式-UnaryExpressio"><a href="#一元运算表达式-UnaryExpressio" class="headerlink" title="一元运算表达式 UnaryExpressio"></a>一元运算表达式 UnaryExpressio</h2><p>更新表达式搭配一元运算符，可以形成一元运算表达式</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">delete</span> <span class="hljs-keyword">a</span>.b<br>void <span class="hljs-keyword">a</span><br>typeof <span class="hljs-keyword">a</span><br>- <span class="hljs-keyword">a</span><br>~ <span class="hljs-keyword">a</span><br>! <span class="hljs-keyword">a</span><br>await <span class="hljs-keyword">a</span><br></code></pre></td></tr></table></figure>
+
+<p>他的特点就是一个更新表达式搭配了一个一元运算符。</p>
+<h2 id="乘方表达式-ExponentiationExpressio"><a href="#乘方表达式-ExponentiationExpressio" class="headerlink" title="乘方表达式 ExponentiationExpressio"></a>乘方表达式 ExponentiationExpressio</h2><p>乘方表达式也是由更新表达式构成的。它使用<code>**</code></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">++i ** <span class="hljs-number">30</span><br><span class="hljs-number">2</span> ** <span class="hljs-number">30</span> <span class="hljs-regexp">//</span> 正确<br>-<span class="hljs-number">2</span> ** <span class="hljs-number">30</span> <span class="hljs-regexp">//</span> 报<br></code></pre></td></tr></table></figure>
+
+<p>例子中，-2 这样的一元运算表达式，是不可以放入乘方表达式的，如果需要表达类似的逻辑，必须加括号。</p>
+<p>我们需要注意一下结合性，** 运算是右结合的，这跟其它正常的运算符（也就是左结合运算符）都不一样：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">4</span> ** <span class="hljs-number">3</span> **<span class="hljs-number">2</span>;<br><span class="hljs-regexp">//</span>以上它是这样被运算的：<br><span class="hljs-number">4</span> ** (<span class="hljs-number">3</span> ** <span class="hljs-number">2</span>)<br><span class="hljs-regexp">//</span>而不是这样被运算的<br>(<span class="hljs-number">4</span> ** <span class="hljs-number">3</span>) ** <br></code></pre></td></tr></table></figure>
+
+<h2 id="乘法表达式-MultiplicativeExpression"><a href="#乘法表达式-MultiplicativeExpression" class="headerlink" title="乘法表达式 MultiplicativeExpression"></a>乘法表达式 MultiplicativeExpression</h2><p>乘方表达式可以构成乘法表达式，用乘号或者除号、取余符号连接就可以了，我们看看例子：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">x</span> * <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p>乘法表达式有三种运算符：<code>*</code>,<code>/</code>,<code>%</code></p>
+<p>它们分别表示乘、除和取余。它们的优先级是一样的，所以统一放在乘法运算表达式中。</p>
+<h2 id="加法表达式-AdditiveExpression"><a href="#加法表达式-AdditiveExpression" class="headerlink" title="加法表达式 AdditiveExpression"></a>加法表达式 AdditiveExpression</h2><p>加法表达式有加号和减号两种运算符。</p>
+<p>加法表达式是由乘法表达式用加号或者减号连接构成的。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">a</span> + <span class="hljs-selector-tag">b</span> * c<br></code></pre></td></tr></table></figure>
+
+<h2 id="移位表达式-ShiftExpression"><a href="#移位表达式-ShiftExpression" class="headerlink" title="移位表达式 ShiftExpression"></a>移位表达式 ShiftExpression</h2><p>移位表达式由加法表达式构成，移位是一种位运算，分成三种：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;&lt; 向左移位<br><span class="hljs-meta">&gt;&gt;</span> 向右移位<br>&gt;&gt;&gt; 无符号向右<br></code></pre></td></tr></table></figure>
+
+<p>移位运算把操作数看做二进制表示的整数，然后移动特定位数。所以左移 n 位相当于乘以 2 的 n 次方，右移 n 位相当于除以 2 取整 n次。</p>
+<h2 id="关系表达式-RelationalExpression"><a href="#关系表达式-RelationalExpression" class="headerlink" title="关系表达式 RelationalExpression"></a>关系表达式 RelationalExpression</h2><p>移位表达式可以构成关系表达式，这里的关系表达式就是大于、小于、大于等于、小于等于等运算符号连接，统称为关系运算。</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bnf"><span class="hljs-attribute">&lt;=</span><br><span class="hljs-attribute">&gt;</span>=<br><span class="hljs-attribute">&lt;</span><br><span class="hljs-attribute">&gt;</span><br>instanceof<br>in<br></code></pre></td></tr></table></figure>
+
+<p>需要注意，这里的 &lt;= 和 &gt;= 关系运算，完全是针对数字的，所以 &lt;= 并不等价于 &lt; 或 ==。例如：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-literal">null</span> &lt;= <span class="hljs-literal">undefined</span><br><span class="hljs-comment">//false</span><br><span class="hljs-literal">null</span> == <span class="hljs-literal">undefined</span><br><span class="hljs-comment">//tru</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="相等表达式-EqualityExpression"><a href="#相等表达式-EqualityExpression" class="headerlink" title="相等表达式 EqualityExpression"></a>相等表达式 EqualityExpression</h2><p>在语法上，相等表达式是由关系表达式用相等比较运算符（如<code> ==</code>）连接构成的。所以我们可以像下面这段代码一样使用，而不需要加括号：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">a <span class="hljs-keyword">instanceof</span> <span class="hljs-string">&quot;object&quot;</span> == <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p>相等表达式由四种运算符和关系表达式构成，我们来看一下运算符:</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">==<br><span class="hljs-section">!=</span><br><span class="hljs-section">===</span><br>!=<br></code></pre></td></tr></table></figure>
+
+<p>类型不同的变量比较时==运算只有三条规则：</p>
+<ul>
+<li>undefined 与 null 相等；</li>
+<li>字符串和 bool 都转为数字再比较；</li>
+<li>对象转换成 primitive 类型再比较。</li>
+</ul>
+<p>这样我们就可以理解一些不太符合直觉的例子了，比如:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-literal">false</span> == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-comment">//true</span><br><span class="hljs-literal">true</span> == <span class="hljs-string">&#x27;true&#x27;</span><span class="hljs-comment">// false</span><br>[<span class="hljs-meta"></span>] == <span class="hljs-number">0</span> <span class="hljs-comment">//true</span><br>[<span class="hljs-meta"></span>] == <span class="hljs-literal">false</span> <span class="hljs-comment">//true</span><br><span class="hljs-keyword">new</span> Boolean(<span class="hljs-string">&#x27;false&#x27;</span>) == <span class="hljs-literal">false</span> <span class="hljs-comment">//false</span><br></code></pre></td></tr></table></figure>
+
+<p>这里不太符合直觉的有两点：</p>
+<ul>
+<li>一个是即使字符串与 boolean 比较，也都要转换成数字；</li>
+<li>二是对象如果转换成了 primitive 类型跟等号另一边类型恰好相同，则不需要转换成数字</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《重学前端》学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/08/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(10)/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《重学前端》学习笔记(10)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/07/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(8)/">
+                        <span class="hidden-mobile">《重学前端》学习笔记(8)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

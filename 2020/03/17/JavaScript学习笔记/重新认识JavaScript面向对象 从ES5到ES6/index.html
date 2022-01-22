@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#252d38">
+  <meta name="author" content="Lin Tui">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="重新认识JavaScript面向对象: 从ES5到ES6一. 重新认识面向对象1. JavaScript是一门面向对象的语言在说明JavaScript是一个面向对象的语言之前, 我们来探讨一下面向对象的三大基本特征:  封装, 继承, 多态。 封装  把抽象出来的属性和对方法组合在一起, 且属性值被保护在内部, 只有通过特定的方法进行改变和读取称为封装  我们以代码举例, 首先我们构造一个Pers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重新认识JavaScript面向对象 从ES5到ES6">
+<meta property="og:url" content="https://lin-tui.github.io.com/2020/03/17/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86JavaScript%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%20%E4%BB%8EES5%E5%88%B0ES6/index.html">
+<meta property="og:site_name" content="Lin Tui">
+<meta property="og:description" content="重新认识JavaScript面向对象: 从ES5到ES6一. 重新认识面向对象1. JavaScript是一门面向对象的语言在说明JavaScript是一个面向对象的语言之前, 我们来探讨一下面向对象的三大基本特征:  封装, 继承, 多态。 封装  把抽象出来的属性和对方法组合在一起, 且属性值被保护在内部, 只有通过特定的方法进行改变和读取称为封装  我们以代码举例, 首先我们构造一个Pers">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584425977636.png">
+<meta property="og:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584425996493.png">
+<meta property="article:published_time" content="2020-03-17T05:55:18.966Z">
+<meta property="article:modified_time" content="2022-01-22T04:45:41.657Z">
+<meta property="article:author" content="Lin Tui">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/lin/AppData/Roaming/Typora/typora-user-images/1584425977636.png">
+  
+  
+  <title>重新认识JavaScript面向对象 从ES5到ES6 - Lin Tui</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lin-tui.github.io.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lin Tui</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="重新认识JavaScript面向对象 从ES5到ES6">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-17 13:55" pubdate>
+        2020年3月17日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      11k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      95 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">重新认识JavaScript面向对象 从ES5到ES6</h1>
+            
+            <div class="markdown-body">
+              <h1 id="重新认识JavaScript面向对象-从ES5到ES6"><a href="#重新认识JavaScript面向对象-从ES5到ES6" class="headerlink" title="重新认识JavaScript面向对象: 从ES5到ES6"></a>重新认识JavaScript面向对象: 从ES5到ES6</h1><h2 id="一-重新认识面向对象"><a href="#一-重新认识面向对象" class="headerlink" title="一. 重新认识面向对象"></a>一. 重新认识面向对象</h2><h4 id="1-JavaScript是一门面向对象的语言"><a href="#1-JavaScript是一门面向对象的语言" class="headerlink" title="1. JavaScript是一门面向对象的语言"></a>1. JavaScript是一门面向对象的语言</h4><p>在说明JavaScript是一个面向对象的语言之前, 我们来探讨一下面向对象的三大基本特征:  <strong>封装</strong>, <strong>继承</strong>, <strong>多态</strong>。</p>
+<p><strong>封装</strong></p>
+<blockquote>
+<p>把抽象出来的属性和对方法组合在一起, 且属性值被保护在内部, 只有通过特定的方法进行改变和读取称为封装</p>
+</blockquote>
+<p>我们以代码举例, 首先我们构造一个<code>Person</code>构造函数, 它有<code>name</code>和<code>id</code>两个属性, 并有一个<code>sayHi</code>方法用于打招呼:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//定义Person构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name, id</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.id = id;<br>&#125;<br><br><span class="hljs-comment">//在Person.prototype中加入方法</span><br>Person.prototype.sayHi = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;你好, 我是&#x27;</span> +  <span class="hljs-built_in">this</span>.name);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在我们生成一个实例对象<code>p1</code>, 并调用<code>sayHi()</code>方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//实例化对象</span><br><span class="hljs-keyword">let</span> p1 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">1234</span>);<br><br><span class="hljs-comment">//调用sayHi方法</span><br>p1.sayHi();<br></code></pre></td></tr></table></figure>
+
+<p>在上述的代码中, <code>p1</code>这个对象并不知道<code>sayHi()</code>这个方法是如何实现的, 但是仍然可以使用这个方法. 这其实就是<strong>封装</strong>. 你也可以实现对象属性的私有和公有, 我们在构造函数中声明一个<code>salary</code>作为私有属性, 有且只有通过<code>getSalary()</code>方法查询到薪资.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name, id</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.id = id;<br>  <span class="hljs-keyword">let</span> salary = <span class="hljs-number">20000</span>;<br>  <span class="hljs-built_in">this</span>.getSalary = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">pwd</span>) </span>&#123;<br>    pwd === <span class="hljs-number">123456</span> ? <span class="hljs-built_in">console</span>.log(salary) : <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;对不起, 你没有权限查看密码&#x27;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>继承</strong></p>
+<blockquote>
+<p>可以让某个类型的对象获得另一个类型的对象的属性和方法称为继承</p>
+</blockquote>
+<p>以刚才的<code>Person</code>作为父类构造器, 我们来新建一个子类构造器<code>Student</code>, 这里我们使用<code>call()</code>方法实现继承</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span>(<span class="hljs-params">name, id, subject</span>) </span>&#123;<br>  <span class="hljs-comment">//使用call实现父类继承</span><br>  Person.call(<span class="hljs-built_in">this</span>, name, id);<br>  <span class="hljs-comment">//添加子类的属性</span><br>  <span class="hljs-built_in">this</span>.subject = subject;<br>&#125;<br><br><span class="hljs-keyword">let</span> s1 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">1234</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>多态</strong></p>
+<blockquote>
+<p>同一操作作用于不同的对象产生不同的执行结果, 这称为多态</p>
+</blockquote>
+<p>JavaScript中函数没有重载， 所以JavaScript中的多态是靠函数覆盖实现的。</p>
+<p>同样以刚才的<code>Person</code>构造函数为例, 我们为<code>Person</code>构造函数添加一个<code>study</code>方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name, id</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.id = id;<br>  <span class="hljs-built_in">this</span>.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(name + <span class="hljs-string">&#x27;在学习&#x27;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>同样, 我们新建一个<code>Student</code>和<code>Teacher</code>构造函数, 该构造函数继承<code>Person</code>, 并也添加<code>study</code>方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span>(<span class="hljs-params">subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.subject = subject;<br>  <span class="hljs-built_in">this</span>.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;在学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>  &#125;<br>&#125;<br>Student.prototype = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">1234</span>);<br>Student.prototype.constructor = Student;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Teacher</span>(<span class="hljs-params">subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.subject = subject;<br>  <span class="hljs-built_in">this</span>.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;为了教学而学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>  &#125;<br>&#125;<br>Teacher.prototype = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">&quot;老夫子&quot;</span>, <span class="hljs-number">4567</span>);<br>Teacher.prototype.constructor = Teacher;<br></code></pre></td></tr></table></figure>
+
+<p>测试我们新建一个函数<code>doStudy</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doStudy</span>(<span class="hljs-params">role</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span>(role <span class="hljs-keyword">instanceof</span> Person) &#123;<br>    role.study();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此时我们分别实例化<code>Student</code>和<code>Teacher</code>, 并调用<code>doStudy</code>方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> student = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;前端开发&#x27;</span>);<br><span class="hljs-keyword">let</span> teacher = <span class="hljs-keyword">new</span> Teacher(<span class="hljs-string">&#x27;前端开发&#x27;</span>);<br><br>doStudy(student); <span class="hljs-comment">//阿辉在学习前端开发</span><br>doStudy(teacher); <span class="hljs-comment">//老夫子为了教学在学习前端开发</span><br></code></pre></td></tr></table></figure>
+
+<p>对于同一函数<code>doStudy</code>， 由于参数的不同， 导致不同的调用结果，这就实现了多态.</p>
+<p><strong>JavaScript的面向对象</strong><br> 从上面的分析可以论证出, JavaScript是一门面向对象的语言, 因为它实现了面向对象的所有特性. 其实, 面向对象仅仅是一个概念或者一个编程思想而已, 它不应该依赖于某个语言存在, 比如Java采用面向对象思想构造其语言, 它实现了类, 继承, 派生, 多态, 接口等机制. 但是这些机制，只是实现面向对象的一种手段， 而非必须。换言之， 一门语言可以根据自身特性选择合适的方式来实现面向对象。 由于大多数程序员首先学习的是Java, C++等高级编程语言， 因而先入为主的接受了“类”这个面向对象实际方式，所以习惯性的用类式面向对象语言中的概念来判断该语言是否是面向对象的语言。这也是很多有其他编程语言经验的人在学习JavaScript对象时，感觉到很困难的地方。</p>
+<p>实际上， JavaScript是通过一种叫<strong>原型(prototype)<strong>的方式来实现面向对象编程的。下面我们就来讨论一下</strong>基于类(class-basesd)的面向对象</strong>和<strong>基于原型(protoype-based)的面向对象</strong>这两者的差别。</p>
+<p><strong>基于类的面向对象</strong></p>
+<p>在基于<strong>类</strong>的面向对象语言中（比如Java和C++）， 是构建在<strong>类(class)<strong>和</strong>实例(instance)<strong>上的。其中</strong>类</strong>定义了所有用于具有某一特征对象的属性。<strong>类</strong>是抽象的事物， 而不是其所描述的全部对象中的任何特定的个体。另一方面， 一个<strong>实例</strong>是一个<strong>类</strong>的实例化，是其中的一个成员。</p>
+<p><strong>基于原型的面向对象</strong><br> 在基于<strong>原型</strong>的语言中（如JavaScript）并不存在这种区别：<strong>它只有对象！</strong>不论是构造函数(constructor)，实例(instance)，原型(prototype)本身都是对象。基于原型的语言具有所谓的原型对象的概念，新对象可以从中获得原始的属性。</p>
+<p>所以，在JavaScript中有一个很有意思的<code>__proto__</code>属性（ES6以下是非标准属性）用于访问其原型对象， 你会发现，上面提到的构造函数，实例，原型本身都有<code>__proto__</code>指向原型对象。其最后顺着原型链都会指向<code>Object</code>这个构造函数，然而<code>Object</code>的原型对象的原型是<code>null</code>，不信， 你可以尝试一下<code>Object.prototype.__proto__ === null</code>为<code>true</code>。然而<code>typeof null === &#39;object&#39;</code>为<code>true</code>。到这里， 我相信你应该就能明白为什么JavaScript这类基于原型的语言中没有类和实例的区别， 而是<strong>万物皆对象！</strong></p>
+<p><strong>差异总结</strong></p>
+<table>
+<thead>
+<tr>
+<th>基于类的（Java）</th>
+<th>基于原型的（JavaScript）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类和实例是不同的事物。</td>
+<td>所有对象均为实例。</td>
+</tr>
+<tr>
+<td>通过类定义来定义类；通过构造器方法来实例化类。</td>
+<td>通过构造器函数来定义和创建一组对象。</td>
+</tr>
+<tr>
+<td>通过 new 操作符创建单个对象。</td>
+<td>相同</td>
+</tr>
+<tr>
+<td>通过类定义来定义现存类的子类， 从而构建对象的层级结构</td>
+<td>指定一个对象作为原型并且与构造函数一起构建对象的层级结构</td>
+</tr>
+<tr>
+<td>遵循类链接继承属性</td>
+<td>遵循原型链继承属性</td>
+</tr>
+<tr>
+<td>类定义指定类的所有实例的所有属性。无法在运行时动态添加属性</td>
+<td>构造器函数或原型指定初始的属性集。允许动态地向单个的对象或者整个对象集中添加或移除属性。</td>
+</tr>
+</tbody></table>
+<h2 id="二-ES5中的面向对象"><a href="#二-ES5中的面向对象" class="headerlink" title="二. ES5中的面向对象"></a>二. ES5中的面向对象</h2><blockquote>
+<p>*这里的ES5并不特指ECMAScript 5， 而是代表ECMAScript 6 之前的ECMAScript！</p>
+</blockquote>
+<h4 id="一-ES5中对象的创建"><a href="#一-ES5中对象的创建" class="headerlink" title="(一) ES5中对象的创建"></a><strong>(一) ES5中对象的创建</strong></h4><p>在ES5中创建对象有两种方式， 第一种是使用对象字面量的方式， 第二种是使用构造函数的方式。该两种方法在特定的使用场景分别有其优点和缺点， 下面我们来分别介绍这两种创建对象的方式。</p>
+<h5 id="1-使用对象字面量的方式"><a href="#1-使用对象字面量的方式" class="headerlink" title="1. 使用对象字面量的方式"></a><strong>1. 使用对象字面量的方式</strong></h5><p>我们通过对象字面量的方式创建两个<code>student</code>对象，分别是<code>student1</code>和<code>student2</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> student1 = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;阿辉&#x27;</span>,<br>  <span class="hljs-attr">age</span>: <span class="hljs-number">22</span>,<br>  <span class="hljs-attr">subject</span>: <span class="hljs-string">&#x27;前端开发&#x27;</span><br>&#125;;<br><br><span class="hljs-keyword">var</span> student2 = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;阿傻&#x27;</span>,<br>  <span class="hljs-attr">age</span>: <span class="hljs-number">22</span>,<br>  <span class="hljs-attr">subject</span>: <span class="hljs-string">&#x27;大数据开发&#x27;</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>上面的代码就是使用对象字面量的方式创建实例对象， 使用对象字面量的方式在创建单一简单对象的时候是非常方便的。但是，它也有其缺点：</p>
+<ul>
+<li>在生成多个实例对象时， 我们需要每次重复写<code>name</code>,<code>age</code>,<code>subject</code>属性，写起来特别的麻烦</li>
+<li>虽然都是学生的对象， 但是看不出<code>student1</code>和<code>student2</code>之间有什么联系。</li>
+</ul>
+<p>为了解决以上两个问题， JavaScript提供了构造函数创建对象的方式。</p>
+<h5 id="2-使用构造函数的方式"><a href="#2-使用构造函数的方式" class="headerlink" title="2. 使用构造函数的方式"></a><strong>2. 使用构造函数的方式</strong></h5><p>构造函数就其实就是一个普通的函数，当对构造函数使用<code>new</code>进行实例化时，会将其内部<code>this</code>的指向绑定实例对象上，下面我们来创建一个<code>Student</code>构造函数（构造函数约定使用大写开头，和普通函数做区分）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我特意在构造函数中打印出<code>this</code>的指向。上面我们提到，构造函数其实就是一个普通的函数， 那么我们使用普通函数的调用方式尝试调用<code>Student</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>); <span class="hljs-comment">//window&#123;&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>采用普通方式调用<code>Student</code>时， <code>this</code>的指向是<code>window</code>。下面使用<code>new</code>来实例化该构造函数， 生成一个实例对象<code>student1</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> student1 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>); <span class="hljs-comment">//Student &#123;name: &quot;阿辉&quot;, age: 22, subject: &quot;前端开发&quot;&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>当我们采用<code>new</code>生成实例化对象<code>student1</code>时， <code>this</code>不再指向<code>window</code>, 而是指向的实例对象本身。这些， 都是<code>new</code>帮我们做的。上面的就是采用构造函数的方式生成实例对象的方式， 并且当我们生成其他实例对象时，由于都是采用<code>Student</code>这个构造函数实例化而来的， 我们能够清楚的知道各实例对象之间的联系。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> student1 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>);<br><span class="hljs-keyword">let</span> student2 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿傻&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;大数据开发&#x27;</span>);<br><span class="hljs-keyword">let</span> student3 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿呆&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;Python&#x27;</span>);<br><span class="hljs-keyword">let</span> student4 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿笨&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;Java&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="二-ES5中对象的继承"><a href="#二-ES5中对象的继承" class="headerlink" title="(二) ES5中对象的继承"></a><strong>(二) ES5中对象的继承</strong></h4><h5 id="1-prototype的原型继承"><a href="#1-prototype的原型继承" class="headerlink" title="1. prototype的原型继承"></a><strong>1. prototype的原型继承</strong></h5><p><code>prototype</code>是JavaScript这类基于原型继承的核心， 只要弄明白了原型和原型链， 就基本上完全理解了JavaScript中对象的继承。下面我将着重的讲解为什么要使用<code>prototype</code>和使用<code>prototype</code>实现继承的方式。</p>
+<p><strong>为什么要使用prototype？</strong></p>
+<p>我们给之前的<code>Student</code>构造函数新增一个<code>study</code>方法</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>  <span class="hljs-built_in">this</span>.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;我在学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在我们来实例化<code>Student</code>构造函数， 生成<code>student1</code>和``student2<code>, 并分别调用其</code>study`方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> student1 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>);<br><span class="hljs-keyword">let</span> student2 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿傻&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;大数据开发&#x27;</span>);<br><br>student1.study(); <span class="hljs-comment">//我在学习前端开发</span><br>student2.study(); <span class="hljs-comment">//我在学习大数据开发</span><br></code></pre></td></tr></table></figure>
+
+<p>这样生成的实例对象表面上看没有任何问题， 但是其实是有很大的<strong>性能问题</strong>！我们来看下面一段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">console</span>.log(student1.study === student2.study); <span class="hljs-comment">//false</span><br></code></pre></td></tr></table></figure>
+
+<p>其实对于每一个实例对象<code>studentx</code>，其<code>study</code>方法的函数体是一模一样的，方法的执行结果只根据其实例对象决定（这就是多态），然而生成的每个实例都需要生成一个<code>study</code>方法去占用一份内存。这样是非常不经济的做法。新手可能会认为， 上面的代码中也就多生成了一个<code>study</code>方法， 对于内存的占用可以忽略不计。</p>
+<p>现在我们应该知道应该将<code>study</code>方法挂载到<code>Student.prototype</code>原型对象上才是正确的写法，所有的<code>studentx</code>实例都能继承该方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>&#125;<br>Student.prototype.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;我在学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在我们实例化<code>student1</code>和<code>student2</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> student1 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>);<br><span class="hljs-keyword">let</span> student2 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿傻&#x27;</span>, <span class="hljs-number">22</span>, <span class="hljs-string">&#x27;大数据开发&#x27;</span>);<br><br>student1.study(); <span class="hljs-comment">//我在学习前端开发</span><br>student2.study(); <span class="hljs-comment">//我在学习大数据开发</span><br><br><span class="hljs-built_in">console</span>.log(student1.study === student2.study); <span class="hljs-comment">//true</span><br></code></pre></td></tr></table></figure>
+
+<p>从上面的代码我们可以看出， <code>student1</code>和<code>student2</code>的<code>study</code>方法执行结果没有发生变化，但是<code>study</code>本身指向了一个内存地址。这就是为什么我们要使用<code>prototype</code>进行挂载方法的原因。接下来我们来讲解一下如何使用<code>prototype</code>来实现继承。</p>
+<h5 id="如何使用prototype实现继承？"><a href="#如何使用prototype实现继承？" class="headerlink" title="如何使用prototype实现继承？"></a><strong>如何使用prototype实现继承？</strong></h5><p>“学生”这个对象可以分为小学生， 中学生和大学生等。我们现在新建一个小学生的构造函数<code>Pupil</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pupil</span>(<span class="hljs-params">school</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.school = school;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>那么如何让<code>Pupil</code>使用<code>prototype</code>继承<code>Student</code>呢? 其实我们只要将<code>Pupil</code>的<code>prototype</code>指向<code>Student</code>的一个实例即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Pupil.prototype = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>);<br>Pupil.prototype.constructor = Pupil;<br><br><span class="hljs-keyword">let</span> pupil1 = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;北大附小&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>代码的第一行， 我们将<code>Pupil</code>的原型对象（<code>Pupil.prototype</code>）指向了<code>Student</code>的实例对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Pupil.prototype = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>代码的第二行也许有的读者会不能理解是什么意思。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Pupil.prototype.constructor = Pupil;<br></code></pre></td></tr></table></figure>
+
+<p><code>Pupil</code>作为构造函数有一个<code>protoype</code>属性指向原型对象<code>Pupil.prototype</code>，而原型对象<code>Pupil.prototype</code>也有一个<code>constructor</code>属性指回它的构造函数<code>Pupil</code>。如下图所示：</p>
+<p><img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584425977636.png" srcset="/img/loading.gif" lazyload alt="1584425977636"></p>
+<p>然而， 当我们使用实例化<code>Student</code>去覆盖<code>Pupil.prototype后</code>， 如果没有第二行代码的情况下， <code>Pupil.prototype.constructor</code>指向了<code>Student</code>构造函数， 如下图所示：<br> <img src="C:\Users\lin\AppData\Roaming\Typora\typora-user-images\1584425996493.png" srcset="/img/loading.gif" lazyload alt="1584425996493"></p>
+<p>而且， <code>pupil1.constructor</code>会默认调用<code>Pupil.prototype.constructor</code>， 这个时候<code>pupil1.constructor</code>指向了<code>Student</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Pupil.prototype = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>);<br><span class="hljs-keyword">let</span> pupil1 = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;北大附小&#x27;</span>);<br><br><span class="hljs-built_in">console</span>.log(pupil1.constructor === Student); <span class="hljs-comment">//true</span><br></code></pre></td></tr></table></figure>
+
+<p>这明显是错误的， <code>pupil1</code>明明是用<code>Pupil</code>构造函数实例化出来的， 怎么其<code>constructor</code>指向了<code>Student</code>构造函数呢。所以， 我们就需要加入第二行， 修正其错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tsx">Pupil.prototype = new Student(&#x27;小辉&#x27;, 8, &#x27;小学义务教育课程&#x27;);<br><br>//修正constructor的指向错误<br>Pupil.prototype.constructor = Pupil;<br><br>let pupil1 = new Pupil(&#x27;北大附小&#x27;);<br><br>console.log(pupil1.constructor === Student); //false<br>console.log(pupil1.constructor === Pupil); //ture<br></code></pre></td></tr></table></figure>
+
+<p>上面就是我们的如何使用<code>prototype</code>实现继承的例子， 需要特别注意的: <strong>如果替换了prototype对象， 必须手动将prototype.constructor重新指向其构造函数。</strong></p>
+<h5 id="2-使用call和apply方法实现继承"><a href="#2-使用call和apply方法实现继承" class="headerlink" title="2. 使用call和apply方法实现继承"></a><strong>2. 使用call和apply方法实现继承</strong></h5><p>使用<code>call</code>和<code>apply</code>是我个人比较喜欢的继承方式， 因为只需要一行代码就可以实现继承。但是该方法也有其局限性，<code>call</code>和<code>apply</code>不能继承原型上的属性和方法， 下面会有详细说明。</p>
+<p><strong>使用call实现继承</strong></p>
+<p>同样对于上面的<code>Student</code>构造函数， 我们使用<code>call</code>实现<code>Pupil</code>继承<code>Student</code>的全部属性和方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//父类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>&#125;<br><br><span class="hljs-comment">//子类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pupil</span>(<span class="hljs-params">name, age, subject, school</span>) </span>&#123;<br>  <span class="hljs-comment">//使用call实现继承</span><br>  Student.call(<span class="hljs-built_in">this</span>, name, age, subject);<br>  <span class="hljs-built_in">this</span>.school = school;<br>&#125;<br><br><span class="hljs-comment">//实例化Pupil</span><br><span class="hljs-keyword">let</span> pupil2 = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>, <span class="hljs-string">&#x27;北大附小&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>需要注意的是， <code>call</code>和<code>apply</code>只能继承本地属性和方法， 而不能继承原型上的属性和方法，如下面的代码所示, 我们给<code>Student</code>挂载<code>study</code>方法，<code>Pupil</code>使用<code>call</code>继承<code>Student</code>后， 调用<code>pupil2.study()</code>会报错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//父类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>&#125;<br><span class="hljs-comment">//原型上挂载study方法</span><br>Student.prototype.study = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;我在学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>&#125;<br><br><span class="hljs-comment">//子类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pupil</span>(<span class="hljs-params">name, age, subject, school</span>) </span>&#123;<br>  <span class="hljs-comment">//使用call实现继承</span><br>  Student.call(<span class="hljs-built_in">this</span>, name, age, subject);<br>  <span class="hljs-built_in">this</span>.school = school;<br>&#125;<br><br><span class="hljs-keyword">let</span> pupil2 = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>, <span class="hljs-string">&#x27;北大附小&#x27;</span>);<br><br><span class="hljs-comment">//报错</span><br>pupil2.study(); <span class="hljs-comment">//Uncaught TypeError: pupil2.study is not a function</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>使用apply实现继承</strong><br> 使用<code>apply</code>实现继承的方式和<code>call</code>类似， 唯一的不同只是参数需要使用数组的方法。下面我们使用<code>apply</code>来实现上面<code>Pupil</code>继承<code>Student</code>的例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//父类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span> (<span class="hljs-params">name, age, subject</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.name = name;<br>  <span class="hljs-built_in">this</span>.age = age; <br>  <span class="hljs-built_in">this</span>.subject = subject;<br>&#125;<br><br><span class="hljs-comment">//子类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pupil</span>(<span class="hljs-params">name, age, subject, school</span>) </span>&#123;<br>  <span class="hljs-comment">//使用applay实现继承</span><br>  Student.apply(<span class="hljs-built_in">this</span>, [name, age, subject]);<br>  <span class="hljs-built_in">this</span>.school = school;<br>&#125;<br><br><span class="hljs-comment">//实例化Pupil</span><br><span class="hljs-keyword">let</span> pupil2 = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>, <span class="hljs-string">&#x27;北大附小&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-其他继承方式"><a href="#3-其他继承方式" class="headerlink" title="3. 其他继承方式"></a><strong>3. 其他继承方式</strong></h5><p>JavaScript中的继承方式不仅仅只有上面提到的几种方法， 在《JavaScript高级程序设计》中， 还有实例继承，拷贝继承，组合继承，寄生组合继承等众多继承方式。在寄生组合继承中， 就很好的弥补了<code>call</code>和<code>apply</code>无法继承原型属性和方法的缺陷，是最完美的继承方法。这里就不详细的展开论述，感兴趣的可以自行阅读《JavaScript高级程序设计》。</p>
+<h3 id="三-ES6中的面向对象"><a href="#三-ES6中的面向对象" class="headerlink" title="三. ES6中的面向对象"></a><strong>三. ES6中的面向对象</strong></h3><p>基于原型的继承方式，虽然实现了代码复用，但是行文松散且不够流畅，可阅读性差，不利于实现扩展和对源代码进行有效的组织管理。不得不承认，基于类的继承方式在语言实现上更健壮，且在构建可服用代码和组织架构程序方面具有明显的优势。所以，ES6中提供了基于类<code>class</code>的语法。但<code>class</code>本质上是ES6提供的一颗<strong>语法糖</strong>，正如我们前面提到的，<strong>JavaScript是一门基于原型的面向对象语言</strong>。</p>
+<h4 id="一-ES6中对象的创建"><a href="#一-ES6中对象的创建" class="headerlink" title="(一) ES6中对象的创建"></a><strong>(一) ES6中对象的创建</strong></h4><p>我们使用ES6的<code>class</code>来创建<code>Student</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//定义类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span> </span>&#123;<br>  <span class="hljs-comment">//构造方法</span><br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name, age, subject</span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>.name = name;<br>    <span class="hljs-built_in">this</span>.age = age;<br>    <span class="hljs-built_in">this</span>.subject = subject;<br>  &#125;<br><br>  <span class="hljs-comment">//类中的方法</span><br>  <span class="hljs-function"><span class="hljs-title">study</span>(<span class="hljs-params"></span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;我在学习&#x27;</span> + <span class="hljs-built_in">this</span>.subject);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//实例化类</span><br><span class="hljs-keyword">let</span> student3 = <span class="hljs-keyword">new</span> Student(<span class="hljs-string">&#x27;阿辉&#x27;</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&#x27;前端开发&#x27;</span>);<br>student3.study(); <span class="hljs-comment">//我在学习前端开发</span><br></code></pre></td></tr></table></figure>
+
+<p>上面的代码定义了一个<code>Student</code>类， 可以看到里面有一个<code>constructor</code>方法， 这就是构造方法，而<code>this</code>关键字则代表实例对象。也就是说，ES5中的构造函数<code>Student</code>， 对应的是E6中<code>Student</code>类中的<code>constructor</code>方法。</p>
+<p><code>Student</code>类除了构造函数方法，还定义了一个<code>study</code>方法。需要特别注意的是，在ES6中定义类中的方法的时候，前面不需要加上<code>function</code>关键字，直接把函数定义进去就可以了。另外，方法之间不要用逗号分隔，加了会报错。而且，类中的方法全部是定义在原型上的，我们可以用下面的代码进行验证。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">console</span>.log(student3.__proto__.study === Student.prototype.study); <span class="hljs-comment">//true</span><br><span class="hljs-built_in">console</span>.log(student3.hasOwnProperty(<span class="hljs-string">&#x27;study&#x27;</span>)); <span class="hljs-comment">// false</span><br></code></pre></td></tr></table></figure>
+
+<p>上面的第一行的代码中, <code>student3.__proto__</code>是指向的原型对象，其中<code>Student.prototype</code>也是指向的原型的对象，结果为<code>true</code>就能很好的说明上面的结论： <strong>类中的方法全部是定义在原型上的</strong>。第二行代码是验证<code>student3</code>实例中是否有<code>study</code>方法，结果为<code>false</code>， 表明实例中没有<code>study</code>方法，这也更好的说明了上面的结论。其实，只要理解了<strong>ES5中的构造函数对应的是类中的constructor方法</strong>，就能推断出上面的结论。</p>
+<h4 id="二-ES6中对象的继承"><a href="#二-ES6中对象的继承" class="headerlink" title="(二) ES6中对象的继承"></a><strong>(二) ES6中对象的继承</strong></h4><p>E6中<code>class</code>可以通过<code>extends</code>关键字来实现继承， 这比前面提到的ES5中使用原型链来实现继承， 要清晰和方便很多。下面我们使用ES6的语法来实现<code>Pupil</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//子类</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pupil</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Student</span></span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name, age, subject, school</span>)</span> &#123;<br>    <span class="hljs-comment">//调用父类的constructor</span><br>    <span class="hljs-built_in">super</span>(name, age, subject); <br>    <span class="hljs-built_in">this</span>.school = school;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">let</span> pupil = <span class="hljs-keyword">new</span> Pupil(<span class="hljs-string">&#x27;小辉&#x27;</span>, <span class="hljs-number">8</span>, <span class="hljs-string">&#x27;小学义务教育课程&#x27;</span>, <span class="hljs-string">&#x27;北大附小&#x27;</span>);<br>pupil.study(); <span class="hljs-comment">//我在学习小学义务教育课程</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码代码中， 我们通过了<code>extends</code>实现<code>Pupil</code>子类继承<code>Student</code>父类。需要特别注意的是，子类必须在<code>constructor</code>方法中<strong>首先调用super方法</strong>，否则实例化时会报错。这是因为子类没有自己的<code>this</code>对象， 而是继承父类的<code>this</code>对象，然后对其加工。如果不调用<code>super</code>方法，子类就得不到<code>this</code>对象。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2371055d0cc0">重新认识JavaScript面向对象: 从ES5到ES6</a> </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">JavaScript学习笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/18/Vue%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E%E9%9B%B6%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E4%BC%81%E4%B8%9A%E7%BA%A7%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/Storage%E5%B0%81%E8%A3%85/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Storage封装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/16/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JavaScript%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+                        <span class="hidden-mobile">JavaScript字符串</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
