@@ -2,7 +2,7 @@
 title: Git
 date: 1625572792753.3086
 tags:
-- Git命令快查
+- Git
 category:
 - 项目开发常用工具
 ---
